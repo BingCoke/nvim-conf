@@ -1,0 +1,27 @@
+{
+  "seq": 0,
+  "type": "response",
+  "request_seq": 22,
+  "success": true,
+  "command": "variables",
+  "body": {
+    "variables": [
+      {
+        "name": "count",
+        "value": "1",
+        "type": "int",
+        "presentationHint": {},
+        "evaluateName": "count",
+        "variablesReference": 0
+      },
+      {
+        "name": "user1",
+        "value": "main.user {name: \"\", age: 0}",
+        "type": "main.user",
+        "presentationHint": {},
+        "evaluateName": "user1",
+        "variablesReference": 1001
+      }
+    ]
+  }
+}

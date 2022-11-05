@@ -2,6 +2,7 @@
 require('basic')
 -- 快捷键映射
 require('keybindings')
+require('lsp.saga-keybinding')
 -- 插件设置
 require('plugins')
 -- 主题配置
@@ -19,5 +20,21 @@ require("plugin-config.telescope")
 require("plugin-config.dashboard")
 -- project
 require("plugin-config.project")
--- 代码高亮 
+-- 代码高亮
 require("plugin-config.nvim-treesitter")
+-- lsp
+require("lsp.setup")
+require("lsp.cmp")
+require("lsp.ui")
+--require("coc.coc-basic")
+require("lsp.null-ls")
+-- dap debug
+require("dap.dap-require")
+require("dap.dap-ui")
+require("dap.dap-text")
+-- autotag 智能标签	
+require("plugin-config.aotutag")
+-- 注释
+require("plugin-config.coment")
+-- pairs
+require("plugin-config.auto-pairs")
