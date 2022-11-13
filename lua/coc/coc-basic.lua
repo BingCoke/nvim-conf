@@ -133,3 +133,14 @@ keyset("n", "<leader>sa", "<CMD>CocList diagnostics<CR>", opt_3)
 
 -- Resume latest coc list.
 keyset("n", "<space>p", ":<C-u>CocListResume<cr>", opt_3)
+
+
+local opt_win = {silent = true, nowait = true, expr = true}
+keyset("n", "<C-p>", 'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-p>"', opt_win)
+keyset("n", "<C-n>", 'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-n>"', opt_win)
+keyset("i", "<C-p>", 'coc#float#has_scroll() ? "<c-r>=coc#float#scroll(1)<cr>" : "<Right>"', opt_win)
+keyset("i", "<C-n>", 'coc#float#has_scroll() ? "<c-r>=coc#float#scroll(0)<cr>" : "<Left>"', opt_win)
+keyset("v", "<C-p>", 'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-p>"', opt_win)
+keyset("v", "<C-n>", 'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-n>"', opt_win)
+
+
