@@ -1,5 +1,31 @@
 {
-  "/**/" : ' "coc.preferences.extensionUpdateCheck": "daily", '
+	"sumneko-lua.locale": "zh-cn",
+	"Lua.diagnostics.globals": [
+		"vim"
+	],
+	"volar.tsLocale": "zh-cn",
+	"snippets.ultisnips.pythonPrompt": false,
+	"Lua.telemetry.enable": true,
 
-  "volar.tsLocale": "zh-cn"
+	"java.jdt.ls.home": "/home/bk/soft/development/jdt-language-server-1.17.0-202210271413",
+	"java.enabled": true,
+	"java.configuration.runtimes": [
+		{
+			"name": "JavaSE-17",
+			"path": "/home/bk/soft/development/jdk-17.0.5"
+		},
+		{
+			"name": "JavaSE-1.8",
+			"path": "/home/bk/soft/development/jdk1.8.0_311"
+		},
+		{
+			"name": "JavaSE-14",
+			"path": "/home/bk/soft/development/jdk-14.0.2",
+			"default": true
+
+		}
+	],
+	
+	"sh.commandPath": "",
+	"sh.globPattern": ""
 }

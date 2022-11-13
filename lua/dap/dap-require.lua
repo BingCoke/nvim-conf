@@ -5,6 +5,7 @@ if not stat then
 end
 --dap.defaluts.fall
 --dap.repl.close()
+require("dap.config.java")
 require("dap.config.go")
 --dap.continue()
 --dap.continue()

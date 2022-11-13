@@ -20,7 +20,7 @@ treesitter.setup({
       init_selection = "<CR>",
       node_incremental = "<CR>",
       node_decremental = "<BS>",
-      scope_incremental = "<TAB>",
+      -- scope_incremental = "<TAB>",
     },
   },
   -- 启用代码缩进模块 (=)

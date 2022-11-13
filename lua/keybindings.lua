@@ -19,6 +19,7 @@ map("n", "<A-j>", "<C-w>j", opt)
 map("n", "<A-k>", "<C-w>k", opt)
 map("n", "<A-l>", "<C-w>l", opt)
 
+
 -- 左右比例控制
 map("n", "<C-Left>", ":vertical resize +2<CR>", opt)
 map("n", "<C-Right>", ":vertical resize -2<CR>", opt)
@@ -59,8 +60,8 @@ map("n", "S", ":w<CR>", opt)
 -- 设置插件快捷键
 local pluginKeys = {}
 --translate
-map("n", "tw", ":TranslateW<CR>", opt)
-map("v", "tw", ":TranslateW<CR>", opt)
+map("n", "<leader>tw", ":TranslateW<CR>", opt)
+map("v", "<leader>tw", ":TranslateW<CR>", opt)
 map("v", "th", "TranslateH<CR>", opt)
 map("n", "th", "TranslateH<CR>", opt)
 
@@ -75,7 +76,7 @@ map("n", "<leader>bl", ":BufferLineCloseRight<CR>", opt)
 map("n", "<leader>bh", ":BufferLineCloseLeft<CR>", opt)
 map("n", "<leader>bc", ":BufferLinePickClose<CR>", opt)
 -- 选择打开的tab
-map("n", "bk", ":BufferLinePick<CR>", opt)
+map("n", "<leader>bk", ":BufferLinePick<CR>", opt)
 map("n", "<A-1>", ":BufferLineGoToBuffer 1<CR>", opt)
 map("n", "<A-2>", ":BufferLineGoToBuffer 2<CR>", opt)
 map("n", "<A-3>", ":BufferLineGoToBuffer 3<CR>", opt)
@@ -98,6 +99,9 @@ map("n", "<C-f>", ":Telescope live_grep<CR>", opt)
 -- 查看tab show window
 map("n", "sw", ":Telescope buffers<CR>", opt)
 
+-- easymotion
+map("n","<leader>r","<plug>(easymotion-s)",opt)
+map("n","<leader>e","<plug>(easymotion-f)",opt)
 -- dap
 map("n", "<F5>", "<Cmd>lua require'dap'.continue()<CR>", opt)
 map("n", "<F10>", "<Cmd>lua require'dap'.step_over()<CR>", opt)
@@ -109,6 +113,9 @@ map("n", "<Leader>lp", "<Cmd>lua require'dap'.set_breakpoint(nil, nil, vim.fn.in
 map("n", "<Leader>dr", "<Cmd>lua require'dap'.repl.open()<CR>", opt)
 map("n", "<Leader>dl", "<Cmd>lua require'dap'.run_last()<CR>", opt)
 map("n", "<Leader>k", "<Cmd>lua require'dapui'.eval()<CR>", opt)
+
+-- treesitter
+map("n","se","<cmd>lua require('vim.treesitter').stop()<CR>",opt)
 
 -- Telescope 列表中 插入模式快捷键
 pluginKeys.telescopeList = {
@@ -133,6 +140,7 @@ pluginKeys.telescopeList = {
 -- alt+m 键 打开关闭tree
 map("n", "<A-m>", ":NvimTreeToggle<CR>", opt)
 -- 列表快捷键
+-- tab 浏览文件
 pluginKeys.nvimTreeList = {
 	-- 打开文件或文件夹
 	{ key = { "<CR>", "o", "<2-LeftMouse>" }, action = "edit" },
@@ -154,86 +162,5 @@ pluginKeys.nvimTreeList = {
 	{ key = "s", action = "system_open" },
 }
 
--- 改用 lspsaga.nvim 的ui显示
--- lsp 回调函数快捷键设置
-pluginKeys.mapLSP = function(mapbuf)
-	--   -- rename
-	--   mapbuf("n", "<leader>rn", "<cmd>lua vim.lsp.buf.rename()<CR>", opt)
-	--   -- code action
-	--   mapbuf("n", "<leader>ca", "<cmd>lua vim.lsp.buf.code_action()<CR>", opt)
-
-	mapbuf("n", "<leader>cd", "<cmd>lua vim.lsp.buf.definition()<CR>", opt)
-	--   mapbuf("n", "gh", "<cmd>lua vim.lsp.buf.hover()<CR>", opt)
-	mapbuf("n", "gD", "<cmd>lua vim.lsp.buf.declaration()<CR>", opt)
-	mapbuf("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opt)
-	mapbuf("n", "gr", "<cmd>lua vim.lsp.buf.references()<CR>", opt)
-	mapbuf("n", "gt", "<cmd>lua vim.lsp.buf.type_definition()<CR>", opt)
-	--   -- diagnostic
-	--   mapbuf("n", "gp", "<cmd>lua vim.diagnostic.open_float()<CR>", opt)
-	--   mapbuf("n", "gk", "<cmd>lua vim.diagnostic.goto_prev()<CR>", opt)
-	--   mapbuf("n", "gj", "<cmd>lua vim.diagnostic.goto_next()<CR>", opt)
-	--vim.lsp.buf.format({async = true,})
-	--   -- 没用到
-	--    mapbuf('n', '<leader>q', '<cmd>lua vim.diagnostic.setloclist()<CR>', opt)
-	--    --mapbuf("n", "<C-i>", "<cmd>lua vim.lsp.buf.signature_help()<CR>", opt)
-	--   -- mapbuf('n', '<space>wa', '<cmd>lua vim.lsp.buf.add_workspace_folder()<CR>', opt)
-	--   -- mapbuf('n', '<space>wr', '<cmd>lua vim.lsp.buf.remove_workspace_folder()<CR>', opt)
-	--   -- mapbuf('n', '<space>wl', '<cmd>lua print(vim.inspect(vim.lsp.buf.list_workspace_folders()))<CR>', opt)
-end
-
---map("n", "<leader>f", "<cmd>lua require'lsp'.buf.format())<CR>", opt)
-map("n", "<leader>f", "<cmd>lua vim.lsp.buf.format({async = true})<CR>", opt)
-map("n","se","<cmd>LspStart emmet_ls<CR>",opt)
-map("n","te","<cmd>LspStop emmet_ls<CR>",opt)
--- nvim-cmp 自动补全
-pluginKeys.cmp = function(cmp)
-	local feedkey = function(key, mode)
-		vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
-	end
-
-	local has_words_before = function()
-		local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-		return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
-	end
-	return {
-		-- 出现补全
-		["<A-.>"] = cmp.mapping(cmp.mapping.complete(), { "i", "c" }),
-		-- 取消
-		["<A-,>"] = cmp.mapping({
-			i = cmp.mapping.abort(),
-			c = cmp.mapping.close(),
-		}),
-		-- 上一个
-		["<C-k>"] = cmp.mapping.select_prev_item(),
-		-- 下一个
-		["<C-j>"] = cmp.mapping.select_next_item(),
-		-- 确认
-		["<TAB>"] = cmp.mapping.confirm({
-			select = true,
-			behavior = cmp.ConfirmBehavior.Replace,
-		}),
-		-- 确认
-		["<CR>"] = cmp.mapping.confirm({
-			select = true,
-			behavior = cmp.ConfirmBehavior.Replace,
-		}),
-		-- 如果窗口内容太多，可以滚动
-		["<C-u>"] = cmp.mapping(cmp.mapping.scroll_docs(-4), { "i", "c" }),
-		["<C-d>"] = cmp.mapping(cmp.mapping.scroll_docs(4), { "i", "c" }),
-		-- 自定义代码段跳转到下一个参数
-		["<C-l>"] = cmp.mapping(function(_)
-			if vim.fn["vsnip#available"](1) == 1 then
-				feedkey("<Plug>(vsnip-expand-or-jump)", "")
-			end
-		end, { "i", "s" }),
-
-		-- 自定义代码段跳转到上一个参数
-		["<C-h>"] = cmp.mapping(function()
-			if vim.fn["vsnip#jumpable"](-1) == 1 then
-				feedkey("<Plug>(vsnip-jump-prev)", "")
-			end
-		end, { "i", "s" }),
-	}
-end
 
 return pluginKeys
