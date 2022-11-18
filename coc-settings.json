@@ -27,5 +27,12 @@
 	],
 	
 	"sh.commandPath": "",
-	"sh.globPattern": ""
+	"sh.globPattern": "",
+
+  "pairs.enableCharacters": [
+    "{",
+    "<",
+  ]
+
+
 }

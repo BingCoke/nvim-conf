@@ -3,6 +3,8 @@ local packer = require("packer")
 packer.startup(function(use)
 	-- Packer 可以管理自己本身
 	use("wbthomason/packer.nvim")
+  --markdonw
+  use({ "iamcco/markdown-preview.nvim", run = "cd app && npm install", setup = function() vim.g.mkdp_filetypes = { "markdown" } end, ft = { "markdown" }, })
 	-- 中文
 	--use "yianwillis/vimcdoc"
 	-- 主题

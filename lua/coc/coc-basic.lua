@@ -48,14 +48,14 @@ keyset("n", "gr", "<Plug>(coc-references)", { silent = true })
 
 -- Use K to show documentation in preview window.
 function _G.show_docs()
-	local cw = vim.fn.expand('<cword>')
-	if vim.fn.index({ 'vim', 'help' }, vim.bo.filetype) >= 0 then
-		vim.api.nvim_command('h ' .. cw)
-	elseif vim.api.nvim_eval('coc#rpc#ready()') then
-		vim.fn.CocActionAsync('doHover')
-	else
-		vim.api.nvim_command('!' .. vim.o.keywordprg .. ' ' .. cw)
-	end
+  local cw = vim.fn.expand('<cword>')
+  if vim.fn.index({ 'vim', 'help' }, vim.bo.filetype) >= 0 then
+    vim.api.nvim_command('h ' .. cw)
+  elseif vim.api.nvim_eval('coc#rpc#ready()') then
+    vim.fn.CocActionAsync('doHover')
+  else
+    vim.api.nvim_command('!' .. vim.o.keywordprg .. ' ' .. cw)
+  end
 end
 
 keyset("n", "K", '<CMD>lua _G.show_docs()<CR>', { silent = true })
@@ -84,8 +84,8 @@ keyset("x", "<leader>s", "<Plug>(coc-codeaction-selected)", opt_2)
 keyset("n", "<leader>s", "<Plug>(coc-codeaction-selected)", opt_2)
 
 -- Remap keys for applying codeAction to the current buffer.
-keyset("n", "<leader>qf", "<Plug>(coc-codeaction)", {silent=true,noremap=true})
-keyset("n","<leader>qr","<plug>(coc-codeaction-cuuent)",opt_2)
+keyset("n", "<leader>qf", "<Plug>(coc-codeaction)", { silent = true, noremap = true })
+keyset("n", "<leader>qr", "<plug>(coc-codeaction-cuuent)", opt_2)
 
 -- Apply AutoFix to problem on the current line.
 keyset("n", "<leader>qv", "<Plug>(coc-fix-current)", opt_2)
@@ -134,13 +134,22 @@ keyset("n", "<leader>sa", "<CMD>CocList diagnostics<CR>", opt_3)
 -- Resume latest coc list.
 keyset("n", "<space>p", ":<C-u>CocListResume<cr>", opt_3)
 
+-- Map function and class text objects
+-- NOTE: Requires 'textDocument.documentSymbol' support from the language server.
+keyset("x", "if", "<Plug>(coc-funcobj-i)", opt_3)
+keyset("o", "if", "<Plug>(coc-funcobj-i)", opt_3)
+keyset("x", "af", "<Plug>(coc-funcobj-a)", opt_3)
+keyset("o", "af", "<Plug>(coc-funcobj-a)", opt_3)
+keyset("x", "ic", "<Plug>(coc-classobj-i)", opt_3)
+keyset("o", "ic", "<Plug>(coc-classobj-i)", opt_3)
+keyset("x", "ac", "<Plug>(coc-classobj-a)", opt_3)
+keyset("o", "ac", "<Plug>(coc-classobj-a)", opt_3)
 
-local opt_win = {silent = true, nowait = true, expr = true}
-keyset("n", "<C-p>", 'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-p>"', opt_win)
-keyset("n", "<C-n>", 'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-n>"', opt_win)
-keyset("i", "<C-p>", 'coc#float#has_scroll() ? "<c-r>=coc#float#scroll(1)<cr>" : "<Right>"', opt_win)
-keyset("i", "<C-n>", 'coc#float#has_scroll() ? "<c-r>=coc#float#scroll(0)<cr>" : "<Left>"', opt_win)
-keyset("v", "<C-p>", 'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-p>"', opt_win)
-keyset("v", "<C-n>", 'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-n>"', opt_win)
 
-
+local opt_win = { silent = true, nowait = true, expr = true }
+keyset("n", "<A-p>", 'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-p>"', opt_win)
+keyset("n", "<A-n>", 'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-n>"', opt_win)
+keyset("i", "<A-p>", 'coc#float#has_scroll() ? "<c-r>=coc#float#scroll(1)<cr>" : "<Right>"', opt_win)
+keyset("i", "<A-n>", 'coc#float#has_scroll() ? "<c-r>=coc#float#scroll(0)<cr>" : "<Left>"', opt_win)
+keyset("v", "<A-p>", 'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-p>"', opt_win)
+keyset("v", "<A-n>", 'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-n>"', opt_win)
