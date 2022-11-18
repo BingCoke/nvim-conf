@@ -29,6 +29,7 @@ require("plugin-config.nvim-treesitter")
 --require("lsp.cmp")
 --require("lsp.ui")
 require("coc.coc-basic")
+require("coc.coc-need")
 --require("lsp.null-ls")
 -- dap debug
 require("dap.mason")
