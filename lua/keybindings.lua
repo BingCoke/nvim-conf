@@ -5,14 +5,14 @@ local map = vim.api.nvim_set_keymap
 -- 复用 opt 参数
 local opt = { noremap = true, silent = true }
 -- 取消 s 默认功能
-map("n", "s", "", opt)
+-- map("n", "s", "", opt)
 -- windows 分屏快捷键
-map("n", "sv", ":vsp<CR>", opt)
-map("n", "sh", ":sp<CR>", opt)
+map("n", "<leader>sv", ":vsp<CR>", opt)
+map("n", "<leader>sh", ":sp<CR>", opt)
 -- 关闭当前
-map("n", "sc", "<C-w>c", opt)
+map("n", "<leader>sc", "<C-w>c", opt)
 -- 关闭其他
-map("n", "so", "<C-w>o", opt)
+map("n", "<leader>so", "<C-w>o", opt)
 -- Alt + hjkl  窗口之间跳转
 map("n", "<A-h>", "<C-w>h", opt)
 map("n", "<A-j>", "<C-w>j", opt)
@@ -53,10 +53,11 @@ map("n", "<C-u>", "9k", opt)
 map("n", "<C-d>", "9j", opt)
 map("v", "<C-u>", "9k", opt)
 map("v", "<C-d>", "9j", opt)
-
 -- 设置退出并,保存
-map("n", "Q", ":q<CR>", opt)
-map("n", "S", ":w<CR>", opt)
+
+map("n", "Q", ":wq<CR>", opt)
+map("n", "<leader>i", ":q<CR>", opt)
+map("n", "<leader>w", ":w<CR>", {})
 -- 设置插件快捷键
 local pluginKeys = {}
 --translate
@@ -97,7 +98,7 @@ map("n", "<C-p>", ":Telescope find_files<CR>", opt)
 -- 全局搜索
 map("n", "<C-f>", ":Telescope live_grep<CR>", opt)
 -- 查看tab show window
-map("n", "sw", ":Telescope buffers<CR>", opt)
+map("n", "<leader>sw", ":Telescope buffers<CR>", opt)
 
 -- easymotion
 map("n","<leader>r","<plug>(easymotion-s)",opt)
@@ -115,7 +116,11 @@ map("n", "<Leader>dl", "<Cmd>lua require'dap'.run_last()<CR>", opt)
 map("n", "<Leader>k", "<Cmd>lua require'dapui'.eval()<CR>", opt)
 
 -- treesitter
-map("n","se","<cmd>lua require('vim.treesitter').stop()<CR>",opt)
+map("n","<leader>se","<cmd>lua require('vim.treesitter').stop()<CR>",opt)
+
+
+map("n","<leader>gh",":Dashboard",opt)
+map("n","<leader>nt",":DashboardNewFile",opt)
 
 -- Telescope 列表中 插入模式快捷键
 pluginKeys.telescopeList = {

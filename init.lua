@@ -45,6 +45,11 @@ require("plugin-config.coment")
 require("plugin-config.auto-pairs")
 -- translate
 require('plugin-config.translate')
-require("plugin-config.easymotion")
+-- require("plugin-config.easymotion")
+require("plugin-config.leap-conf")
 -- 设置 tmux关闭
 -- os.execute("tmux set status off")
+require("plugin-config.ranger")
+
+
+

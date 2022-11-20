@@ -14,12 +14,14 @@ packer.startup(function(use)
 	use "EdenEast/nightfox.nvim"
 	-- 功能性插件
 	-- 跳转插件
-	use 'easymotion/vim-easymotion'
-	--use 'ggandor/leap.nvim'
+	-- use 'easymotion/vim-easymotion'
+	use 'ggandor/leap.nvim'
 	-- surround
 	use "yaocccc/vim-surround"
 	-- 标签页
 	use({ "akinsho/bufferline.nvim", requires = { "kyazdani42/nvim-web-devicons", "moll/vim-bbye" } })
+  -- ranger
+  use "rbgrouleff/bclose.vim"
 	-- 文件树
 	use({ "kyazdani42/nvim-tree.lua", requires = "kyazdani42/nvim-web-devicons" })
 	-- 文件树拓展 project

@@ -74,6 +74,11 @@ end
 time([[try_loadstring definition]], false)
 time([[Defining packer_plugins]], true)
 _G.packer_plugins = {
+  ["bclose.vim"] = {
+    loaded = true,
+    path = "/home/bk/.local/share/nvim/site/pack/packer/start/bclose.vim",
+    url = "https://github.com/rbgrouleff/bclose.vim"
+  },
   ["bufferline.nvim"] = {
     loaded = true,
     path = "/home/bk/.local/share/nvim/site/pack/packer/start/bufferline.nvim",
@@ -98,6 +103,11 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/bk/.local/share/nvim/site/pack/packer/start/fcitx.nvim",
     url = "https://github.com/h-hg/fcitx.nvim"
+  },
+  ["leap.nvim"] = {
+    loaded = true,
+    path = "/home/bk/.local/share/nvim/site/pack/packer/start/leap.nvim",
+    url = "https://github.com/ggandor/leap.nvim"
   },
   ["lua-lsp"] = {
     loaded = true,
@@ -215,11 +225,6 @@ _G.packer_plugins = {
     loaded = true,
     path = "/home/bk/.local/share/nvim/site/pack/packer/start/vim-bbye",
     url = "https://github.com/moll/vim-bbye"
-  },
-  ["vim-easymotion"] = {
-    loaded = true,
-    path = "/home/bk/.local/share/nvim/site/pack/packer/start/vim-easymotion",
-    url = "https://github.com/easymotion/vim-easymotion"
   },
   ["vim-interestingwords"] = {
     loaded = true,
