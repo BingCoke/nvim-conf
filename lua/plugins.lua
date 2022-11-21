@@ -21,6 +21,7 @@ packer.startup(function(use)
 	-- 标签页
 	use({ "akinsho/bufferline.nvim", requires = { "kyazdani42/nvim-web-devicons", "moll/vim-bbye" } })
   -- ranger
+  use 'francoiscabrol/ranger.vim'
   use "rbgrouleff/bclose.vim"
 	-- 文件树
 	use({ "kyazdani42/nvim-tree.lua", requires = "kyazdani42/nvim-web-devicons" })
