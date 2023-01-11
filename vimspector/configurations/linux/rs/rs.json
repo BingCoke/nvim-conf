@@ -1,0 +1,14 @@
+
+{
+  "$schema": "https://puremourning.github.io/vimspector/schema/vimspector.schema.json",
+  "configurations": {
+    "launch": {
+      "adapter": "CodeLLDB",
+      "configuration": {
+        "request": "launch",
+        "program": "${Executable}",
+        "args": [ "*${Args}" ]
+      }
+    }
+  }
+}

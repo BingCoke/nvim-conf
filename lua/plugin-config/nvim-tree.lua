@@ -9,6 +9,9 @@ end
 -- 列表操作快捷键
 local list_keys = require('keybindings').nvimTreeList
 nvim_tree.setup({
+    diagnostics = {
+      enable=true,
+    },
     -- 不显示 git 状态图标
     git = {
         enable = false,
@@ -22,7 +25,7 @@ nvim_tree.setup({
     -- 隐藏 .文件 和 node_modules 文件夹
     filters = {
         dotfiles = true,
-        custom = { 'node_modules' },
+        -- custom = { 'node_modules' },
     },
     view = {
         -- 宽度

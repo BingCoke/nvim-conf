@@ -24,6 +24,8 @@ local opts = { silent = true, noremap = true }
 local opt = { silent = true, noremap = true, expr = true, replace_keycodes = false }
 keyset("i", "<c-j>", 'coc#pum#visible() ? coc#pum#next(1) : v:lua.check_back_space() ? "<TAB>" : coc#refresh()', opt)
 keyset("i", "<c-k>", [[coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"]], opt)
+keyset("i", "<c-d>", 'coc#pum#visible() ? coc#pum#next(5) : v:lua.check_back_space() ? "<TAB>" : coc#refresh()', opt)
+keyset("i", "<c-u>", [[coc#pum#visible() ? coc#pum#prev(5) : "\<C-h>"]], opt)
 
 vim.g.coc_snippet_next = '<c-l>'
 vim.g.coc_snippet_prev = '<c-h>'
@@ -31,14 +33,15 @@ vim.g.coc_snippet_prev = '<c-h>'
 -- <C-g>u breaks current undo, please make your own choice.
 keyset("i", "<TAB>", [[coc#pum#visible() ? coc#pum#confirm() : "<TAB>"]], opt)
 -- Use <c-j> to trigger snippets
-keyset("i", "<c-i>", "<Plug>(coc-snippets-expand-jump)")
+keyset("i", "<A-i>", "<Plug>(coc-snippets-expand-jump)")
 -- Use <c-space> to trigger completion.
-keyset("i", "<c-space>", "coc#refresh()", { silent = true, expr = true })
-
+keyset("i", "<A-space>", "coc#refresh()", { silent = true, expr = true })
 -- Use `[g` and `]g` to navigate diagnostics
 -- Use `:CocDiagnostics` to get all diagnostics of current buffer in location list.
 keyset("n", "[g", "<Plug>(coc-diagnostic-prev)", { silent = true })
 keyset("n", "]g", "<Plug>(coc-diagnostic-next)", { silent = true })
+keyset("n", "[e", "<Plug>(coc-diagnostic-prev-error)", { silent = true })
+keyset("n", "]e", "<Plug>(coc-diagnostic-next-error)", { silent = true })
 
 -- GoTo code navigation.
 keyset("n", "gd", "<Plug>(coc-definition)", { silent = true })
@@ -92,7 +95,7 @@ keyset("n", "<leader>qv", "<Plug>(coc-fix-current)", opt_2)
 
 
 -- Run the Code Lens action on the current line.
-keyset("n", "<leader>cl", "<Plug>(coc-codelens-action)", opt_2)
+keyset("n", "<leader>ac", "<Plug>(coc-codelens-action)", opt_2)
 
 
 -- Use CTRL-S for selections ranges.
@@ -147,9 +150,16 @@ keyset("o", "ac", "<Plug>(coc-classobj-a)", opt_3)
 
 
 local opt_win = { silent = true, nowait = true, expr = true }
-keyset("n", "<A-p>", 'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-p>"', opt_win)
-keyset("n", "<A-n>", 'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-n>"', opt_win)
-keyset("i", "<A-p>", 'coc#float#has_scroll() ? "<c-r>=coc#float#scroll(1)<cr>" : "<Right>"', opt_win)
-keyset("i", "<A-n>", 'coc#float#has_scroll() ? "<c-r>=coc#float#scroll(0)<cr>" : "<Left>"', opt_win)
-keyset("v", "<A-p>", 'coc#float#has_scroll() ? coc#float#scroll(1) : "<C-p>"', opt_win)
-keyset("v", "<A-n>", 'coc#float#has_scroll() ? coc#float#scroll(0) : "<C-n>"', opt_win)
+keyset("n", "<A-n>", 'coc#float#has_scroll() ? coc#float#scroll(1) : "<A-p>"', opt_win)
+keyset("n", "<A-p>", 'coc#float#has_scroll() ? coc#float#scroll(0) : "<A-n>"', opt_win)
+keyset("i", "<A-n>", 'coc#float#has_scroll() ? "<c-r>=coc#float#scroll(1)<cr>" : "<Right>"', opt_win)
+keyset("i", "<A-p>", 'coc#float#has_scroll() ? "<c-r>=coc#float#scroll(0)<cr>" : "<Left>"', opt_win)
+keyset("v", "<A-n>", 'coc#float#has_scroll() ? coc#float#scroll(1) : "<A-p>"', opt_win)
+keyset("v", "<A-p>", 'coc#float#has_scroll() ? coc#float#scroll(0) : "<A-n>"', opt_win)
+
+
+
+-- Remap keys for apply refactor code actions.
+keyset("n", "<leader>re", "<Plug>(coc-codeaction-refactor)", { silent = true })
+keyset("x", "<leader>r", "<Plug>(coc-codeaction-refactor-selected)", { silent = true })
+keyset("n", "<leader>r", "<Plug>(coc-codeaction-refactor-selected)", { silent = true })

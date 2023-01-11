@@ -2,7 +2,9 @@
 require('basic')
 
 -- 快捷键映射
+
 require('keybindings')
+
 --require('lsp.saga-keybinding')
 -- 插件设置
 require('plugins')
@@ -32,10 +34,10 @@ require("coc.coc-basic")
 require("coc.coc-need")
 --require("lsp.null-ls")
 -- dap debug
-require("dap.mason")
-require("dap.dap-require")
-require("dap.dap-ui")
-require("dap.dap-text")
+-- require("dap.mason")
+-- require("dap.dap-require")
+-- require("dap.dap-ui")
+-- require("dap.dap-text")
 -- autotag 智能标签	
 require("plugin-config.aotutag")
 -- 注释
@@ -46,10 +48,11 @@ require("plugin-config.auto-pairs")
 -- translate
 require('plugin-config.translate')
 -- require("plugin-config.easymotion")
+
 require("plugin-config.leap-conf")
 -- 设置 tmux关闭
 -- os.execute("tmux set status off")
 require("plugin-config.ranger")
 
-
+require("plugin-config.vimspector")
 

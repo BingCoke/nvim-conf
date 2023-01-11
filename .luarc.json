@@ -4,5 +4,9 @@
     "Lua.diagnostics.disable": [
         "deprecated",
         "param-type-mismatch"
+    ],
+    "Lua.diagnostics.globals": [
+        "vim",
+        "let"
     ]
 }

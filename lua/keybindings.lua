@@ -19,6 +19,9 @@ map("n", "<A-j>", "<C-w>j", opt)
 map("n", "<A-k>", "<C-w>k", opt)
 map("n", "<A-l>", "<C-w>l", opt)
 
+vim.s = 12;
+
+
 
 -- 左右比例控制
 map("n", "<C-Left>", ":vertical resize +2<CR>", opt)
@@ -58,6 +61,8 @@ map("v", "<C-d>", "9j", opt)
 map("n", "Q", ":wq<CR>", opt)
 map("n", "<leader>i", ":q<CR>", opt)
 map("n", "<leader>w", ":w<CR>", {})
+
+map("n", "<leader>W", ":w !sudo tee %<CR>", {})
 -- 设置插件快捷键
 local pluginKeys = {}
 --translate
@@ -100,27 +105,26 @@ map("n", "<C-f>", ":Telescope live_grep<CR>", opt)
 -- 查看tab show window
 map("n", "<leader>sw", ":Telescope buffers<CR>", opt)
 
--- easymotion
-map("n","<leader>r","<plug>(easymotion-s)",opt)
-map("n","<leader>e","<plug>(easymotion-f)",opt)
 -- dap
-map("n", "<F5>", "<Cmd>lua require'dap'.continue()<CR>", opt)
-map("n", "<F10>", "<Cmd>lua require'dap'.step_over()<CR>", opt)
-map("n", "<F11>", "<Cmd>lua require'dap'.step_into()<CR>", opt)
-map("n", "<F12>", "<Cmd>lua require'dap'.step_out()<CR>", opt)
-map("n", "<Leader>b", "<Cmd>lua require'dap'.toggle_breakpoint()<CR>", opt)
-map("n", "<Leader>B", "<Cmd>lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>", opt)
-map("n", "<Leader>lp", "<Cmd>lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>", opt)
-map("n", "<Leader>dr", "<Cmd>lua require'dap'.repl.open()<CR>", opt)
-map("n", "<Leader>dl", "<Cmd>lua require'dap'.run_last()<CR>", opt)
-map("n", "<Leader>k", "<Cmd>lua require'dapui'.eval()<CR>", opt)
+-- map("n", "<F5>", "<Cmd>lua require'dap'.continue()<CR>", opt)
+-- map("n", "<F10>", "<Cmd>lua require'dap'.step_over()<CR>", opt)
+-- map("n", "<F11>", "<Cmd>lua require'dap'.step_into()<CR>", opt)
+-- map("n", "<F12>", "<Cmd>lua require'dap'.step_out()<CR>", opt)
+-- map("n", "<Leader>b", "<Cmd>lua require'dap'.toggle_breakpoint()<CR>", opt)
+-- map("n", "<Leader>B", "<Cmd>lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>", opt)
+-- map("n", "<Leader>lp", "<Cmd>lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>", opt)
+-- map("n", "<Leader>dr", "<Cmd>lua require'dap'.repl.open()<CR>", opt)
+-- map("n", "<Leader>dl", "<Cmd>lua require'dap'.run_last()<CR>", opt)
+-- map("n", "<Leader>k", "<Cmd>lua require'dapui'.eval()<CR>", opt)
+map("n", "<Leader>de", ":VimspectorReset<cr>", opt)
+
 
 -- treesitter
 map("n","<leader>se","<cmd>lua require('vim.treesitter').stop()<CR>",opt)
 
 
 map("n","<leader>gh",":Dashboard",opt)
-map("n","<leader>nt",":DashboardNewFile",opt)
+map("n","<leader>nt",":DashboardNewFile<CR>",opt)
 
 -- Telescope 列表中 插入模式快捷键
 pluginKeys.telescopeList = {

@@ -7,5 +7,6 @@ end
 --dap.repl.close()
 require("dap.config.java")
 require("dap.config.go")
+require("dap.config.lldb")
 --dap.continue()
 --dap.continue()

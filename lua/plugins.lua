@@ -8,8 +8,11 @@ packer.startup(function(use)
 	-- 中文
 	--use "yianwillis/vimcdoc"
 	-- 主题
-	use("folke/tokyonight.nvim")
 	use("shaunsingh/nord.nvim")
+  use "joshdick/onedark.vim"
+  use 'marko-cerovac/material.nvim'
+
+  use("puremourning/vimspector")
 	--use 'arcticicestudio/nord-vim'
 	use "EdenEast/nightfox.nvim"
 	-- 功能性插件
@@ -45,6 +48,8 @@ packer.startup(function(use)
 	-- 代码高亮
 	use 'lfv89/vim-interestingwords'
 	use({ "nvim-treesitter/nvim-treesitter", run = ":TSUpdate" })
+-- leetcode
+  use 'ianding1/leetcode.vim'
 
 	------- LSP -----
 	use({ "williamboman/mason.nvim" })
@@ -94,9 +99,9 @@ packer.startup(function(use)
 	use("b0o/schemastore.nvim")
 
 	---------- DAP debug------
-	use("mfussenegger/nvim-dap")
-	use("theHamsta/nvim-dap-virtual-text")
-	use("rcarriga/nvim-dap-ui")
+	-- use("mfussenegger/nvim-dap")
+	-- use("theHamsta/nvim-dap-virtual-text")
+	-- use("rcariga/nvim-dap-ui")
 	-- 输入法切换，当模式成为 normal模式的时候
 	use 'h-hg/fcitx.nvim'
 	-- 标签智能补全

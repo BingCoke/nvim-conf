@@ -102,3 +102,7 @@ hi TermCursorNC ctermfg=235 ctermbg=243 cterm=NONE
 hi GitGutterAdd    ctermfg=106
 hi GitGutterChange ctermfg=136
 hi GitGutterDelete ctermfg=160
+
+
+
+
