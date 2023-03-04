@@ -2,41 +2,71 @@
 	"sumneko-lua.locale": "zh-cn",
 	"Lua.diagnostics.globals": [
 		"vim"
+
 	],
 	"volar.tsLocale": "zh-cn",
 	"snippets.ultisnips.pythonPrompt": false,
-	"Lua.telemetry.enable": true,
-
-	"java.jdt.ls.home": "/home/bk/soft/development/jdt-language-server-1.17.0-202210271413",
-	"java.enabled": true,
-	"java.configuration.runtimes": [
-		{
-			"name": "JavaSE-17",
-			"path": "/home/bk/soft/development/jdk-17.0.5"
-		},
-		{
-			"name": "JavaSE-1.8",
-			"path": "/home/bk/soft/development/jdk1.8.0_311"
-		},
-		{
-			"name": "JavaSE-14",
-			"path": "/home/bk/soft/development/jdk-14.0.2",
-			"default": true
-
-		}
-	],
 	"sh.commandPath": "",
 	"sh.globPattern": "",
+  
   "pairs.enableCharacters": [
     "(",
     "{",
     "<",
-    "[",
+    "["
   ],
-  "rust-analyzer.debug.runtime": "vimspector",
+  "rust-analyzer.trace.server": "verbose",
+  "rust-analyzer.updates.checkOnStartup": false,
   "rust-analyzer.workspace.symbol.search.scope": "workspace_and_dependencies",
+  "rust-analyzer.completion.snippets.custom": {
+    "Arc::new": {
+      "postfix": "arc",
+      "body": "Arc::new(${receiver})",
+      "requires": "std::sync::Arc",
+      "description": "Put the expression into an `Arc`",
+      "scope": "expr"
+    },
+    "Rc::new": {
+      "postfix": "rc",
+      "body": "Rc::new(${receiver})",
+      "requires": "std::rc::Rc",
+      "description": "Put the expression into an `Rc`",
+      "scope": "expr"
+    },
+    "Box::pin": {
+      "postfix": "pinbox",
+      "body": "Box::pin(${receiver})",
+      "requires": "std::boxed::Box",
+      "description": "Put the expression into a pinned `Box`",
+      "scope": "expr"
+    },
+    "Ok": {
+      "postfix": "ok",
+      "body": "Ok(${receiver})",
+      "description": "Wrap the expression in a `Result::Ok`",
+      "scope": "expr"
+    },
+    "Err": {
+      "postfix": "err",
+      "body": "Err(${receiver})",
+      "description": "Wrap the expression in a `Result::Err`",
+      "scope": "expr"
+    },
+    "Some": {
+      "postfix": "some",
+      "body": "Some(${receiver})",
+      "description": "Wrap the expression in an `Option::Some`",
+      "scope": "expr"
+    },
+    "println": {
+      "postfix": "pln",
+      "body": "println!(\"${receiver} = {:?}\", ${receiver});",
+      "description": "println for a variable",
+      "scope": "expr"
+    }
+  },
   "suggest.completionItemKindLabels": {
-      "constructor": "\ufb25",
+    "constructor": "\ufb25",
     "keyword": "\uf1de",
     "variable": "\ue79b",
     "value": "\uf89f",
@@ -67,13 +97,16 @@
   "outline.autoPreview": true,
   "suggest.floatConfig": {
     "border": true,
-    "rounded": true,
+    "rounded": true
   },
   "hover.floatConfig": {
-    "border": true
+    "border": true,
+    "rounded": true
   },
   "diagnostic.floatConfig": {
-    "border": true
-  }
-
+    "border": true,
+    "rounded": true
+  },
+  "colors.enable": true,
+  "colors.highlightPriority": 1000
 }

@@ -62,6 +62,7 @@ function _G.show_docs()
 end
 
 keyset("n", "K", '<CMD>lua _G.show_docs()<CR>', { silent = true })
+keyset("n", "<a-a>", '<CMD>lua _G.show_docs()<CR>', { silent = true })
 
 
 

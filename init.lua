@@ -20,11 +20,11 @@ require("plugin-config.lualine")
 -- 搜索
 require("plugin-config.telescope")
 -- 启动页面
-require("plugin-config.dashboard")
+--require("plugin-config.dashboard")
 -- project
 require("plugin-config.project")
 -- 代码高亮
-require("plugin-config.nvim-treesitter")
+-- require("plugin-config.nvim-treesitter")
 -- lsp
 
 --require("lsp.setup")
@@ -38,21 +38,22 @@ require("coc.coc-need")
 -- require("dap.dap-require")
 -- require("dap.dap-ui")
 -- require("dap.dap-text")
--- autotag 智能标签	
-require("plugin-config.aotutag")
+-- autotag 智能标签
+-- require("plugin-config.aotutag")
 -- 注释
 require("plugin-config.coment")
 -- pairs
-
 require("plugin-config.auto-pairs")
 -- translate
 require('plugin-config.translate')
 -- require("plugin-config.easymotion")
-
 require("plugin-config.leap-conf")
 -- 设置 tmux关闭
 -- os.execute("tmux set status off")
 require("plugin-config.ranger")
 
 require("plugin-config.vimspector")
+require "plugin-config.wilder"
+
+
 

@@ -1,7 +1,7 @@
 --local colorscheme = "onedarkpro"
 --local colorscheme = "tokyonight"
--- local colorscheme = "nord"
- local colorscheme = "material"
+--local colorscheme = "nord"
+local colorscheme = "material"
 
  vim.g.material_style = "palenight"
 local status_ok, _ = pcall(vim.cmd, "colorscheme " .. colorscheme)
@@ -33,10 +33,6 @@ require('material').setup({
         types = {},
     },
 
-    
-  
-  
-  
     plugins = { -- Uncomment the plugins that you use to highlight them
         -- Available plugins:
         -- "dap",
@@ -52,17 +48,17 @@ require('material').setup({
         -- "nvim-tree",
         -- "nvim-web-devicons",
         -- "sneak",
-        -- "telescope",
+        "telescope",
         -- "trouble",
         -- "which-key",
     },
 
     disable = {
         colored_cursor = false, -- Disable the colored cursor
-        borders = true, -- Disable borders between verticaly split windows
+        borders = false, -- Disable borders between verticaly split windows
         background = false, -- Prevent the theme from setting the background (NeoVim then uses your terminal background)
         term_colors = false, -- Prevent the theme from setting terminal colors
-        eob_lines = true -- Hide the end-of-buffer lines
+        eob_lines = false -- Hide the end-of-buffer lines
     },
 
     high_visibility = {
@@ -101,7 +97,8 @@ custom_highlights = {
 
 })
 
- pcall(vim.cmd,"hi CocMenuSel ctermbg=237 guibg=#425d6e")
+pcall(vim.cmd,"hi CocMenuSel ctermbg=237 guibg=#425d6e")
+
 
 
 

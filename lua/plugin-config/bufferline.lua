@@ -3,11 +3,16 @@ if not status then
     vim.notify("没有找到 bufferline")
   return
 end
-
+vim.opt.termguicolors = true
 -- bufferline 配置
 -- https://github.com/akinsho/bufferline.nvim#configuration
 bufferline.setup({
   options = {
+    hover = {
+      enable = true,
+      delay = 200,
+      reveal = {'close'}
+    },
     -- 关闭 Tab 的命令，这里使用 moll/vim-bbye 的 :Bdelete 命令
     close_command = "Bdelete! %d",
     right_mouse_command = "Bdelete! %d",
@@ -23,6 +28,7 @@ bufferline.setup({
     },
     -- 使用 nvim 内置 LSP  后续课程会配置
     diagnostics = "coc",
+    diagnostics_update_in_insert = true,
     -- 可选，显示 LSP 报错图标
     ---@diagnostic disable-next-line: unused-local
     diagnostics_indicator = function(count, level, diagnostics_dict, context)

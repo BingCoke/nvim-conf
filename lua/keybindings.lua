@@ -11,6 +11,8 @@ map("n", "<leader>sv", ":vsp<CR>", opt)
 map("n", "<leader>sh", ":sp<CR>", opt)
 -- 关闭当前
 map("n", "<leader>sc", "<C-w>c", opt)
+map("n", "<A-d>", "<C-w>c", opt)
+map("i", "<A-d>", "<C-w>c", opt)
 -- 关闭其他
 map("n", "<leader>so", "<C-w>o", opt)
 -- Alt + hjkl  窗口之间跳转
@@ -19,10 +21,8 @@ map("n", "<A-j>", "<C-w>j", opt)
 map("n", "<A-k>", "<C-w>k", opt)
 map("n", "<A-l>", "<C-w>l", opt)
 
+
 vim.s = 12;
-
-
-
 -- 左右比例控制
 map("n", "<C-Left>", ":vertical resize +2<CR>", opt)
 map("n", "<C-Right>", ":vertical resize -2<CR>", opt)
@@ -39,6 +39,8 @@ map("t", "<A-j>", [[ <C-\><C-N><C-w>j ]], opt)
 map("t", "<A-k>", [[ <C-\><C-N><C-w>k ]], opt)
 map("t", "<A-l>", [[ <C-\><C-N><C-w>l ]], opt)
 
+map("v", "<a-c>", "\"+y", opt)
+map("v", "<c-c>", "\"+y", opt)
 -- visual模式下缩进代码
 map("v", "<", "<gv", opt)
 map("v", ">", ">gv", opt)
@@ -93,9 +95,22 @@ map("n", "<A-7>", ":BufferLineGoToBuffer 7<CR>", opt)
 map("n", "<A-8>", ":BufferLineGoToBuffer 8<CR>", opt)
 map("n", "<A-9>", ":BufferLineGoToBuffer 9<CR>", opt)
 map("n", "<A-0>", ":BufferLineGoToBuffer 10<CR>", opt)
+map("i", "<A-1>", ":BufferLineGoToBuffer 1<CR>", opt)
+map("i", "<A-2>", ":BufferLineGoToBuffer 2<CR>", opt)
+map("i", "<A-3>", ":BufferLineGoToBuffer 3<CR>", opt)
+map("i", "<A-4>", ":BufferLineGoToBuffer 4<CR>", opt)
+map("i", "<A-5>", ":BufferLineGoToBuffer 5<CR>", opt)
+map("i", "<A-6>", ":BufferLineGoToBuffer 6<CR>", opt)
+map("i", "<A-7>", ":BufferLineGoToBuffer 7<CR>", opt)
+map("i", "<A-8>", ":BufferLineGoToBuffer 8<CR>", opt)
+map("i", "<A-9>", ":BufferLineGoToBuffer 9<CR>", opt)
+map("i", "<A-0>", ":BufferLineGoToBuffer 10<CR>", opt)
 --tab置换
 map("n", "<A-i>", ":BufferLineMoveNext<CR>", opt)
 map("n", "<A-o>", ":BufferLineMovePrev<CR>", opt)
+map("i", "<A-i>", ":BufferLineMoveNext<CR>", opt)
+map("i", "<A-o>", ":BufferLineMovePrev<CR>", opt)
+
 -- 设置文件搜索
 -- Telescope
 -- 查找文件
@@ -120,10 +135,9 @@ map("n", "<Leader>de", ":VimspectorReset<cr>", opt)
 
 
 -- treesitter
-map("n","<leader>se","<cmd>lua require('vim.treesitter').stop()<CR>",opt)
 
 
-map("n","<leader>gh",":Dashboard",opt)
+map("n","<leader>gh",":Dashboard<CR>",opt)
 map("n","<leader>nt",":DashboardNewFile<CR>",opt)
 
 -- Telescope 列表中 插入模式快捷键
