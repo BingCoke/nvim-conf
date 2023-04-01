@@ -26,7 +26,6 @@ bufferline.setup({
         text_align = "left",
       },
     },
-    -- 使用 nvim 内置 LSP  后续课程会配置
     diagnostics = "coc",
     diagnostics_update_in_insert = true,
     -- 可选，显示 LSP 报错图标
@@ -39,13 +38,11 @@ bufferline.setup({
       end
       return s
     end,
-    separator_style = "slant",
+    separator_style = "slope",
     highlights = {
         fill = {
-            bg = {
-                attribute = "fg",
-                highlight = "Pmenu"
-            }
+            ctermbg = 7,
+            ctermfg = 0
         }
     },
   },

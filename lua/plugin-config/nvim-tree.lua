@@ -31,7 +31,7 @@ nvim_tree.setup({
     },
     -- 隐藏 .文件 和 node_modules 文件夹
     filters = {
-        dotfiles = true,
+        -- dotfiles = true,
         -- custom = { 'node_modules' },
     },
     view = {
@@ -61,14 +61,9 @@ nvim_tree.setup({
         },
     },
     -- project plugin 需要这样设置
-    update_cwd = true,
-    update_focused_file = {
-      enable = true,
-      update_cwd = true,
-    },
 })
 -- 自动关闭
-vim.cmd([[
-  autocmd BufEnter * ++nested if winnr('$') == 1 && bufname() == 'NvimTree_' . tabpagenr() | quit | endif
-]])
+-- vim.cmd([[
+--   autocmd BufEnter * ++nested if winnr('$') == 1 && bufname() == 'NvimTree_' . tabpagenr() | quit | endif
+-- ]])
 

@@ -1,115 +1,200 @@
-local packer = require("packer")
-
-packer.startup(function(use)
-  -- Packer 可以管理自己本身
-  use("wbthomason/packer.nvim")
-  --markdonw
-  use({
-    "iamcco/markdown-preview.nvim",
-    run = "cd app && npm install",
-    setup = function() vim.g.mkdp_filetypes = { "markdown" } end,
-    ft = { "markdown" },
+--local packer = require("packer")
+local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+if not vim.loop.fs_stat(lazypath) then
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable", -- latest stable release
+    lazypath,
   })
-  -- 主题
-  use("shaunsingh/nord.nvim")
-  use "joshdick/onedark.vim"
-  use 'marko-cerovac/material.nvim'
+end
+vim.opt.rtp:prepend(lazypath)
+-- Example using a list of specs with the default options
 
-  use("puremourning/vimspector")
-  use "EdenEast/nightfox.nvim"
+require("lazy").setup({
+
+  --markdonw
+  {
+    "iamcco/markdown-preview.nvim",
+    --cmd = "cd app && npm install",
+    --opts = function() vim.g.mkdp_filetypes = { "markdown" } end,
+    config = function()
+      vim.g.mkdp_filetypes = { "markdown" }
+    end,
+    ft = { "markdown" },
+  },
+  {
+    'marko-cerovac/material.nvim',
+    config = function()
+      require("colorscheme")
+    end,
+  },
+  {
+    'bluz71/vim-nightfly-colors'
+  },
+  --"puremourning/vimspector",
   -- 功能性插件
   -- 跳转插件
-  use 'ggandor/leap.nvim'
+  {
+    'tpope/vim-fugitive'
+  },
+  {
+    'ggandor/leap.nvim',
+    lazy = true,
+    config = function()
+      require("plugin-config.leap-conf")
+    end,
+  },
   -- surround
-  use "yaocccc/vim-surround"
-  -- 标签页
-  use({ "akinsho/bufferline.nvim", requires = { "kyazdani42/nvim-web-devicons", "moll/vim-bbye" } })
-  -- ranger
-  -- use 'francoiscabrol/ranger.vim'
-  use "rbgrouleff/bclose.vim"
+  "yaocccc/vim-surround",
   -- 文件树
-  use({ "kyazdani42/nvim-tree.lua", requires = "kyazdani42/nvim-web-devicons" })
+  {
+    "kyazdani42/nvim-tree.lua",
+    dependencies = "kyazdani42/nvim-web-devicons",
+    config = function()
+      require("plugin-config.nvim-tree")
+    end
+  },
   -- 文件树拓展 project
-  use("ahmedkhalf/project.nvim")
+  {
+    "ahmedkhalf/project.nvim",
+    config = function()
+      require("plugin-config.project")
+    end
+  },
   -- 加载
   --  use ('j-hui/fidget.nvim')
-  -- lualine
-  use({ "nvim-lualine/lualine.nvim", requires = { "kyazdani42/nvim-web-devicons" } })
-  use("arkav/lualine-lsp-progress")
+  -- -- lualine
+  {
+    "nvim-lualine/lualine.nvim",
+    dependencies = { "kyazdani42/nvim-web-devicons" },
+    config = function()
+      require("plugin-config.lualine")
+    end,
+  },
+  --[[   {
+    'vim-airline/vim-airline',
+    -- dependencies = { 'vim-airline/vim-airline' },
+    config = function()
+      vim.g.airline_theme = 'icebergDark'
+    end
+  }, ]]
+  {
+    'willothy/nvim-cokeline',
+    dependencies = "kyazdani42/nvim-web-devicons",
+    config = function()
+      require "plugin-config.cokeline"
+    end
+  },
+  --"arkav/lualine-lsp-progress",
   -- telescope
-  use({ "nvim-telescope/telescope.nvim", requires = { "nvim-lua/plenary.nvim" } })
+  { "nvim-telescope/telescope.nvim",
+    dependencies = { "nvim-lua/plenary.nvim" },
+    config = function()
+      require("plugin-config.telescope")
+    end
+  },
   -- zfz telescope的拓展
-  use({
+  {
     "nvim-telescope/telescope-fzf-native.nvim",
-    run = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
-  })
+    --cmd = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
+    dependencies = { "nvim-telescope/telescope.nvim" }
+  },
   -- telescope-env
-  use("LinArcX/telescope-env.nvim")
+  {
+    "LinArcX/telescope-env.nvim",
+    dependencies = { "nvim-telescope/telescope.nvim" }
+  },
   -- 启动页面
   -- dashboard-nvim
-  use {
+  { 'kyazdani42/nvim-web-devicons' },
+  {
     'glepnir/dashboard-nvim',
     event = 'VimEnter',
     config = function()
       require("plugin-config.dashboard")
     end,
-    requires = { 'nvim-tree/nvim-web-devicons' }
-  }
+    dependencies = "kyazdani42/nvim-web-devicons",
+  },
   -- 代码高亮
   --[[ use {
     "shift-d/crates.nvim",
     requires = { "nvim-lua/plenary.nvim" }
   } ]]
   ------- LSP -----
-  use({ "williamboman/mason.nvim" })
+  --use({ "williamboman/mason.nvim" })
   --use({ "williamboman/mason-lspconfig.nvim" })
-  use { 'neoclide/coc.nvim', branch = 'release' }
-  use 'Alloyed/lua-lsp'
-  use 'IngoMeyer441/coc_current_word'
+  {
+    'fannheyward/telescope-coc.nvim',
+    dependencies = "nvim-telescope/telescope.nvim",
+    config = function()
+      require("telescope").setup({
+        extensions = {
+          coc = {
+            theme = 'ivy',
+            prefer_locations = true, -- always use Telescope locations to preview definitions/declarations/implementations etc
+          }
+        },
+      })
+      require('telescope').load_extension('coc')
+    end
+  },
 
 
+  {
+    'neoclide/coc.nvim',
+    branch = 'release',
+    config = function()
+      require("coc.coc-basic")
+      require("coc.coc-need")
+    end
+
+  },
+  --use 'Alloyed/lua-lsp'
+  {
+    'IngoMeyer441/coc_current_word',
+    dependencies = { "neoclide/coc.nvim" },
+    config = function()
+      pcall(vim.cmd,
+        "hi CurrentWord guifg=#eeeeee guibg=NONE gui=underline,bold,italic ctermfg=NONE ctermbg=NONE cterm=underline,bold,italic")
+    end
+  },
   -- 常见编程语言代码段
-  use 'honza/vim-snippets'
+  {
+    'honza/vim-snippets',
+  },
   -- JSON 增强
-  use("b0o/schemastore.nvim")
-
+  "b0o/schemastore.nvim",
   ---------- DAP debug------
   -- use("mfussenegger/nvim-dap")
   -- use("theHamsta/nvim-dap-virtual-text")
   -- use("rcariga/nvim-dap-ui")
   -- 输入法切换，当模式成为 normal模式的时候
-  use 'h-hg/fcitx.nvim'
+  'h-hg/fcitx.nvim',
   -- 标签智能补全
   -- use 'windwp/nvim-ts-autotag'
   -- 注释
-  use 'numToStr/comment.nvim'
-  -- 翻译
-  use 'voldikss/vim-translator'
+  {
+    'numToStr/comment.nvim',
+    config = function()
+      require("plugin-config.coment")
+    end
+  },
 
-  --
-
-
-  use {
+  {
     'gelguy/wilder.nvim',
     config = function()
       -- config goes here
+      require("plugin-config.wilder")
     end,
-  }
-end)
-config = {
-  display = {
-    open_fn = function()
-      return require("packer.util").float({ border = "single" })
+    event = "CmdlineEnter"
+  },
+  {
+    'yaocccc/nvim-hlchunk',
+    config = function()
+
     end,
   },
-}
--- 每次保存 plugins.lua 自动安装插件
-pcall(
-  vim.cmd,
-  [[
-    augroup packer_user_config
-    autocmd!
-    autocmd BufWritePost plugins.lua source <afile> | PackerSync
-    augroup end
-  ]]
-)
+})

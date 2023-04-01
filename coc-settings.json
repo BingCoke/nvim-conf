@@ -1,22 +1,24 @@
 {
+  "suggest.filterOnBackspace": true,
 	"sumneko-lua.locale": "zh-cn",
 	"Lua.diagnostics.globals": [
-		"vim"
-
+		"vim" ,
+    "redis",
+    "ARGV",
+    "KEYS"
 	],
 	"volar.tsLocale": "zh-cn",
 	"snippets.ultisnips.pythonPrompt": false,
 	"sh.commandPath": "",
 	"sh.globPattern": "",
-  
   "pairs.enableCharacters": [
     "(",
     "{",
     "<",
     "["
   ],
-  "rust-analyzer.trace.server": "verbose",
-  "rust-analyzer.updates.checkOnStartup": false,
+  "diagnostic.level": "hint",
+  "rust-analyzer.trace.server": "off",
   "rust-analyzer.workspace.symbol.search.scope": "workspace_and_dependencies",
   "rust-analyzer.completion.snippets.custom": {
     "Arc::new": {
@@ -58,10 +60,10 @@
       "description": "Wrap the expression in an `Option::Some`",
       "scope": "expr"
     },
-    "println": {
+    "Println": {
       "postfix": "pln",
-      "body": "println!(\"${receiver} = {:?}\", ${receiver});",
-      "description": "println for a variable",
+      "body": "println!(${receiver})",
+      "description": "Wrap the expression in an `Option::Some`",
       "scope": "expr"
     }
   },
@@ -92,21 +94,31 @@
     "snippet": "\ue60b",
     "typeParameter": "\uf728",
     "default": " "
-
   },
   "outline.autoPreview": true,
   "suggest.floatConfig": {
     "border": true,
-    "rounded": true
+    "rounded": true,
   },
   "hover.floatConfig": {
     "border": true,
-    "rounded": true
+    "rounded": true,
+    "title": "hover"
   },
   "diagnostic.floatConfig": {
     "border": true,
+    "rounded": true,
+    "title": "diagnostic"
+  },
+  "floatFactory.floatConfig": {
+    "border": true,
     "rounded": true
   },
-  "colors.enable": true,
-  "colors.highlightPriority": 1000
+  "colors.enable": false,
+  "colors.highlightPriority": 1000,
+  "workspace.ignoredFolders": [
+    "$HOME/.rustup/**",
+    "$HOME/.cargo/**"
+  ]
+  
 }

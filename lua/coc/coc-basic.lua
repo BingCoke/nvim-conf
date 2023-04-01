@@ -27,6 +27,7 @@ keyset("i", "<c-k>", [[coc#pum#visible() ? coc#pum#prev(1) : "\<C-h>"]], opt)
 keyset("i", "<c-d>", 'coc#pum#visible() ? coc#pum#next(5) : v:lua.check_back_space() ? "<TAB>" : coc#refresh()', opt)
 keyset("i", "<c-u>", [[coc#pum#visible() ? coc#pum#prev(5) : "\<C-h>"]], opt)
 
+
 vim.g.coc_snippet_next = '<c-l>'
 vim.g.coc_snippet_prev = '<c-h>'
 -- Make <CR> to accept selected completion item or notify coc.nvim to format
@@ -164,3 +165,8 @@ keyset("v", "<A-p>", 'coc#float#has_scroll() ? coc#float#scroll(0) : "<A-n>"', o
 keyset("n", "<leader>re", "<Plug>(coc-codeaction-refactor)", { silent = true })
 keyset("x", "<leader>r", "<Plug>(coc-codeaction-refactor-selected)", { silent = true })
 keyset("n", "<leader>r", "<Plug>(coc-codeaction-refactor-selected)", { silent = true })
+
+local coc_diag_record = {}
+
+
+-- require("notify")

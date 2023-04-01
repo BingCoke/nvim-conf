@@ -8,6 +8,11 @@ require('dashboard').setup {
         action = "Telescope projects",
       },
       {
+        icon = "  ",
+        desc = "current                            ",
+        action = "Telescope find_files",
+      },
+      {
         icon = "  ",
         desc = "Recently files                      ",
         action = "Telescope oldfiles",

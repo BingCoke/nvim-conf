@@ -33,7 +33,7 @@ map("n", "<C-Up>", ":resize -2<CR>", opt)
 -- 打开terminal
 map("n", "<leader>h", ":sp | terminal<CR>", opt)
 map("n", "<leader>v", ":vsp | terminal<CR>", opt)
-map("t", "`", "<C-\\><C-n>", opt)
+map("t", "<esc>", "<C-\\><C-n>", opt)
 map("t", "<A-h>", [[ <C-\><C-N><C-w>h ]], opt)
 map("t", "<A-j>", [[ <C-\><C-N><C-w>j ]], opt)
 map("t", "<A-k>", [[ <C-\><C-N><C-w>k ]], opt)
@@ -60,56 +60,14 @@ map("v", "<C-u>", "9k", opt)
 map("v", "<C-d>", "9j", opt)
 -- 设置退出并,保存
 
-map("n", "Q", ":wq<CR>", opt)
+map("n", "<leader>q", ":wq<CR>", opt)
 map("n", "<leader>i", ":q<CR>", opt)
 map("n", "<leader>w", ":w<CR>", {})
-
 map("n", "<leader>W", ":w !sudo tee %<CR>", {})
+
 -- 设置插件快捷键
 local pluginKeys = {}
 --translate
-map("n", "<leader>tw", ":TranslateW<CR>", opt)
-map("v", "<leader>tw", ":TranslateW<CR>", opt)
-map("v", "th", "TranslateH<CR>", opt)
-map("n", "th", "TranslateH<CR>", opt)
-
--- bufferline
--- 左右Tab切换
-map("n", "<C-h>", ":BufferLineCyclePrev<CR>", opt)
-map("n", "<C-l>", ":BufferLineCycleNext<CR>", opt)
--- 关闭
---"moll/vim-bbye"
-map("n", "<C-w>", ":Bdelete!<CR>", opt)
-map("n", "<leader>bl", ":BufferLineCloseRight<CR>", opt)
-map("n", "<leader>bh", ":BufferLineCloseLeft<CR>", opt)
-map("n", "<leader>bc", ":BufferLinePickClose<CR>", opt)
--- 选择打开的tab
-map("n", "<leader>bk", ":BufferLinePick<CR>", opt)
-map("n", "<A-1>", ":BufferLineGoToBuffer 1<CR>", opt)
-map("n", "<A-2>", ":BufferLineGoToBuffer 2<CR>", opt)
-map("n", "<A-3>", ":BufferLineGoToBuffer 3<CR>", opt)
-map("n", "<A-4>", ":BufferLineGoToBuffer 4<CR>", opt)
-map("n", "<A-5>", ":BufferLineGoToBuffer 5<CR>", opt)
-map("n", "<A-6>", ":BufferLineGoToBuffer 6<CR>", opt)
-map("n", "<A-7>", ":BufferLineGoToBuffer 7<CR>", opt)
-map("n", "<A-8>", ":BufferLineGoToBuffer 8<CR>", opt)
-map("n", "<A-9>", ":BufferLineGoToBuffer 9<CR>", opt)
-map("n", "<A-0>", ":BufferLineGoToBuffer 10<CR>", opt)
-map("i", "<A-1>", ":BufferLineGoToBuffer 1<CR>", opt)
-map("i", "<A-2>", ":BufferLineGoToBuffer 2<CR>", opt)
-map("i", "<A-3>", ":BufferLineGoToBuffer 3<CR>", opt)
-map("i", "<A-4>", ":BufferLineGoToBuffer 4<CR>", opt)
-map("i", "<A-5>", ":BufferLineGoToBuffer 5<CR>", opt)
-map("i", "<A-6>", ":BufferLineGoToBuffer 6<CR>", opt)
-map("i", "<A-7>", ":BufferLineGoToBuffer 7<CR>", opt)
-map("i", "<A-8>", ":BufferLineGoToBuffer 8<CR>", opt)
-map("i", "<A-9>", ":BufferLineGoToBuffer 9<CR>", opt)
-map("i", "<A-0>", ":BufferLineGoToBuffer 10<CR>", opt)
---tab置换
-map("n", "<A-i>", ":BufferLineMoveNext<CR>", opt)
-map("n", "<A-o>", ":BufferLineMovePrev<CR>", opt)
-map("i", "<A-i>", ":BufferLineMoveNext<CR>", opt)
-map("i", "<A-o>", ":BufferLineMovePrev<CR>", opt)
 
 -- 设置文件搜索
 -- Telescope
@@ -117,25 +75,16 @@ map("i", "<A-o>", ":BufferLineMovePrev<CR>", opt)
 map("n", "<C-p>", ":Telescope find_files<CR>", opt)
 -- 全局搜索
 map("n", "<C-f>", ":Telescope live_grep<CR>", opt)
+map("n", "<A-f>", ":Telescope coc document_symbols<CR>", opt)
 -- 查看tab show window
 map("n", "<leader>sw", ":Telescope buffers<CR>", opt)
 
 -- dap
--- map("n", "<F5>", "<Cmd>lua require'dap'.continue()<CR>", opt)
--- map("n", "<F10>", "<Cmd>lua require'dap'.step_over()<CR>", opt)
--- map("n", "<F11>", "<Cmd>lua require'dap'.step_into()<CR>", opt)
--- map("n", "<F12>", "<Cmd>lua require'dap'.step_out()<CR>", opt)
--- map("n", "<Leader>b", "<Cmd>lua require'dap'.toggle_breakpoint()<CR>", opt)
--- map("n", "<Leader>B", "<Cmd>lua require'dap'.set_breakpoint(vim.fn.input('Breakpoint condition: '))<CR>", opt)
--- map("n", "<Leader>lp", "<Cmd>lua require'dap'.set_breakpoint(nil, nil, vim.fn.input('Log point message: '))<CR>", opt)
--- map("n", "<Leader>dr", "<Cmd>lua require'dap'.repl.open()<CR>", opt)
--- map("n", "<Leader>dl", "<Cmd>lua require'dap'.run_last()<CR>", opt)
--- map("n", "<Leader>k", "<Cmd>lua require'dapui'.eval()<CR>", opt)
-map("n", "<Leader>de", ":VimspectorReset<cr>", opt)
 
 
 -- treesitter
 
+map("n","<c-w>","<c-w>w",opt)
 
 map("n","<leader>gh",":Dashboard<CR>",opt)
 map("n","<leader>nt",":DashboardNewFile<CR>",opt)

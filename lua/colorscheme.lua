@@ -13,12 +13,11 @@ end
 
 local colors = require 'material.colors'
 require('material').setup({
-
     contrast = {
         terminal = false, -- Enable contrast for the built-in terminal
         sidebars = false, -- Enable contrast for sidebar-like windows ( for example Nvim-Tree )
         floating_windows = false, -- Enable contrast for floating windows
-        cursor_line = false, -- Enable darker background for the cursor line
+        cursor_line = true, -- Enable darker background for the cursor line
         non_current_windows = false, -- Enable darker background for non-current windows
         filetypes = {}, -- Specify which filetypes get the contrasted (darker) background
     },
@@ -69,7 +68,6 @@ require('material').setup({
     lualine_style = "default", -- Lualine style ( can be 'stealth' or 'default' )
 
     async_loading = true, -- Load parts of the theme asyncronously for faster startup (turned on by default)
-    
 
 custom_highlights = {
         LineNr = { bg = '#FF0000' },
@@ -98,8 +96,7 @@ custom_highlights = {
 })
 
 pcall(vim.cmd,"hi CocMenuSel ctermbg=237 guibg=#425d6e")
-
-
+pcall(vim.cmd,"hi Cursor guifg=NONE guibg=NONE")
 
 
 

@@ -1,7 +1,7 @@
 -- 如果找不到lualine 组件，就不继续执行
 -- 设置tmux的时候不显示状态栏
-local r = os.getenv("TMUX");
-
+-- local r = os.getenv("TMUX");
+--[[ 
 if r == nil then
   -- vim.o.laststatus = 2
   vim.o.laststatus = 0
@@ -14,7 +14,7 @@ else
   vim.o.showmode = true
   return
 end
-
+ ]]
 
 
 local status, lualine = pcall(require, "lualine")
@@ -25,7 +25,7 @@ end
 
 lualine.setup({
   options = {
-    theme = "nord",
+    theme = "nightfly",
     component_separators = { left = "|", right = "|" },
     -- https://github.com/ryanoasis/powerline-extra-symbols
     section_separators = { left = " ", right = "" },
