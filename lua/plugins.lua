@@ -25,6 +25,13 @@ require("lazy").setup({
     end,
     ft = { "markdown" },
   },
+  { "CRAG666/code_runner.nvim",
+    config = function()
+      require('code_runner').setup(
+      -- put here the commands by filetype
+      )
+    end
+  },
   {
     'marko-cerovac/material.nvim',
     config = function()
@@ -183,14 +190,14 @@ require("lazy").setup({
     end
   },
 
-  {
+  --[[ {
     'gelguy/wilder.nvim',
     config = function()
       -- config goes here
       require("plugin-config.wilder")
     end,
-    event = "CmdlineEnter"
-  },
+    event = "CmdlineEnter",
+  }, ]]
   {
     'yaocccc/nvim-hlchunk',
     config = function()
