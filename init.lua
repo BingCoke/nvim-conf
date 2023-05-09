@@ -3,6 +3,7 @@ require('basic')
 
 -- 快捷键映射
 
+
 require('keybindings')
 
 --require('lsp.saga-keybinding')
@@ -10,4 +11,5 @@ require('keybindings')
 require('plugins')
 
 
-vim.g.hlchunk_files = '*.ts,*.js,*.json,*.go,*.c,*.cpp,*.rs,*.h,*.hpp,*.lua'
+
+vim.g.hlchunk_files = '*.ts,*.js,*.json,*.go,*.c,*.cpp,*.rs,*.h,*.hpp,*.lua,*.py'

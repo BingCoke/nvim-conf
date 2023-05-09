@@ -1,5 +1,6 @@
 --local packer = require("packer")
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
     "git",
@@ -12,7 +13,6 @@ if not vim.loop.fs_stat(lazypath) then
 end
 vim.opt.rtp:prepend(lazypath)
 -- Example using a list of specs with the default options
-
 require("lazy").setup({
 
   --markdonw
@@ -151,36 +151,74 @@ require("lazy").setup({
     requires = { "nvim-lua/plenary.nvim" }
   } ]]
   ------- LSP -----
-  --use({ "williamboman/mason.nvim" })
-  --use({ "williamboman/mason-lspconfig.nvim" })
-  {
-    'neoclide/coc.nvim',
-    branch = 'release',
+  { "neovim/nvim-lspconfig" },
+  { "williamboman/mason-lspconfig.nvim",
     config = function()
-      require("coc.coc-basic")
-      require("coc.coc-need")
+      require "lsp.lsp"
     end
+  },
+  { "williamboman/mason.nvim",
+    config = function()
+      require "lsp.mason"
+    end
+  },
+  { "mfussenegger/nvim-dap" },
+  { "jose-elias-alvarez/null-ls.nvim" },
+  --- cmp
+  { "hrsh7th/cmp-nvim-lsp" }, -- for autocompletion
 
-  },
-  --use 'Alloyed/lua-lsp'
-  {
-    'IngoMeyer441/coc_current_word',
-    dependencies = { "neoclide/coc.nvim" },
+  { "hrsh7th/nvim-cmp",
     config = function()
-      pcall(vim.cmd,
-        "hi CurrentWord guifg=#eeeeee guibg=NONE gui=underline,bold,italic ctermfg=NONE ctermbg=NONE cterm=underline,bold,italic")
+      require "lsp.cmp"
     end
   },
+  { "hrsh7th/cmp-buffer" },
+  { "hrsh7th/cmp-path" },
+
+  --- snippets
+  { "L3MON4D3/LuaSnip" }, -- snippet engine
+  { "saadparwaiz1/cmp_luasnip" }, -- for autocompletion
+  { "rafamadriz/friendly-snippets" }, -- useful snippets
+
+  {
+    "glepnir/lspsaga.nvim",
+    branch = "main",
+    config = function()
+      require("lspsaga").setup({})
+    end,
+  }, -- enhanced lsp uis
+
   -- 常见编程语言代码段
   {
     'honza/vim-snippets',
   },
   -- JSON 增强
   "b0o/schemastore.nvim",
-  ---------- DAP debug------
-  -- use("mfussenegger/nvim-dap")
-  -- use("theHamsta/nvim-dap-virtual-text")
-  -- use("rcariga/nvim-dap-ui")
+
+
+  { "folke/trouble.nvim", requires = "kyazdani42/nvim-web-devicons",
+    config = function()
+      require "lsp.trouble"
+    end
+  },
+  { "jose-elias-alvarez/typescript.nvim" }, -- additional functionality for typescript server (e.g. rename file & update imports)
+  { "onsails/lspkind.nvim" }, -- vs-code like icons for autocompletion
+  { "simrat39/rust-tools.nvim" }, -- rust server
+
+  -- formatting & linting
+  { "jose-elias-alvarez/null-ls.nvim" }, -- configure formatters & linters
+  { "jayp0521/mason-null-ls.nvim" }, -- bridges gap b/w mason & null-ls
+
+  -- treesitter configuration
+  {
+    "nvim-treesitter/nvim-treesitter",
+    run = function()
+    end,
+  },
+
+
+
+
   -- 输入法切换，当模式成为 normal模式的时候
   'h-hg/fcitx.nvim',
   -- 标签智能补全
@@ -192,15 +230,6 @@ require("lazy").setup({
       require("plugin-config.coment")
     end
   },
-
-  --[[ {
-    'gelguy/wilder.nvim',
-    config = function()
-      -- config goes here
-      require("plugin-config.wilder")
-    end,
-    event = "CmdlineEnter",
-  }, ]]
   {
     'yaocccc/nvim-hlchunk',
     config = function()
