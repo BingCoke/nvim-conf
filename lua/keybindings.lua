@@ -111,6 +111,7 @@ pluginKeys.telescopeList = {
 -- nvim-tree
 -- alt+m 键 打开关闭tree
 map("n", "<A-m>", ":NvimTreeToggle<CR>", opt)
+--[[ map("n", "<A-m>", ":NvimTreeToggle<CR>", opt)
 -- 列表快捷键
 -- tab 浏览文件
 pluginKeys.nvimTreeList = {
@@ -132,7 +133,7 @@ pluginKeys.nvimTreeList = {
 	{ key = "c", action = "copy" },
 	{ key = "p", action = "paste" },
 	{ key = "s", action = "system_open" },
-}
+} ]]
 
 
 
@@ -143,5 +144,8 @@ vim.keymap.set('n', '<leader>rp', ':RunProject<CR>', { noremap = true, silent = 
 vim.keymap.set('n', '<leader>rq', ':RunClose<CR>', { noremap = true, silent = false })
 vim.keymap.set('n', '<leader>rcf', ':CRFiletype<CR>', { noremap = true, silent = false })
 vim.keymap.set('n', '<leader>rcpp', ':CRProjects<CR>', { noremap = true, silent = false })
+
+vim.keymap.set('n', '<leader>m', ':MarkdownPreview<CR>', { noremap = true, silent = false })
+vim.keymap.set('n', '<leader>t', ':TagbarToggle<CR>', { noremap = true, silent = false })
 
 return pluginKeys

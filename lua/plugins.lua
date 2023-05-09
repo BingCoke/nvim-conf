@@ -21,16 +21,33 @@ require("lazy").setup({
     --cmd = "cd app && npm install",
     --opts = function() vim.g.mkdp_filetypes = { "markdown" } end,
     config = function()
-      vim.g.mkdp_filetypes = { "markdown" }
+      vim.g.mkdp_path_to_chrome = "google-chrome-stable"
+      vim.g.mkdp_theme = 'dark'
     end,
-    ft = { "markdown" },
+  },
+  {
+    'voldikss/vim-floaterm',
+    config = function()
+      require("plugin-config.fterm").setup()
+      require("plugin-config.fterm").config()
+    end
+
   },
   { "CRAG666/code_runner.nvim",
     config = function()
       require('code_runner').setup(
       -- put here the commands by filetype
+        {
+          mode = 'float',
+          float = {
+            border = 'single'
+          }
+        }
       )
     end
+  },
+  {
+    'preservim/tagbar'
   },
   {
     'marko-cerovac/material.nvim',
@@ -89,6 +106,9 @@ require("lazy").setup({
     end
   }, ]]
   {
+    "moll/vim-bbye"
+  },
+  {
     'willothy/nvim-cokeline',
     dependencies = "kyazdani42/nvim-web-devicons",
     config = function()
@@ -133,23 +153,6 @@ require("lazy").setup({
   ------- LSP -----
   --use({ "williamboman/mason.nvim" })
   --use({ "williamboman/mason-lspconfig.nvim" })
-  {
-    'fannheyward/telescope-coc.nvim',
-    dependencies = "nvim-telescope/telescope.nvim",
-    config = function()
-      require("telescope").setup({
-        extensions = {
-          coc = {
-            theme = 'ivy',
-            prefer_locations = true, -- always use Telescope locations to preview definitions/declarations/implementations etc
-          }
-        },
-      })
-      require('telescope').load_extension('coc')
-    end
-  },
-
-
   {
     'neoclide/coc.nvim',
     branch = 'release',
@@ -201,7 +204,6 @@ require("lazy").setup({
   {
     'yaocccc/nvim-hlchunk',
     config = function()
-
     end,
   },
 })

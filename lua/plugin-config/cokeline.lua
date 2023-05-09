@@ -5,7 +5,7 @@ map('n', '<c-l>', '<Plug>(cokeline-focus-next)', { silent = true })
 map('n', '<a-p>', '<Plug>(cokeline-switch-prev)', { silent = true })
 map('n', '<a-n>', '<Plug>(cokeline-switch-next)', { silent = true })
 --map('n', '<a-w>', '<Plug>(cokeline-pick-close)', { silent = true })
-map('n', '<a-w>', ':bd<CR>', { silent = true })
+map('n', '<a-w>', ':Bdelete<CR>', { silent = true })
 
 for i = 1, 9 do
   map('n', ('<a-%s>'):format(i), ('<Plug>(cokeline-focus-%s)'):format(i), { silent = true })
@@ -43,7 +43,6 @@ local components = {
     end,
     truncation = { priority = 1 }
   },
-
   devicon = {
     text = function(buffer)
       return
@@ -115,7 +114,6 @@ local components = {
       --[[ if vim.b.coc_diagnostic_info.warning > 0 then
         return ' '
       end ]]
-
       return '  '
     end,
     fg = function(buffer)
@@ -148,7 +146,7 @@ local components = {
 }
 
 require('cokeline').setup({
-  show_if_buffers_are_at_least = 2,
+  show_if_buffers_are_at_least = 1,
   buffers = {
     -- filter_valid = function(buffer) return buffer.type ~= 'terminal' end,
     -- filter_visible = function(buffer) return buffer.type ~= 'terminal' end,
@@ -167,6 +165,17 @@ require('cokeline').setup({
     style = function(buffer)
       return buffer.is_focused and "bold" or nil
     end,
+  },
+  sidebar = {
+    filetype = 'NvimTree',
+    components = {
+      {
+        text = '  NvimTree',
+        fg = yellow,
+        bg = get_hex('NvimTreeNormal', 'bg'),
+        style = 'bold',
+      },
+    }
   },
   components = {
     components.space,

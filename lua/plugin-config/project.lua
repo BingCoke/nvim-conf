@@ -1,6 +1,6 @@
 local status, project = pcall(require, "project_nvim")
 if not status then
-    vim.notify("没有找到 project_nvim")
+  vim.notify("没有找到 project_nvim")
   return
 end
 
@@ -8,8 +8,11 @@ end
 vim.g.nvim_tree_respect_buf_cwd = 1
 
 project.setup({
-  detection_methods = { "pattern" },
-  patterns = { ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json", ".sln" },
+  silent_chdir = true,
+  detection_methods = { "pattern", "lsp" },
+  patterns = { ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json", ".sln", ".idea" },
+  show_hidden = true,
+  exclude_dirs = {"~/.cargo/*"}
 })
 
 local status, telescope = pcall(require, "telescope")

@@ -1,25 +1,17 @@
 {
   "suggest.filterOnBackspace": true,
-	"sumneko-lua.locale": "zh-cn",
-	"Lua.diagnostics.globals": [
-		"vim" ,
-    "redis",
-    "ARGV",
-    "KEYS"
-	],
-	"volar.tsLocale": "zh-cn",
-	"snippets.ultisnips.pythonPrompt": false,
-	"sh.commandPath": "",
-	"sh.globPattern": "",
-  "pairs.enableCharacters": [
-    "(",
-    "{",
-    "<",
-    "["
-  ],
+  "sumneko-lua.locale": "zh-cn",
+  "python.analysis.typeCheckingMode": "off",
+  "python.analysis.diagnosticMode": "openFilesOnly",
+
+  "Lua.diagnostics.globals": ["vim", "redis", "ARGV", "KEYS"],
+  "volar.tsLocale": "zh-cn",
+  "snippets.ultisnips.pythonPrompt": false,
+  "sh.commandPath": "",
+  "pairs.enableCharacters": ["(", "{", "<", "["],
   "diagnostic.level": "hint",
   "rust-analyzer.trace.server": "off",
-  "rust-analyzer.workspace.symbol.search.scope": "workspace_and_dependencies",
+
   "rust-analyzer.completion.snippets.custom": {
     "Arc::new": {
       "postfix": "arc",
@@ -98,7 +90,7 @@
   "outline.autoPreview": true,
   "suggest.floatConfig": {
     "border": true,
-    "rounded": true,
+    "rounded": true
   },
   "hover.floatConfig": {
     "border": true,
@@ -116,9 +108,5 @@
   },
   "colors.enable": false,
   "colors.highlightPriority": 1000,
-  "workspace.ignoredFolders": [
-    "$HOME/.rustup/**",
-    "$HOME/.cargo/**"
-  ]
-  
+  "workspace.ignoredFolders": ["$HOME/.rustup/**", "$HOME/.cargo/**"]
 }

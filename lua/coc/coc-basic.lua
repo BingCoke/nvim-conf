@@ -8,7 +8,6 @@ vim.opt.updatetime = 100
 vim.opt.signcolumn = "yes"
 
 local keyset = vim.keymap.set
-local map = vim.api.nvim_set_keymap
 -- Auto completes
 --[[ function _G.check_back_space()
     local col = vim.fn.col('.') - 1
@@ -152,12 +151,12 @@ keyset("o", "ac", "<Plug>(coc-classobj-a)", opt_3)
 
 
 local opt_win = { silent = true, nowait = true, expr = true }
-keyset("n", "<A-n>", 'coc#float#has_scroll() ? coc#float#scroll(1) : "<A-p>"', opt_win)
-keyset("n", "<A-p>", 'coc#float#has_scroll() ? coc#float#scroll(0) : "<A-n>"', opt_win)
-keyset("i", "<A-n>", 'coc#float#has_scroll() ? "<c-r>=coc#float#scroll(1)<cr>" : "<Right>"', opt_win)
-keyset("i", "<A-p>", 'coc#float#has_scroll() ? "<c-r>=coc#float#scroll(0)<cr>" : "<Left>"', opt_win)
-keyset("v", "<A-n>", 'coc#float#has_scroll() ? coc#float#scroll(1) : "<A-p>"', opt_win)
-keyset("v", "<A-p>", 'coc#float#has_scroll() ? coc#float#scroll(0) : "<A-n>"', opt_win)
+keyset("n", "<A-i>", 'coc#float#has_scroll() ? coc#float#scroll(1) : "<A-p>"', opt_win)
+keyset("n", "<A-o>", 'coc#float#has_scroll() ? coc#float#scroll(0) : "<A-n>"', opt_win)
+keyset("i", "<A-i>", 'coc#float#has_scroll() ? "<c-r>=coc#float#scroll(1)<cr>" : "<Right>"', opt_win)
+keyset("i", "<A-o>", 'coc#float#has_scroll() ? "<c-r>=coc#float#scroll(0)<cr>" : "<Left>"', opt_win)
+keyset("v", "<A-i>", 'coc#float#has_scroll() ? coc#float#scroll(1) : "<A-p>"', opt_win)
+keyset("v", "<A-o>", 'coc#float#has_scroll() ? coc#float#scroll(0) : "<A-n>"', opt_win)
 
 
 
