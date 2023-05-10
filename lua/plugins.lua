@@ -1,6 +1,9 @@
 --local packer = require("packer")
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
+
+
+
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
     "git",
@@ -172,9 +175,11 @@ require("lazy").setup({
       require "lsp.cmp"
     end
   },
-  { "hrsh7th/cmp-buffer" },
+  {"hrsh7th/cmp-cmdline"},
+  {"hrsh7th/cmp-buffer" },
   { "hrsh7th/cmp-path" },
-
+  {'hrsh7th/cmp-vsnip'},
+  {'hrsh7th/vim-vsnip'},
   --- snippets
   { "L3MON4D3/LuaSnip" }, -- snippet engine
   { "saadparwaiz1/cmp_luasnip" }, -- for autocompletion
@@ -184,7 +189,12 @@ require("lazy").setup({
     "glepnir/lspsaga.nvim",
     branch = "main",
     config = function()
-      require("lspsaga").setup({})
+      require("lspsaga").setup({
+        scroll_preview = {
+          scroll_down = "<C-d>",
+          scroll_up = "<C-u>",
+        },
+      })
     end,
   }, -- enhanced lsp uis
 
@@ -212,7 +222,8 @@ require("lazy").setup({
   -- treesitter configuration
   {
     "nvim-treesitter/nvim-treesitter",
-    run = function()
+    config = function ()
+      require "plugin-config.nvim-treesitter"
     end,
   },
 
