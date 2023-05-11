@@ -1,15 +1,19 @@
 {
   "suggest.filterOnBackspace": true,
   "sumneko-lua.locale": "zh-cn",
+
   "python.analysis.typeCheckingMode": "off",
+
   "python.analysis.diagnosticMode": "openFilesOnly",
 
   "Lua.diagnostics.globals": ["vim", "redis", "ARGV", "KEYS"],
+
   "volar.tsLocale": "zh-cn",
   "snippets.ultisnips.pythonPrompt": false,
   "sh.commandPath": "",
   "pairs.enableCharacters": ["(", "{", "<", "["],
   "diagnostic.level": "hint",
+
   "rust-analyzer.trace.server": "off",
 
   "rust-analyzer.completion.snippets.custom": {
@@ -59,6 +63,7 @@
       "scope": "expr"
     }
   },
+
   "suggest.completionItemKindLabels": {
     "constructor": "\ufb25",
     "keyword": "\uf1de",

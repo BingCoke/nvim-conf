@@ -29,20 +29,35 @@ local on_attach = function(client, bufnr)
   -- keybind options
   local opts = { noremap = true, silent = true, buffer = bufnr }
 
+
   -- set keybinds
   keymap.set("n", "gr", "<cmd>Lspsaga lsp_finder<CR>", opts) -- show definition, references
-  keymap.set("n", "gd", "<Cmd>lua vim.lsp.buf.definition()<CR>", opts) -- got to declaration
+  --keymap.set("n", "gd", "<Cmd>lua vim.lsp.buf.definition()<CR>", opts) -- got to declaration
   keymap.set("n", "gD", "<cmd>Lspsaga peek_definition<CR>", opts) -- see definition and make edits in window
+  keymap.set("n", "gd", "<cmd>Lspsaga goto_definition<CR>")
+  -- Go to type definition
+  keymap.set("n", "gy", "<cmd>Lspsaga goto_type_definition<CR>")
   keymap.set("n", "gi", "<cmd>lua vim.lsp.buf.implementation()<CR>", opts) -- go to implementation
+
   keymap.set("n", "<leader>ca", "<cmd>Lspsaga code_action<CR>", opts) -- see available code actions
   keymap.set("n", "<leader>rn", "<cmd>Lspsaga rename<CR>", opts) -- smart rename
+
   keymap.set("n", "<leader>D", "<cmd>Lspsaga show_line_diagnostics<CR>", opts) -- show  diagnostics for line
   keymap.set("n", "<leader>d", "<cmd>Lspsaga show_cursor_diagnostics<CR>", opts) -- show diagnostics for cursor
-  keymap.set("n", "[d", "<cmd>Lspsaga diagnostic_jump_prev<CR>", opts) -- jump to previous diagnostic in buffer
-  keymap.set("n", "]d", "<cmd>Lspsaga diagnostic_jump_next<CR>", opts) -- jump to next diagnostic in buffer
+
+  keymap.set("n", "[g", "<cmd>Lspsaga diagnostic_jump_prev<CR>", opts) -- jump to previous diagnostic in buffer
+  keymap.set("n", "]g", "<cmd>Lspsaga diagnostic_jump_next<CR>", opts) -- jump to next diagnostic in buffer
+  -- Diagnostic jump with filters such as only jumping to an error
+  keymap.set("n", "[e", function()
+      require("lspsaga.diagnostic"):goto_prev({ severity = vim.diagnostic.severity.ERROR })
+    end)
+  keymap.set("n", "]e", function()
+      require("lspsaga.diagnostic"):goto_next({ severity = vim.diagnostic.severity.ERROR })
+    end)
+
   keymap.set("n", "K", "<cmd>Lspsaga hover_doc<CR>", opts) -- show documentation for what is under cursor
+  keymap.set("n", "<A-a>", "<cmd>Lspsaga hover_doc<CR>", opts) -- show documentation for what is under cursor
   keymap.set("n", "<leader>o", "<cmd>LSoutlineToggle<CR>", opts) -- see outline on right hand side
-  keymap.set("n", "<leader>tt", "<cmd>Lspsaga term_toggle<CR>", opts) -- see outline on right hand side
 
   -- typescript specific keymaps (e.g. rename file and update imports)
   if client.name == "tsserver" then
@@ -63,6 +78,7 @@ local on_attach = function(client, bufnr)
       -- Code action groups
       vim.keymap.set("n", "<Leader>a", rt.code_action_group.code_action_group, { buffer = bufnr })
   end
+
 
 end
 
@@ -86,17 +102,91 @@ typescript.setup({
 })
 
 
+
+-- for go
+--
+require('go').setup({
+  -- other setups ....
+  lsp_cfg = {
+    capabilities = capabilities,
+    on_attach = on_attach,
+    -- other setups
+  },
+})
+
+
+local cfg = require'go.lsp'.config() -- config() return the go.nvim gopls setup
+
+lspconfig.gopls.setup(cfg)
+
 -- configure rust server with plugin
 rt.setup({
   server = {
     capabilities = capabilities,
     on_attach = on_attach,
+    settings = {
+      ['rust-analyzer'] = {
+        ['completion'] = {
+          ['snippets'] = {
+            ['custom'] = {
+              ["Arc::new"] = {
+                ["postfix"] = "arc",
+                ["body"] = "Arc::new(${receiver})",
+                ["requires"] = "std::sync::Arc",
+                ["description"] = "sync::Arc",
+                ["scope"] = "expr"
+              },
+              ["Ok"] = {
+                ["postfix"] = "ok",
+                ["body"] = "Ok(${receiver})",
+                ["description"] = "Result::Ok",
+                ["scope"] = "expr"
+              },
+              ["Err"] = {
+                ["postfix"] = "err",
+                ["body"] = "Err(${receiver})",
+                ["description"] = "Result::Err",
+                ["scope"] = "expr"
+              },
+              ["Some"] = {
+                ["postfix"] = "some",
+                ["body"] = "Some(${receiver})",
+                ["description"] = "Option::Some",
+                ["scope"] = "expr"
+              },
+              ["Println"] = {
+                ["postfix"] = "pln",
+                ["body"] = "println!(${receiver})",
+                ["description"] = "get pln",
+                ["scope"] = "expr"
+              },
+              ["Box::pin"] = {
+                ["postfix"] = "pinb",
+                ["body"] = "Box::pin",
+                ["description"] = "get pln",
+                ["scope"] = "expr"
+              }
+            }
+          }
+        }
+
+      }
+
+    }
   },
 })
 
 lspconfig["lua_ls"].setup({
   capabilities = capabilities,
   on_attach = on_attach,
+  settings = {
+    Lua = {
+      diagnostics = {
+        -- Get the language server to recognize the `vim` global
+        globals = { 'vim' },
+      },
+    }
+  }
 })
 
 -- configure cpp clangd
@@ -138,7 +228,9 @@ lspconfig["pyright"].setup({
       python = {
         analysis = {
           autoSearchPaths = true,
+          diagnosticMode = "workspace",
           useLibraryCodeForTypes = true,
+          typeCheckingMode = "off",
         },
       },
     },

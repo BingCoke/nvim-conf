@@ -1,8 +1,4 @@
---local packer = require("packer")
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
-
-
-
 
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
@@ -14,6 +10,7 @@ if not vim.loop.fs_stat(lazypath) then
     lazypath,
   })
 end
+
 vim.opt.rtp:prepend(lazypath)
 -- Example using a list of specs with the default options
 require("lazy").setup({
@@ -55,12 +52,18 @@ require("lazy").setup({
   {
     'marko-cerovac/material.nvim',
     config = function()
-      require("colorscheme")
+      --require("colorscheme")
     end,
   },
   {
     'bluz71/vim-nightfly-colors'
   },
+  {'folke/tokyonight.nvim',
+    config = function ()
+      require("colorscheme")
+    end
+  },
+  { "catppuccin/nvim", name = "catppuccin" },
   --"puremourning/vimspector",
   -- 功能性插件
   -- 跳转插件
@@ -101,13 +104,6 @@ require("lazy").setup({
       require("plugin-config.lualine")
     end,
   },
-  --[[   {
-    'vim-airline/vim-airline',
-    -- dependencies = { 'vim-airline/vim-airline' },
-    config = function()
-      vim.g.airline_theme = 'icebergDark'
-    end
-  }, ]]
   {
     "moll/vim-bbye"
   },
@@ -156,6 +152,10 @@ require("lazy").setup({
   ------- LSP -----
   { "neovim/nvim-lspconfig" },
   { "williamboman/mason-lspconfig.nvim",
+    dependencies = {
+      "ray-x/go.nvim",
+      "ray-x/guihua.lua",
+    },
     config = function()
       require "lsp.lsp"
     end
@@ -168,33 +168,43 @@ require("lazy").setup({
   { "mfussenegger/nvim-dap" },
   { "jose-elias-alvarez/null-ls.nvim" },
   --- cmp
-  { "hrsh7th/cmp-nvim-lsp" }, -- for autocompletion
 
   { "hrsh7th/nvim-cmp",
+    dependencies = {
+      "hrsh7th/cmp-nvim-lsp", -- for autocompletion
+      "hrsh7th/cmp-nvim-lua",
+      "hrsh7th/cmp-cmdline",
+      "hrsh7th/cmp-buffer",
+      "hrsh7th/cmp-path",
+      'hrsh7th/cmp-vsnip',
+      'hrsh7th/vim-vsnip',
+      "rafamadriz/friendly-snippets", -- useful snippets
+    },
     config = function()
       require "lsp.cmp"
     end
   },
-  {"hrsh7th/cmp-cmdline"},
-  {"hrsh7th/cmp-buffer" },
-  { "hrsh7th/cmp-path" },
-  {'hrsh7th/cmp-vsnip'},
-  {'hrsh7th/vim-vsnip'},
-  --- snippets
-  { "L3MON4D3/LuaSnip" }, -- snippet engine
-  { "saadparwaiz1/cmp_luasnip" }, -- for autocompletion
-  { "rafamadriz/friendly-snippets" }, -- useful snippets
-
+  {
+    'saecki/crates.nvim',
+    tag = 'v0.3.0',
+    requires = { 'nvim-lua/plenary.nvim' },
+    config = function()
+        vim.api.nvim_create_autocmd({"BufRead"}, {
+          group = vim.api.nvim_create_augroup("CmpSourceCargo", { clear = true }),
+          pattern = "Cargo.toml",
+          callback = function()
+            require('crates').setup()
+            local cmp = require("cmp")
+            cmp.setup.buffer({ sources = { { name = "crates" } } })
+          end,
+        })
+    end,
+  },
   {
     "glepnir/lspsaga.nvim",
     branch = "main",
     config = function()
-      require("lspsaga").setup({
-        scroll_preview = {
-          scroll_down = "<C-d>",
-          scroll_up = "<C-u>",
-        },
-      })
+      require("lsp.saga")
     end,
   }, -- enhanced lsp uis
 
@@ -219,6 +229,7 @@ require("lazy").setup({
   { "jose-elias-alvarez/null-ls.nvim" }, -- configure formatters & linters
   { "jayp0521/mason-null-ls.nvim" }, -- bridges gap b/w mason & null-ls
 
+
   -- treesitter configuration
   {
     "nvim-treesitter/nvim-treesitter",
@@ -226,9 +237,6 @@ require("lazy").setup({
       require "plugin-config.nvim-treesitter"
     end,
   },
-
-
-
 
   -- 输入法切换，当模式成为 normal模式的时候
   'h-hg/fcitx.nvim',

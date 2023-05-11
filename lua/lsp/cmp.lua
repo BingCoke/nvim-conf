@@ -5,11 +5,6 @@ if not cmp_status then
 end
 
 
--- import luasnip plugin safely
-local luasnip_status, luasnip = pcall(require, "luasnip")
-if not luasnip_status then
-  return
-end
 
 -- import lspkind plugin safely
 local lspkind_status, lspkind = pcall(require, "lspkind")
@@ -18,7 +13,7 @@ if not lspkind_status then
 end
 
 -- load vs-code like snippets from plugins (e.g. friendly-snippets)
-require("luasnip/loaders/from_vscode").lazy_load()
+--require("vsnip/loaders/from_vscode").lazy_load()
 
 
 
@@ -28,13 +23,30 @@ local feedkey = function(key, mode)
 end
 
 
+local function border(hl_name)
+  return {
+    { "╭", hl_name },
+    { "─", hl_name },
+    { "╮", hl_name },
+    { "│", hl_name },
+    { "╯", hl_name },
+    { "─", hl_name },
+    { "╰", hl_name },
+    { "│", hl_name },
+  }
+end
+
+
 vim.opt.completeopt = "menu,menuone,noselect"
 
 cmp.setup({
   snippet = {
     expand = function(args)
-      luasnip.lsp_expand(args.body)
+      vim.fn["vsnip#anonymous"](args.body)
     end,
+  },
+  view = {
+    --entries = {name = 'native' }
   },
   mapping = {
     ["<c-k>"] = cmp.mapping.select_prev_item(), -- previous suggestion
@@ -45,10 +57,10 @@ cmp.setup({
 
     ["<A-Space>"] = cmp.mapping.complete(), -- show completion suggestions
 
+
     ["<C-e>"] = cmp.mapping.abort(), -- close completion window
     ["<CR>"] = cmp.mapping.confirm({ select = false }),
     ["<Tab>"] = cmp.mapping.confirm({ select = true, behavior = cmp.ConfirmBehavior.Replace }),
-
 
       -- 自定义代码段跳转到下一个参数
     ["<C-l>"] = cmp.mapping(function(_)
@@ -65,13 +77,15 @@ cmp.setup({
     end, {"i", "s"}),
 
   },
+  -- 阻止预选则
+  preselect = cmp.PreselectMode.None,
   -- sources for autocompletion
   sources = cmp.config.sources({
-    { name = "nvim_lsp" }, -- lsp
-    { name = "luasnip" }, -- snippets
+    { name = "vsnip", group_index = 1 , priority=100},
+    { name = "nvim_lsp", group_index = 2 }, -- lsp
     { name = "buffer" }, -- text within current buffer
     { name = "path" }, -- file system paths
-    { name = "vsnip" }
+    { name = "nvim_lua" },
   }),
   -- configure lspkind for vs-code like icons
   formatting = {
@@ -80,6 +94,14 @@ cmp.setup({
       ellipsis_char = "...",
     }),
   },
+  window = {
+    completion = cmp.config.window.bordered(),
+    documentation = {
+      border = border "CmpDocBorder",
+      winhighlight = "Normal:CmpDoc",
+    },
+
+  }
 })
 
 -- / 查找模式使用 buffer 源

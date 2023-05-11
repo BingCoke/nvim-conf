@@ -1,9 +1,34 @@
---local colorscheme = "onedarkpro"
---local colorscheme = "tokyonight"
---local colorscheme = "nord"
-local colorscheme = "material"
+local colorscheme = "tokyonight-storm"
 
- vim.g.material_style = "palenight"
+
+require("tokyonight").setup({
+  -- your configuration comes here
+  -- or leave it empty to use the default settings
+  style = "storm", -- The theme comes in three styles, `storm`, `moon`, a darker variant `night` and `day`
+  light_style = "day", -- The theme is used when the background is set to light
+  transparent = true, -- Enable this to disable setting the background color
+  terminal_colors = true, -- Configure the colors used when opening a `:terminal` in Neovim
+  styles = {
+    -- Style to be applied to different syntax groups
+    -- Value is any valid attr-list value for `:help nvim_set_hl`
+    comments = { italic = true },
+    keywords = { italic = true },
+    functions = {},
+    variables = { bold = true },
+    DiagnosticUnnecessary = { bold = true, fg = "#7aa2f7" },
+    -- Background styles. Can be "dark", "transparent" or "normal"
+    sidebars = "storm", -- style for sidebars, see below
+    floats = "storm", -- style for floating windows
+  },
+  sidebars = { "qf", "help" }, -- Set a darker background on sidebar-like windows. For example: `["qf", "vista_kind", "terminal", "packer"]`
+  day_brightness = 0.3, -- Adjusts the brightness of the colors of the **Day** style. Number between 0 and 1, from dull to vibrant colors
+  hide_inactive_statusline = false, -- Enabling this option, will hide inactive statuslines and replace them with a thin border instead. Should work with the standard **StatusLine** and **LuaLine**.
+  dim_inactive = false, -- dims inactive windows
+  lualine_bold = false, -- When `true`, section headers in the lualine theme will be bold
+})
+
+
+
 local status_ok, _ = pcall(vim.cmd, "colorscheme " .. colorscheme)
 
 if not status_ok then
@@ -11,92 +36,7 @@ if not status_ok then
   return
 end
 
-local colors = require 'material.colors'
-require('material').setup({
-    contrast = {
-        terminal = false, -- Enable contrast for the built-in terminal
-        sidebars = false, -- Enable contrast for sidebar-like windows ( for example Nvim-Tree )
-        floating_windows = false, -- Enable contrast for floating windows
-        cursor_line = true, -- Enable darker background for the cursor line
-        non_current_windows = false, -- Enable darker background for non-current windows
-        filetypes = {}, -- Specify which filetypes get the contrasted (darker) background
-    },
-
-    styles = { -- Give comments style such as bold, italic, underline etc.
-        comments = {  },
-        strings = { --[[ bold = true ]] },
-        keywords = { --[[ underline = true ]] },
-        functions = { --[[ bold = true, undercurl = true ]] },
-        variables = {},
-        operators = {[[ bold = true ]] },
-        types = {},
-    },
-
-    plugins = { -- Uncomment the plugins that you use to highlight them
-        -- Available plugins:
-        -- "dap",
-        "dashboard",
-        -- "gitsigns",
-        -- "hop",
-        -- "indent-blankline",
-        -- "lspsaga",
-        -- "mini",
-        -- "neogit",
-        -- "nvim-cmp",
-        -- "nvim-navic",
-        -- "nvim-tree",
-        -- "nvim-web-devicons",
-        -- "sneak",
-        "telescope",
-        -- "trouble",
-        -- "which-key",
-    },
-
-    disable = {
-        colored_cursor = false, -- Disable the colored cursor
-        borders = false, -- Disable borders between verticaly split windows
-        background = false, -- Prevent the theme from setting the background (NeoVim then uses your terminal background)
-        term_colors = false, -- Prevent the theme from setting terminal colors
-        eob_lines = false -- Hide the end-of-buffer lines
-    },
-
-    high_visibility = {
-        lighter = true, -- Enable higher contrast text for lighter style
-        darker = true -- Enable higher contrast text for darker style
-    },
-
-    lualine_style = "default", -- Lualine style ( can be 'stealth' or 'default' )
-
-    async_loading = true, -- Load parts of the theme asyncronously for faster startup (turned on by default)
-
-custom_highlights = {
-        LineNr = { bg = '#FF0000' },
-        CursorLine = { fg = colors.editor.constrast , underline = true },
-
-        -- This is a list of possible values
-        YourHighlightGroup = {
-            fg = "#SOME_COLOR", -- foreground color
-            sp = "#SOME_COLOR", -- special color (for colored underlines, undercurls...)
-            bold = false, -- make group bold
-            italic = false, -- make group italic
-            underline = false, -- make group underlined
-            undercurl = false, -- make group undercurled
-            underdot = false, -- make group underdotted
-            underdash = false, -- make group underslashed
-            striketrough = false, -- make group striked trough
-            reverse = false, -- reverse the fg and bg colors
-            link = "SomeOtherGroup" -- link to some other highlight group
-        }
-    },
-
-    -- Custom colors must be a function that takes in the default colors table as
-    -- a paramter, and then modifies them.
-    -- To se the available colors, see lua/material/colors/init.lua
-
-})
-
 pcall(vim.cmd,"hi CocMenuSel ctermbg=237 guibg=#425d6e")
-pcall(vim.cmd,"hi Cursor guifg=NONE guibg=NONE")
-
-
+pcall(vim.cmd,"hi DiagnosticUnnecessary guifg=#545c7e")
+--pcall(vim.cmd,"hi Cursor guifg=NONE guibg=NONE")
 
