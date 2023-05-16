@@ -190,6 +190,7 @@ local root_files = {
   "__init__.py",
 }
 
+capabilities.textDocument.completion.completionItem.snippetSupport = true
 lspconfig["pyright"].setup({
   capabilities = capabilities,
   on_attach = on_attach,
