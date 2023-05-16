@@ -10,6 +10,7 @@ local mason_null_ls = require "mason-null-ls"
 -- enable mason
 mason.setup()
 
+-- http://www.baidu.com
 mason_lspconfig.setup({
   -- list of servers for mason to install
   ensure_installed = {

@@ -1,4 +1,21 @@
+---@diagnostic disable: unused-local
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
+
+local language = {
+  "c",
+  "cpp",
+  "rust",
+  "go",
+  "python",
+  "javascript",
+  "html",
+  "css",
+  "markdown",
+  "yaml",
+  "json",
+  "lua",
+  "typescript",
+}
 
 if not vim.loop.fs_stat(lazypath) then
   vim.fn.system({
@@ -15,68 +32,55 @@ vim.opt.rtp:prepend(lazypath)
 -- Example using a list of specs with the default options
 require("lazy").setup({
 
-  --markdonw
+  {
+    "simrat39/symbols-outline.nvim",
+    config = function(opts, self)
+      require("plugin-config.symbols-outline")
+    end,
+    ft = language,
+  },
+  -- autopairs
+  {
+    "windwp/nvim-autopairs",
+    config = function()
+      require("nvim-autopairs").setup({})
+    end,
+  },
+  --markdonw preview
   {
     "iamcco/markdown-preview.nvim",
     --cmd = "cd app && npm install",
     --opts = function() vim.g.mkdp_filetypes = { "markdown" } end,
     config = function()
       vim.g.mkdp_path_to_chrome = "google-chrome-stable"
-      vim.g.mkdp_theme = 'dark'
+      vim.g.mkdp_theme = "dark"
+      vim.g.mkdp_command_for_global = 1
+      vim.g.mkdp_auto_close = 0
     end,
+    ft = { "markdown" },
   },
+  -- floaterm
   {
-    'voldikss/vim-floaterm',
+    "voldikss/vim-floaterm",
     config = function()
       require("plugin-config.fterm").setup()
       require("plugin-config.fterm").config()
-    end
-
-  },
-  { "CRAG666/code_runner.nvim",
-    config = function()
-      require('code_runner').setup(
-      -- put here the commands by filetype
-        {
-          mode = 'float',
-          float = {
-            border = 'single'
-          }
-        }
-      )
-    end
-  },
-  {
-    'preservim/tagbar'
-  },
-  {
-    'marko-cerovac/material.nvim',
-    config = function()
-      --require("colorscheme")
     end,
   },
+  -- tokyngingt
   {
-    'bluz71/vim-nightfly-colors'
-  },
-  {'folke/tokyonight.nvim',
-    config = function ()
+    "folke/tokyonight.nvim",
+    config = function()
       require("colorscheme")
-    end
+    end,
   },
-  { "catppuccin/nvim", name = "catppuccin" },
   --"puremourning/vimspector",
   -- 功能性插件
   -- 跳转插件
-  {
-    'tpope/vim-fugitive'
-  },
-  {
-    'ggandor/leap.nvim',
-    lazy = true,
-    config = function()
-      require("plugin-config.leap-conf")
-    end,
-  },
+  -- vim
+  --[[ {
+    "tpope/vim-fugitive",
+  }, ]]
   -- surround
   "yaocccc/vim-surround",
   -- 文件树
@@ -85,15 +89,22 @@ require("lazy").setup({
     dependencies = "kyazdani42/nvim-web-devicons",
     config = function()
       require("plugin-config.nvim-tree")
-    end
+    end,
   },
   -- 文件树拓展 project
   {
     "ahmedkhalf/project.nvim",
     config = function()
       require("plugin-config.project")
-    end
+    end,
   },
+  -- language ts
+  {
+    "jose-elias-alvarez/typescript.nvim",
+    config = function()
+    end,
+    ft = { "js", "ts" },
+  }, -- additional functionality for typescript server (e.g. rename file & update imports)
   -- 加载
   --  use ('j-hui/fidget.nvim')
   -- -- lualine
@@ -105,100 +116,69 @@ require("lazy").setup({
     end,
   },
   {
-    "moll/vim-bbye"
+    "romgrk/barbar.nvim",
+    dependencies = {
+      "lewis6991/gitsigns.nvim", -- OPTIONAL: for git status
+      --"nvim-tree/nvim-web-devicons", -- OPTIONAL: for file icons
+      -- 页面关闭
+      "moll/vim-bbye",
+    },
+    init = function()
+      vim.g.barbar_auto_setup = false
+    end,
+    config = function(self, opts)
+      require("plugin-config.barbar")
+    end,
   },
-  {
-    'willothy/nvim-cokeline',
+  --[[ {
+    "willothy/nvim-cokeline",
     dependencies = "kyazdani42/nvim-web-devicons",
     config = function()
-      require "plugin-config.cokeline"
-    end
-  },
-  --"arkav/lualine-lsp-progress",
+      require("plugin-config.cokeline")
+    end,
+  }, ]]
   -- telescope
-  { "nvim-telescope/telescope.nvim",
+  {
+    "nvim-telescope/telescope.nvim",
     dependencies = { "nvim-lua/plenary.nvim" },
     config = function()
       require("plugin-config.telescope")
-    end
-  },
-  -- zfz telescope的拓展
-  {
-    "nvim-telescope/telescope-fzf-native.nvim",
-    --cmd = "cmake -S. -Bbuild -DCMAKE_BUILD_TYPE=Release && cmake --build build --config Release && cmake --install build --prefix build",
-    dependencies = { "nvim-telescope/telescope.nvim" }
-  },
-  -- telescope-env
-  {
-    "LinArcX/telescope-env.nvim",
-    dependencies = { "nvim-telescope/telescope.nvim" }
+    end,
   },
   -- 启动页面
   -- dashboard-nvim
-  { 'kyazdani42/nvim-web-devicons' },
+  { "kyazdani42/nvim-web-devicons" },
   {
-    'glepnir/dashboard-nvim',
-    event = 'VimEnter',
+    "glepnir/dashboard-nvim",
+    event = "VimEnter",
     config = function()
       require("plugin-config.dashboard")
     end,
     dependencies = "kyazdani42/nvim-web-devicons",
   },
-  -- 代码高亮
-  --[[ use {
-    "shift-d/crates.nvim",
-    requires = { "nvim-lua/plenary.nvim" }
-  } ]]
   ------- LSP -----
-  { "neovim/nvim-lspconfig" },
-  { "williamboman/mason-lspconfig.nvim",
-    dependencies = {
-      "ray-x/go.nvim",
-      "ray-x/guihua.lua",
-    },
-    config = function()
-      require "lsp.lsp"
-    end
-  },
-  { "williamboman/mason.nvim",
-    config = function()
-      require "lsp.mason"
-    end
-  },
-  { "mfussenegger/nvim-dap" },
-  { "jose-elias-alvarez/null-ls.nvim" },
-  --- cmp
-
-  { "hrsh7th/nvim-cmp",
-    dependencies = {
-      "hrsh7th/cmp-nvim-lsp", -- for autocompletion
-      "hrsh7th/cmp-nvim-lua",
-      "hrsh7th/cmp-cmdline",
-      "hrsh7th/cmp-buffer",
-      "hrsh7th/cmp-path",
-      'hrsh7th/cmp-vsnip',
-      'hrsh7th/vim-vsnip',
-      "rafamadriz/friendly-snippets", -- useful snippets
-    },
-    config = function()
-      require "lsp.cmp"
-    end
-  },
   {
-    'saecki/crates.nvim',
-    tag = 'v0.3.0',
-    requires = { 'nvim-lua/plenary.nvim' },
+    "neovim/nvim-lspconfig",
+    dependencies = {
+      "williamboman/mason-lspconfig.nvim",
+      "williamboman/mason.nvim",
+      "onsails/lspkind.nvim",
+    },
     config = function()
-        vim.api.nvim_create_autocmd({"BufRead"}, {
-          group = vim.api.nvim_create_augroup("CmpSourceCargo", { clear = true }),
-          pattern = "Cargo.toml",
-          callback = function()
-            require('crates').setup()
-            local cmp = require("cmp")
-            cmp.setup.buffer({ sources = { { name = "crates" } } })
-          end,
-        })
+      require("lsp.mason")
+      require("lsp.lsp")
+      require("lsp.lspkind")
     end,
+    ft = language,
+  },
+  -- JSON 增强
+  {
+    "b0o/schemastore.nvim",
+    config = function()
+      -- code
+      require("language.json")
+    end,
+    ft = "json",
   },
   {
     "glepnir/lspsaga.nvim",
@@ -206,52 +186,181 @@ require("lazy").setup({
     config = function()
       require("lsp.saga")
     end,
+    ft = language,
   }, -- enhanced lsp uis
-
-  -- 常见编程语言代码段
+  -- lsp_signature
   {
-    'honza/vim-snippets',
-  },
-  -- JSON 增强
-  "b0o/schemastore.nvim",
-
-
-  { "folke/trouble.nvim", requires = "kyazdani42/nvim-web-devicons",
+    "ray-x/lsp_signature.nvim",
     config = function()
-      require "lsp.trouble"
-    end
+      local cfg = {
+        floating_window = false,
+      } -- add your config here
+      require("lsp_signature").setup(cfg)
+    end,
+    ft = language,
   },
-  { "jose-elias-alvarez/typescript.nvim" }, -- additional functionality for typescript server (e.g. rename file & update imports)
-  { "onsails/lspkind.nvim" }, -- vs-code like icons for autocompletion
-  { "simrat39/rust-tools.nvim" }, -- rust server
+  -- language go
+  {
+    "ray-x/go.nvim",
+    dependencies = { "ray-x/guihua.lua", "neovim/nvim-lspconfig" },
+    config = function()
+      require("language.go")
+    end,
+    --event = "BufEnter *.go",
+    ft = "go",
+  },
+  -- language rust
+  --[[ {
+    --"simrat39/rust-tools.nvim", -- rust server
+    dir = "/home/bk/tmp/rust-tools.nvim",
+    dependencies = {
+      "neovim/nvim-lspconfig",
+      "mfussenegger/nvim-dap",
+    },
+    config = function()
+      require("language.rust")
+    end,
+    event = "BufEnter Cargo.toml",
+    ft = { "rust" },
+  }, ]]
+  -- language ts
+  {
+    "jose-elias-alvarez/typescript.nvim",
+    ft = { "js", "ts" },
+  }, -- additional functionality for typescript server (e.g. rename file & update imports)
+  -- dap
+  {
+    "mfussenegger/nvim-dap",
+    dependencies = {
+      "jay-babu/mason-nvim-dap.nvim",
+      "rcarriga/nvim-dap-ui",
+      "theHamsta/nvim-dap-virtual-text",
+    },
+    config = function()
+      require("dap.dap")
+      require("dap.dap-virtual-text")
+      require("dap.dap-ui")
+      require("dap.dap-keymap")
+    end,
+    ft = { "rust", "go", "python", "shell" },
+  },
+  --- cmp
+  -- 常见编程语言代码段
+  -- 引擎
+  {
+    "L3MON4D3/LuaSnip",
+    dependencies = {
+      "saadparwaiz1/cmp_luasnip",
+      "rafamadriz/friendly-snippets", -- useful snippets
+      "honza/vim-snippets",
+    },
+  },
+  -- cmp
+  {
+    "hrsh7th/nvim-cmp",
+    dependencies = {
+      "hrsh7th/cmp-nvim-lsp", -- for autocompletion
+      "hrsh7th/cmp-nvim-lua",
+      "hrsh7th/cmp-cmdline",
+      "hrsh7th/cmp-buffer",
+      "hrsh7th/cmp-path",
+      "L3MON4D3/LuaSnip",
+    },
+    config = function()
+      require("lsp.cmp")
+    end,
+  },
+  {
+    "saecki/crates.nvim",
+    tag = "v0.3.0",
+    requires = { "nvim-lua/plenary.nvim" },
+    config = function()
+      require("crates").setup({
+        null_ls = {
+          enabled = true,
+          name = "crates.nvim",
+        },
+      })
+      local cmp = require("cmp")
+      cmp.setup.buffer({ sources = { { name = "crates" } } })
+    end,
+    --  event = "BufEnter Cargo.toml",
+    ft = { "toml" },
+  },
+
+  -- trouble
+  {
+    "folke/trouble.nvim",
+    requires = "kyazdani42/nvim-web-devicons",
+    config = function()
+      require("lsp.trouble")
+    end,
+    ft = language,
+  },
 
   -- formatting & linting
-  { "jose-elias-alvarez/null-ls.nvim" }, -- configure formatters & linters
-  { "jayp0521/mason-null-ls.nvim" }, -- bridges gap b/w mason & null-ls
-
+  {
+    "jose-elias-alvarez/null-ls.nvim",
+    dependencies = {
+      "jayp0521/mason-null-ls.nvim",
+    },
+    config = function()
+      require("lsp.null-ls")
+    end,
+    ft = language,
+  },
+  -- 高亮当前单词
+  {
+    "RRethy/vim-illuminate",
+    config = function()
+    end,
+    ft = language,
+  },
+  --[[ {
+    "stevearc/overseer.nvim",
+    opts = {},
+    config = function(self, opts)
+      require("overseer").setup()
+    end,
+    ft = language,
+  }, ]]
 
   -- treesitter configuration
   {
     "nvim-treesitter/nvim-treesitter",
-    config = function ()
-      require "plugin-config.nvim-treesitter"
+    config = function()
+      require("plugin-config.nvim-treesitter")
     end,
+    ft = language,
   },
-
+  -- 折叠
+  {
+    "kevinhwang91/nvim-ufo",
+    dependencies = {
+      "kevinhwang91/promise-async",
+      "nvim-treesitter/nvim-treesitter",
+    },
+    config = function()
+      require("plugin-config.ufo")
+    end,
+    --ft = language,
+  },
   -- 输入法切换，当模式成为 normal模式的时候
-  'h-hg/fcitx.nvim',
+  "h-hg/fcitx.nvim",
   -- 标签智能补全
   -- use 'windwp/nvim-ts-autotag'
   -- 注释
   {
-    'numToStr/comment.nvim',
+    "numToStr/comment.nvim",
     config = function()
       require("plugin-config.coment")
-    end
+    end,
   },
+  -- 线
   {
-    'yaocccc/nvim-hlchunk',
+    "yaocccc/nvim-hlchunk",
     config = function()
     end,
+    --ft = language,
   },
 })

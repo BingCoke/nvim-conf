@@ -14,8 +14,7 @@ require("tokyonight").setup({
     comments = { italic = true },
     keywords = { italic = true },
     functions = {},
-    variables = { bold = true },
-    DiagnosticUnnecessary = { bold = true, fg = "#7aa2f7" },
+    variables = {},
     -- Background styles. Can be "dark", "transparent" or "normal"
     sidebars = "storm", -- style for sidebars, see below
     floats = "storm", -- style for floating windows

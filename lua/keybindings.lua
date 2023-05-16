@@ -1,12 +1,14 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
+
 local map = vim.api.nvim_set_keymap
 -- 复用 opt 参数
 local opt = { noremap = true, silent = true }
 -- 取消 s 默认功能
 -- map("n", "s", "", opt)
 -- windows 分屏快捷键
+map("i", "<c-`>", "`", opt)
 map("n", "<leader>sv", ":vsp<CR>", opt)
 map("n", "<leader>sh", ":sp<CR>", opt)
 -- 关闭当前
@@ -20,15 +22,15 @@ map("n", "<A-h>", "<C-w>h", opt)
 map("n", "<A-j>", "<C-w>j", opt)
 map("n", "<A-k>", "<C-w>k", opt)
 map("n", "<A-l>", "<C-w>l", opt)
-
+--map("n", "gx", "<Plug>NetrwBrowseX", opt)
 
 vim.s = 12;
 -- 左右比例控制
-map("n", "<C-Left>", ":vertical resize +2<CR>", opt)
-map("n", "<C-Right>", ":vertical resize -2<CR>", opt)
+map("n", "<C-Left>", ":vertical resize -2<CR>", opt)
+map("n", "<C-Right>", ":vertical resize +2<CR>", opt)
 -- 上下比例控制
-map("n", "<C-Down>", ":resize +2<CR>", opt)
-map("n", "<C-Up>", ":resize -2<CR>", opt)
+map("n", "<C-Down>", ":resize -2<CR>", opt)
+map("n", "<C-Up>", ":resize +2<CR>", opt)
 -- Terminal相关
 -- 打开terminal
 map("n", "<leader>h", ":sp | terminal<CR>", opt)
@@ -75,7 +77,7 @@ local pluginKeys = {}
 map("n", "<C-p>", ":Telescope find_files<CR>", opt)
 -- 全局搜索
 map("n", "<C-f>", ":Telescope live_grep<CR>", opt)
-map("n", "<A-f>", ":Telescope coc document_symbols<CR>", opt)
+map("n", "<leader>p", ":Telescope lsp_workspace_symbols<CR>", opt)
 -- 查看tab show window
 map("n", "<leader>sw", ":Telescope buffers<CR>", opt)
 
@@ -111,41 +113,8 @@ pluginKeys.telescopeList = {
 -- nvim-tree
 -- alt+m 键 打开关闭tree
 map("n", "<A-m>", ":NvimTreeToggle<CR>", opt)
---[[ map("n", "<A-m>", ":NvimTreeToggle<CR>", opt)
--- 列表快捷键
--- tab 浏览文件
-pluginKeys.nvimTreeList = {
-	-- 打开文件或文件夹
-	{ key = { "<CR>", "o", "<2-LeftMouse>" }, action = "edit" },
-	-- 分屏打开文件
-	{ key = "<C-v>", action = "vsplit" },
-	{ key = "<c-h>", action = "split" },
-	-- 显示隐藏文件
-	{ key = "i", action = "toggle_custom" }, -- 对应 filters 中的 custom (node_modules)
-	{ key = ".", action = "toggle_dotfiles" }, -- Hide (dotfiles)
-	-- 文件操作
-	{ key = "R", action = "refresh" },
-	{ key = "a", action = "create" },
-	{ key = "D", action = "remove" },
-	{ key = "d", action = "trash" },
-	{ key = "r", action = "rename" },
-	{ key = "x", action = "cut" },
-	{ key = "c", action = "copy" },
-	{ key = "p", action = "paste" },
-	{ key = "s", action = "system_open" },
-} ]]
-
-
-
-vim.keymap.set('n', '<leader>rr', ':RunCode<CR>', { noremap = true, silent = false })
-vim.keymap.set('n', '<leader>rf', ':RunFile<CR>', { noremap = true, silent = false })
---vim.keymap.set('n', '<leader>rft', ':RunFile tab<CR>', { noremap = true, silent = false })
-vim.keymap.set('n', '<leader>rp', ':RunProject<CR>', { noremap = true, silent = false })
-vim.keymap.set('n', '<leader>rq', ':RunClose<CR>', { noremap = true, silent = false })
-vim.keymap.set('n', '<leader>rcf', ':CRFiletype<CR>', { noremap = true, silent = false })
-vim.keymap.set('n', '<leader>rcpp', ':CRProjects<CR>', { noremap = true, silent = false })
 
 vim.keymap.set('n', '<leader>m', ':MarkdownPreview<CR>', { noremap = true, silent = false })
-vim.keymap.set('n', '<leader>t', ':TagbarToggle<CR>', { noremap = true, silent = false })
+vim.keymap.set('n', '<leader>t', ':SymbolsOutline<CR>', { noremap = true, silent = false })
 
 return pluginKeys

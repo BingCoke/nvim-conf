@@ -4,13 +4,16 @@
 
   "python.analysis.typeCheckingMode": "off",
 
+
   "python.analysis.diagnosticMode": "openFilesOnly",
 
   "Lua.diagnostics.globals": ["vim", "redis", "ARGV", "KEYS"],
 
-  "volar.tsLocale": "zh-cn",
   "snippets.ultisnips.pythonPrompt": false,
+
+  "volar.tsLocale": "zh-cn",
   "sh.commandPath": "",
+
   "pairs.enableCharacters": ["(", "{", "<", "["],
   "diagnostic.level": "hint",
 

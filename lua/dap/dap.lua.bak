@@ -1,0 +1,103 @@
+local mason_dap = require("mason-nvim-dap")
+--- dap conf https://github.com/mfussenegger/nvim-dap/wiki/Debug-Adapter-installation
+
+local daputil = require("dap.dap-utils")
+mason_dap.setup({
+  ensure_installed = {
+    "delve",
+    "python",
+    "codelldb",
+    "bash",
+  },
+  handlers = {
+    function(config)
+      -- all sources with no handler get passed here
+      -- Keep original functionality
+      require("mason-nvim-dap").default_setup(config)
+    end,
+    python = function(config)
+      local venv_path = os.getenv("VIRTUAL_ENV") or os.getenv("CONDA_PREFIX")
+      config.configurations = {
+        -- launch exe
+        {
+          type = "python", -- the type here established the link to the adapter definition: `dap.adapters.python`
+          request = "launch",
+          name = "Python: Launch file",
+          program = "${file}", -- This configuration will launch the current file if used.
+          args = function()
+            return daputil.str2argtable(daputil.arg)
+          end,
+          pythonPath = venv_path and (venv_path .. "/bin/python") or nil,
+        },
+      }
+      mason_dap.default_setup(config) -- don't forget this!
+    end,
+    -- insure install lldb-vscode in your system
+    codelldb = function(config)
+      mason_dap.default_setup(config) -- don't forget this!
+    end,
+    delve = function(config)
+      config.configurations = {
+        {
+          type = "delve",
+          name = "Delve: Debug",
+          request = "launch",
+          program = "${file}",
+          args = function()
+            print("hello")
+            return daputil.str2arglist(daputil.arg)
+          end,
+        },
+        {
+          type = "delve",
+          name = "Delve: Debug test", -- configuration for debugging test files
+          request = "launch",
+          mode = "test",
+          program = "${file}",
+          args = function()
+            return daputil.str2argtable(daputil.arg)
+          end,
+        },
+        -- works with go.mod packages and sub packages
+        {
+          type = "delve",
+          name = "Delve: Debug test (go.mod)",
+          request = "launch",
+          mode = "test",
+          program = "./${relativeFileDirname}",
+          args = function()
+            return daputil.str2argtable(daputil.arg)
+          end,
+        },
+      }
+      mason_dap.default_setup(config) -- don't forget this!
+    end,
+  },
+})
+
+vim.fn.sign_define("DapBreakpoint", { text = "🐞" })
+-- set 断点的图标
+local dap_breakpoint = {
+  error = {
+    text = "🐞",
+    texthl = "LspDiagnosticsSignError",
+    linehl = "",
+    numhl = "",
+  },
+  rejected = {
+    text = "",
+    texthl = "LspDiagnosticsSignHint",
+    linehl = "",
+    numhl = "",
+  },
+  stopped = {
+    text = "⭐️",
+    texthl = "LspDiagnosticsSignInformation",
+    linehl = "DiagnosticUnderlineInfo",
+    numhl = "LspDiagnosticsSignInformation",
+  },
+}
+
+vim.fn.sign_define("DapBreakpoint", dap_breakpoint.error)
+vim.fn.sign_define("DapStopped", dap_breakpoint.stopped)
+vim.fn.sign_define("DapBreakpointRejected", dap_breakpoint.rejected)

@@ -26,9 +26,9 @@ vim.bo.shiftwidth = 2
 vim.o.expandtab = true
 vim.bo.expandtab = true
 -- 新行对齐当前行
-vim.o.autoindent = true
-vim.bo.autoindent = true
-vim.o.smartindent = true
+vim.o.autoindent = false
+vim.bo.autoindent = false
+vim.o.smartindent = false
 -- 搜索大小写不敏感，除非包含大写
 vim.o.ignorecase = true
 vim.o.smartcase = true
@@ -61,7 +61,7 @@ vim.o.timeoutlen = 500
 vim.o.splitbelow = true
 vim.o.splitright = true
 -- 自动补全不自动选中
-vim.g.completeopt = "menu,menuone,noselect,noinsert"
+--vim.g.completeopt = "menu,menuone,noselect,noinsert"
 -- 样式
 vim.o.background = "dark"
 vim.o.termguicolors = true
@@ -72,7 +72,7 @@ vim.o.list = true
 -- 补全增强
 vim.o.wildmenu = true
 -- Dont' pass messages to |ins-completin menu|
-vim.o.shortmess = vim.o.shortmess .. 'c'
+--vim.o.shortmess = vim.o.shortmess .. 'c'
 -- 补全最多显示10行
 vim.o.pumheight = 8
 -- 永远显示 tabline

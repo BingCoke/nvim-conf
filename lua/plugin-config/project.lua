@@ -12,7 +12,7 @@ project.setup({
   detection_methods = { "pattern", "lsp" },
   patterns = { ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json", ".sln", ".idea" },
   show_hidden = true,
-  exclude_dirs = {"~/.cargo/*"}
+  exclude_dirs = { "~/.cargo/*" },
 })
 
 local status, telescope = pcall(require, "telescope")

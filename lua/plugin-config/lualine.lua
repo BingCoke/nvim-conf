@@ -1,23 +1,4 @@
--- 如果找不到lualine 组件，就不继续执行
--- 设置tmux的时候不显示状态栏
--- local r = os.getenv("TMUX");
---[[ 
-if r == nil then
-  -- vim.o.laststatus = 2
-  vim.o.laststatus = 0
-  vim.o.cmdheight = 1
-  vim.o.showmode = true
-  return
-else
-  vim.o.laststatus = 0
-  vim.o.cmdheight = 1
-  vim.o.showmode = true
-  return
-end
- ]]
 
--- 你好
--- nihao
 local status, lualine = pcall(require, "lualine")
 if not status then
   vim.notify("没有找到 lualine")
