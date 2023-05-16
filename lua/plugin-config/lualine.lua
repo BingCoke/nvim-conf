@@ -19,7 +19,7 @@ lualine.setup({
       {
         "diagnostics",
         sources = { "nvim_diagnostic" },
-        symbols = { error = "E", warn = "W", info = "I", hint = "H" },
+        symbols = { error = "", warn = "", info = "", hint = "" },
       },
     },
     lualine_c = {
