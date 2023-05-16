@@ -139,8 +139,8 @@ lspconfig["emmet_ls"].setup({
   filetypes = { "html", "typescriptreact", "javascriptreact", "css", "sass", "scss", "less", "svelte" },
 })
 
+local rs_cap = require("cmp_nvim_lsp").default_capabilities()
 
-local rs_cap = vim.lsp.protocol.make_client_capabilities()
 rs_cap.textDocument.completion.completionItem.snippetSupport = true
 
 rs_cap.experimental = {
@@ -149,7 +149,6 @@ rs_cap.experimental = {
   serverStatusNotification = true,
   snippetTextEdit = true,
   codeActionGroup = true,
-  ssr = true,
 }
 -- enable auto-import
 rs_cap.textDocument.completion.completionItem.resolveSupport = {
@@ -164,8 +163,6 @@ rs_cap.experimental.commands = {
     "editor.action.triggerParameterHints",
   },
 }
---rs_cap = vim.tbl_deep_extend("force", capabilities, default_capabilities or {})
-
 lspconfig["rust_analyzer"].setup({
   capabilities = rs_cap,
   on_attach = on_attach,
@@ -179,9 +176,6 @@ lspconfig["rust_analyzer"].setup({
     },
   },
 })
-
-
-
 
 -- configure pyright server
 -- py-lsp
@@ -197,7 +191,7 @@ local root_files = {
 }
 
 lspconfig["pyright"].setup({
-  capabilities = default_capabilities,
+  capabilities = capabilities,
   on_attach = on_attach,
   root_dir = util.root_pattern(unpack(root_files)),
   settings = {

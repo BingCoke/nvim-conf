@@ -40,7 +40,7 @@ map("n", "<Space>bl", "<Cmd>BufferOrderByLanguage<CR>", opts)
 require("barbar").setup({
   separator = { left = "", right = "" },
   -- Enable/disable auto-hiding the tab bar when there is a single buffer
-  auto_hide = false,
+  auto_hide = true,
   exclude_ft = {},
   exclude_name = {},
   -- A buffer to this direction will be focused (if it exists) when closing the current buffer.

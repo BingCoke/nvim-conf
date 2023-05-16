@@ -24,6 +24,18 @@ require("lspsaga").setup({
     sign_priority = 40,
     virtual_text = true,
   },
+  finder = {
+    keys = {
+      jump_to = "p",
+      expand_or_jump = "o",
+      vsplit = "s",
+      split = "i",
+      tabe = "t",
+      tabnew = "<CR>",
+      quit = { "q", "<ESC>" },
+      close_in_preview = "<ESC>",
+    },
+  },
   diagnostic = {
     on_insert = false,
     on_insert_follow = false,
@@ -40,7 +52,7 @@ require("lspsaga").setup({
     extend_relatedInformation = false,
     keys = {
       exec_action = "o",
-      quit = "q",
+      quit = { "q" },
       expand_or_jump = "<CR>",
       quit_in_show = { "q", "<ESC>" },
     },

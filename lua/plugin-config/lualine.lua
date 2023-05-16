@@ -1,4 +1,3 @@
-
 local status, lualine = pcall(require, "lualine")
 if not status then
   vim.notify("没有找到 lualine")
@@ -14,11 +13,24 @@ lualine.setup({
   },
   extensions = { "nvim-tree", "toggleterm" },
   sections = {
-    lualine_c = {
-      "filename",
+    lualine_b = {
+      "branch",
+      "diff",
       {
-        "lsp_progress",
-        spinner_symbols = { " ", " ", " ", " ", " ", " " },
+        "diagnostics",
+        sources = { "nvim_diagnostic" },
+        symbols = { error = "E", warn = "W", info = "I", hint = "H" },
+      },
+    },
+    lualine_c = {
+      {
+        "filename",
+        symbols = {
+          modified = "[●]", -- Text to show when the file is modified.
+          readonly = "[-]", -- Text to show when the file is non-modifiable or readonly.
+          unnamed = "[No Name]", -- Text to show for unnamed buffers.
+          newfile = "[New]", -- Text to show for newly created file before first write
+        },
       },
     },
     lualine_x = {
@@ -26,14 +38,10 @@ lualine.setup({
       {
         "fileformat",
         symbols = {
-          unix = '', -- e712
-          dos = '', -- e70f
-          mac = '', -- e711
+          unix = "", -- e712
+          dos = "", -- e70f
+          mac = "", -- e711
         },
-        --        symbols = {
-        --          unix = "LF",
-        --          dos = "CRLF",
-        --          mac = "CR",
         --        },
       },
       "encoding",

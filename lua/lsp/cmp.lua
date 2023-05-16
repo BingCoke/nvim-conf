@@ -24,6 +24,8 @@ local has_words_before = function()
   return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
 end
 
+
+
 local function border(hl_name)
   return {
     { "╭", hl_name },
@@ -135,6 +137,7 @@ cmp.setup.cmdline("/", {
   },
 })
 
+
 -- : 命令行模式中使用 path 和 cmdline 源.
 cmp.setup.cmdline(":", {
   mapping = cmp.mapping.preset.cmdline(),
@@ -148,36 +151,6 @@ cmp.setup.cmdline(":", {
 -- auto pair
 local cmp_autopairs = require("nvim-autopairs.completion.cmp")
 cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
-
-local handlers = require("nvim-autopairs.completion.handlers")
-
-cmp.event:on(
-  "confirm_done",
-  cmp_autopairs.on_confirm_done({
-    filetypes = {
-      -- "*" is a alias to all filetypes
-      ["*"] = {
-        ["("] = {
-          kind = {
-            cmp.lsp.CompletionItemKind.Function,
-            cmp.lsp.CompletionItemKind.Method,
-          },
-          handler = handlers["*"],
-        },
-      },
-      lua = {
-        ["("] = {
-          kind = {
-            cmp.lsp.CompletionItemKind.Function,
-            cmp.lsp.CompletionItemKind.Method,
-          },
-        },
-      },
-      -- Disable for tex
-      tex = false,
-    },
-  })
-)
 
 local api = vim.api
 local function generate_highlight()
@@ -199,4 +172,5 @@ local function generate_highlight()
   api.nvim_command("highlight! link CmpItemKindProperty CmpItemKindKeyword")
   api.nvim_command("highlight! link CmpItemKindUnit CmpItemKindKeyword")
 end
+
 generate_highlight()

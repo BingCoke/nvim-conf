@@ -43,7 +43,7 @@ require("lazy").setup({
   {
     "windwp/nvim-autopairs",
     config = function()
-      require("nvim-autopairs").setup({})
+      require("plugin-config.autopairs")
     end,
   },
   --markdonw preview
@@ -127,6 +127,7 @@ require("lazy").setup({
       vim.g.barbar_auto_setup = false
     end,
     config = function(self, opts)
+      vim.g.barbar_auto_setup = false
       require("plugin-config.barbar")
     end,
   },
@@ -163,11 +164,13 @@ require("lazy").setup({
       "williamboman/mason-lspconfig.nvim",
       "williamboman/mason.nvim",
       "onsails/lspkind.nvim",
+      "lvimuser/lsp-inlayhints.nvim",
     },
     config = function()
       require("lsp.mason")
       require("lsp.lsp")
       require("lsp.lspkind")
+      require("lsp.inlayghints")
     end,
     ft = language,
   },
