@@ -19,8 +19,8 @@ require('dashboard').setup {
       },
       {
         icon = "  ",
-        desc = "Edit keybindings                    ",
-        action = "edit ~/.config/nvim/lua/keybindings.lua",
+        desc = "Edit Snippets                    ",
+        action = "edit ~/.config/nvim/my-snippets",
       },
       {
         icon = "  ",

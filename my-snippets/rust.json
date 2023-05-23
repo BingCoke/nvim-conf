@@ -1,0 +1,35 @@
+{
+  "pubfn": {
+    "prefix": [
+      "pfn"
+    ],
+    "body": [
+      "pub fn ${1:fname}() ${2} {",
+      "${0}",
+      "}"
+    ],
+    "description": "字母"
+  },
+  "pubstruct": {
+    "prefix": [
+      "pst"
+    ],
+    "body": [
+      "pub fn ${1:fname}() ${2} {",
+      "${0}",
+      "}"
+    ],
+    "description": "字母"
+  },
+  "afn": {
+    "prefix": [
+      "afn"
+    ],
+    "body": [
+      "async pub fn ${1:fname}() ${2} {",
+      "${0}",
+      "}"
+    ],
+    "description": "字母"
+  }
+}

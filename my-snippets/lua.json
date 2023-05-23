@@ -1,0 +1,9 @@
+{
+  "alpha": {
+    "prefix": "a",
+    "body": [
+      "abcdefghijklmnopqrstuvwxyz"
+    ],
+    "description": "字母"
+  }
+}

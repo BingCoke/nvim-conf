@@ -26,9 +26,9 @@ vim.bo.shiftwidth = 2
 vim.o.expandtab = true
 vim.bo.expandtab = true
 -- 新行对齐当前行
-vim.o.autoindent = false
-vim.bo.autoindent = false
-vim.o.smartindent = false
+vim.o.autoindent = true
+vim.bo.autoindent = true
+vim.o.smartindent = true
 -- 搜索大小写不敏感，除非包含大写
 vim.o.ignorecase = true
 vim.o.smartcase = true
@@ -37,7 +37,7 @@ vim.o.hlsearch = false
 -- 边输入边搜索
 vim.o.incsearch = true
 -- 命令行高为2，提供足够的显示空间
-vim.o.cmdheight = 0
+vim.o.cmdheight = 1
 -- 当文件被外部程序修改时，自动加载
 vim.o.autoread = true
 vim.bo.autoread = true
@@ -70,17 +70,16 @@ vim.opt.termguicolors = true
 vim.o.listchars = "space: ,tab:  "
 vim.o.list = true
 -- 补全增强
-vim.o.wildmenu = true
+--vim.o.wildmenu = true
 -- Dont' pass messages to |ins-completin menu|
 --vim.o.shortmess = vim.o.shortmess .. 'c'
+
 -- 补全最多显示10行
 vim.o.pumheight = 8
 -- 永远显示 tabline
 vim.o.showtabline = 2
 -- 使用增强状态栏插件后不再需要 vim 的模式提示
-vim.o.showmode = false
+vim.o.showmode = true
 
 -- 使用系统剪切板
 --vim.o.clipboard='unnamedplus'
-
-

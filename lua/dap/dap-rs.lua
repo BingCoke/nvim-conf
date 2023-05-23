@@ -27,14 +27,13 @@ local function debug(args)
         args = args.cargoArgs,
         cwd = args.workspaceRoot,
         on_exit = function(j, code)
-          if code and code > 0 then
+          --[[           if code and code > 0 then
             notify.create_notify_floating_window(
               { "An error occurred while compiling. Please fix all compilation issues and try again." },
               { timeout = 3000 }
             )
             return
-          end
-
+          end ]]
           vim.schedule(function()
             local executables = {}
 
@@ -72,6 +71,7 @@ local function debug(args)
               }, { timeout = 3000 })
               return
             end
+
             if #executables > 1 then
               notify.create_notify_floating_window({
                 "Multiple compilation artifacts are not supported.",

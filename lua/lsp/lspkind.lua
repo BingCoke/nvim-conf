@@ -1,5 +1,5 @@
---[[ local symbol_map = {
-  Text = "",
+local symbol_map = {
+  Text = "T",
   Method = "",
   Function = "",
   Constructor = "",
@@ -23,10 +23,10 @@
   Struct = "פּ",
   Event = "",
   Operator = "",
-  TypeParameter = ""
-} ]]
+  TypeParameter = "",
+}
 
-require('lspkind').init({
-    mode = 'symbol_text',
---    symbol_map = symbol_map
+require("lspkind").init({
+  mode = "symbol_text",
+  symbol_map = symbol_map,
 })

@@ -1,3 +1,6 @@
+local M = {
+  is = true,
+}
 local status_ok, dapui = pcall(require, "dapui")
 if not status_ok then
   vim.notify("dapui not found")
@@ -27,7 +30,7 @@ dapui.setup({
 })
 
 -- 这里一定要先配置好dap
-local dap  = require("dap")
+local dap = require("dap")
 
 local debug_open = function()
   dapui.open()
@@ -36,16 +39,19 @@ local debug_open = function()
 end
 local debug_close = function()
   dap.repl.close()
-  dapui.close()
   vim.api.nvim_command("DapVirtualTextDisable")
   -- vim.api.nvim_command("bdelete! term:")   -- close debug temrinal
 end
 
 dap.listeners.after.event_initialized["dapui_config"] = function()
-  debug_open()
+  if M.is then
+    debug_open()
+    M.is = false
+  end
+
 end
 dap.listeners.before.event_terminated["dapui_config"] = function()
-  debug_close()
+  --debug_close()
 end
 dap.listeners.before.event_exited["dapui_config"] = function()
   debug_close()
@@ -53,3 +59,5 @@ end
 dap.listeners.before.disconnect["dapui_config"] = function()
   debug_close()
 end
+
+return M

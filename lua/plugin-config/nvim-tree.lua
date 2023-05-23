@@ -14,7 +14,9 @@ vim.opt.termguicolors = true
 
 
 -- 列表操作快捷键
-local list_keys = require('keybindings').nvimTreeList
+local list_keys = {
+
+}
 nvim_tree.setup({
     diagnostics = {
       enable=true,

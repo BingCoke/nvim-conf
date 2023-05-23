@@ -1,7 +1,8 @@
----@diagnostic disable: unused-local
+---@diagnostic disable: unused-localplpl
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
 local language = {
+  "awk",
   "c",
   "cpp",
   "rust",
@@ -12,9 +13,13 @@ local language = {
   "css",
   "markdown",
   "yaml",
+  "yml",
   "json",
   "lua",
   "typescript",
+  "xml",
+  "sh",
+  "toml"
 }
 
 if not vim.loop.fs_stat(lazypath) then
@@ -47,6 +52,15 @@ require("lazy").setup({
     end,
   },
   --markdonw preview
+  --[[ {
+    "edluffy/hologram.nvim",
+    config = function(self, opts)
+      require("hologram").setup({
+        auto_display = true, -- WIP automatic markdown image display, may be prone to breaking
+      })
+    end,
+    ft = { "markdown" },
+  }, ]]
   {
     "iamcco/markdown-preview.nvim",
     --cmd = "cd app && npm install",
@@ -74,21 +88,17 @@ require("lazy").setup({
       require("colorscheme")
     end,
   },
-  --"puremourning/vimspector",
-  -- 功能性插件
-  -- 跳转插件
-  -- vim
-  --[[ {
-    "tpope/vim-fugitive",
-  }, ]]
-  -- surround
-  "yaocccc/vim-surround",
-  -- 文件树
   {
-    "kyazdani42/nvim-tree.lua",
-    dependencies = "kyazdani42/nvim-web-devicons",
-    config = function()
-      require("plugin-config.nvim-tree")
+    "nvim-neo-tree/neo-tree.nvim",
+    branch = "v2.x",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-tree/nvim-web-devicons",
+      --"nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
+      "MunifTanjim/nui.nvim",
+    },
+    config = function(self, opts)
+      require("plugin-config.neotree")
     end,
   },
   -- 文件树拓展 project
@@ -110,7 +120,9 @@ require("lazy").setup({
   -- -- lualine
   {
     "nvim-lualine/lualine.nvim",
-    dependencies = { "kyazdani42/nvim-web-devicons" },
+    dependencies = {
+      "nvim-tree/nvim-web-devicons",
+    },
     config = function()
       require("plugin-config.lualine")
     end,
@@ -138,24 +150,48 @@ require("lazy").setup({
       require("plugin-config.cokeline")
     end,
   }, ]]
+
+  --[[ {
+    "Shatur/neovim-session-manager",
+    config = function(self, opts)
+      require("plugin-config.session-manager")
+    end,
+  }, ]]
   -- telescope
   {
     "nvim-telescope/telescope.nvim",
-    dependencies = { "nvim-lua/plenary.nvim" },
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope-ui-select.nvim",
+    },
     config = function()
       require("plugin-config.telescope")
     end,
   },
   -- 启动页面
   -- dashboard-nvim
-  { "kyazdani42/nvim-web-devicons" },
+  {
+    "nvim-tree/nvim-web-devicons",
+    priority = 70,
+    config = function(self, opts)
+      require("plugin-config.nvim-web-devicions")
+    end,
+  },
+  --[[ {
+    "goolord/alpha-nvim",
+    config = function()
+      require("alpha").setup(require("alpha.themes.dashboard").config)
+    end,
+  }, ]]
   {
     "glepnir/dashboard-nvim",
-    event = "VimEnter",
+    -- event = "VimEnter",
     config = function()
       require("plugin-config.dashboard")
     end,
-    dependencies = "kyazdani42/nvim-web-devicons",
+    dependencies = {
+      "nvim-tree/nvim-web-devicons",
+    },
   },
   ------- LSP -----
   {
@@ -254,9 +290,16 @@ require("lazy").setup({
     "L3MON4D3/LuaSnip",
     dependencies = {
       "saadparwaiz1/cmp_luasnip",
-      "rafamadriz/friendly-snippets", -- useful snippets
       "honza/vim-snippets",
+      "rafamadriz/friendly-snippets", -- useful snippets
     },
+    event = "BufEnter",
+    config = function(self, opts)
+      require("luasnip").config.setup({
+        history = true,
+        --region_check_events = 'CursorMoved'
+      })
+    end,
   },
   -- cmp
   {
@@ -269,6 +312,7 @@ require("lazy").setup({
       "hrsh7th/cmp-path",
       "L3MON4D3/LuaSnip",
     },
+    event = "BufEnter",
     config = function()
       require("lsp.cmp")
     end,
@@ -294,7 +338,7 @@ require("lazy").setup({
   -- trouble
   {
     "folke/trouble.nvim",
-    requires = "kyazdani42/nvim-web-devicons",
+    dependencies = {},
     config = function()
       require("lsp.trouble")
     end,
@@ -316,6 +360,7 @@ require("lazy").setup({
   {
     "RRethy/vim-illuminate",
     config = function()
+      vim.g.Illuminate_delay = 20
     end,
     ft = language,
   },
@@ -346,7 +391,7 @@ require("lazy").setup({
     config = function()
       require("plugin-config.ufo")
     end,
-    --ft = language,
+    ft = language,
   },
   -- 输入法切换，当模式成为 normal模式的时候
   "h-hg/fcitx.nvim",
@@ -358,12 +403,17 @@ require("lazy").setup({
     config = function()
       require("plugin-config.coment")
     end,
+    ft = language,
   },
   -- 线
   {
     "yaocccc/nvim-hlchunk",
     config = function()
     end,
-    --ft = language,
+    ft = language,
   },
+  --[[ {
+    "stevearc/overseer.nvim",
+    opts = {},
+  }, ]]
 })

@@ -11,8 +11,11 @@ lualine.setup({
     section_separators = { left = " ", right = "" },
     globalstatus = false,
   },
-  extensions = { "nvim-tree", "toggleterm" },
+  extensions = { "neo-tree", "toggleterm", "nvim-dap-ui", "lazy", "symbols-outline" },
   sections = {
+    lualine_a = {
+      "hostname",
+    },
     lualine_b = {
       "branch",
       "diff",

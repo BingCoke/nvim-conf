@@ -5,10 +5,12 @@ vim.g.maplocalleader = " "
 local map = vim.api.nvim_set_keymap
 -- 复用 opt 参数
 local opt = { noremap = true, silent = true }
+map("n", "Q", "q", opt)
+map("n", "q", "", opt)
+map("i", "<c-`>", "`", opt)
 -- 取消 s 默认功能
 -- map("n", "s", "", opt)
 -- windows 分屏快捷键
-map("i", "<c-`>", "`", opt)
 map("n", "<leader>sv", ":vsp<CR>", opt)
 map("n", "<leader>sh", ":sp<CR>", opt)
 -- 关闭当前
@@ -88,8 +90,6 @@ map("n", "<leader>sw", ":Telescope buffers<CR>", opt)
 
 map("n","<c-w>","<c-w>w",opt)
 
-map("n","<leader>gh",":Dashboard<CR>",opt)
-map("n","<leader>nt",":DashboardNewFile<CR>",opt)
 
 -- Telescope 列表中 插入模式快捷键
 pluginKeys.telescopeList = {
@@ -112,7 +112,7 @@ pluginKeys.telescopeList = {
 
 -- nvim-tree
 -- alt+m 键 打开关闭tree
-map("n", "<A-m>", ":NvimTreeToggle<CR>", opt)
+--map("n", "<A-m>", ":NvimTreeToggle<CR>", opt)
 
 vim.keymap.set('n', '<leader>m', ':MarkdownPreview<CR>', { noremap = true, silent = false })
 vim.keymap.set('n', '<leader>t', ':SymbolsOutline<CR>', { noremap = true, silent = false })

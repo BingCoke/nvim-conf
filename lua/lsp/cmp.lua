@@ -11,7 +11,6 @@ if not lspkind_status then
 end
 
 -- load vs-code like snippets from plugins (e.g. friendly-snippets)
---require("vsnip/loaders/from_vscode").lazy_load()
 
 local feedkey = function(key, mode)
   vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
@@ -37,6 +36,8 @@ local function border(hl_name)
   }
 end
 
+-- load snippets from path/of/your/nvim/config/my-cool-snippets
+require("luasnip.loaders.from_vscode").lazy_load({ paths = { "./my-snippets" } })
 require("luasnip.loaders.from_vscode").lazy_load()
 
 cmp.setup({
@@ -75,8 +76,10 @@ cmp.setup({
 
     -- 自定义代码段跳转到下一个参数
     ["<c-l>"] = cmp.mapping(function(fallback)
-      if luasnip.expand_or_jumpable() then
-        luasnip.expand_or_jump()
+      if luasnip.jumpable(1) then
+        luasnip.jump(1)
+      else
+        fallback()
       end
     end, { "i", "s" }),
 
@@ -90,18 +93,23 @@ cmp.setup({
   preselect = cmp.PreselectMode.None,
   -- sources for autocompletion
   sources = cmp.config.sources({
-    --		{ name = "nvim_lsp" }, -- lsp
     { name = "nvim_lsp" },
     { name = "luasnip" },
     { name = "buffer" }, -- text within current buffer
     { name = "path" }, -- file system paths
   }),
   -- configure lspkind for vs-code like icons
+  --formatting = require("cmp.lspkind").formatting,
   formatting = {
-    fields = { "abbr", "kind" },
+    fields = { "abbr", "kind", "menu" },
+    duplicates = {
+      buffer = 1,
+      path = 1,
+      nvim_lsp = 0,
+      luasnip = 1,
+    },
     format = lspkind.cmp_format({
-      mode = "symbol_text",
-      --mode = 'symbol', -- show only symbol annotations
+      mode = "symbol",
       maxwidth = 30,      -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
       ellipsis_char = "...", -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
     }),
@@ -113,16 +121,7 @@ cmp.setup({
     documentation = {
       border = border("CmpDocBorder"),
       winhighlight = "Normal:CmpDoc",
-    },
-  },
-  sorting = {
-    comparators = {
-      cmp.config.compare.exact,
-      cmp.config.compare.recently_used,
-      cmp.config.compare.offset,
-      cmp.config.compare.score,
-      cmp.config.compare.sort_text,
-      cmp.config.compare.order,
+      max_width = 20,
     },
   },
 })
@@ -161,6 +160,22 @@ cmp.event:on(
             cmp.lsp.CompletionItemKind.Method,
           },
           handler = handlers["*"],
+        },
+      },
+      rust = {
+        ["("] = {
+          kind = {
+            cmp.lsp.CompletionItemKind.Function,
+            cmp.lsp.CompletionItemKind.Method,
+          },
+          ---@param char string
+          ---@param item table item completion
+          ---@param bufnr number buffer number
+          ---@param rules table
+          ---@param commit_character table<string>
+          handler = function(char, item, bufnr, rules, commit_character)
+            -- Your handler function. Inpect with print(vim.inspect{char, item, bufnr, rules, commit_character})
+          end,
         },
       },
       lua = {
@@ -204,7 +219,6 @@ cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 
 local api = vim.api
 local function generate_highlight()
-  api.nvim_command("highlight! CmpItemMenu ctermbg=237 guibg=#576486")
   -- gray
   api.nvim_command("highlight! CmpItemAbbrDeprecated guibg=NONE gui=strikethrough guifg=#808080")
   -- blue
@@ -221,6 +235,10 @@ local function generate_highlight()
   api.nvim_command("highlight! CmpItemKindKeyword guibg=NONE guifg=#D4D4D4")
   api.nvim_command("highlight! link CmpItemKindProperty CmpItemKindKeyword")
   api.nvim_command("highlight! link CmpItemKindUnit CmpItemKindKeyword")
+
+
+
+  --api.nvim_command("highlight CmpItemMenu CmpItemKindKeyword")
 end
 
 generate_highlight()

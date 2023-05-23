@@ -77,8 +77,15 @@ local function get_user_input(opt)
 
   vim.api.nvim_buf_set_keymap(
     input_box_buf,
-    "i",
-    "q",
+    "n",
+    "<ESC>",
+    "<Esc>:lua vim.api.nvim_win_close(0, true)<CR>",
+    { nowait = true, silent = true }
+  )
+  vim.api.nvim_buf_set_keymap(
+    input_box_buf,
+    "n",
+    "<c-c>",
     "<Esc>:lua vim.api.nvim_win_close(0, true)<CR>",
     { nowait = true, silent = true }
   )

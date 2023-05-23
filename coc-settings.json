@@ -1,24 +1,25 @@
 {
   "suggest.filterOnBackspace": true,
   "sumneko-lua.locale": "zh-cn",
-
   "python.analysis.typeCheckingMode": "off",
-
-
   "python.analysis.diagnosticMode": "openFilesOnly",
-
-  "Lua.diagnostics.globals": ["vim", "redis", "ARGV", "KEYS"],
-
+  "Lua.diagnostics.globals": [
+    "vim",
+    "redis",
+    "ARGV",
+    "KEYS"
+  ],
   "snippets.ultisnips.pythonPrompt": false,
-
   "volar.tsLocale": "zh-cn",
   "sh.commandPath": "",
-
-  "pairs.enableCharacters": ["(", "{", "<", "["],
+  "pairs.enableCharacters": [
+    "(",
+    "{",
+    "<",
+    "["
+  ],
   "diagnostic.level": "hint",
-
   "rust-analyzer.trace.server": "off",
-
   "rust-analyzer.completion.snippets.custom": {
     "Arc::new": {
       "postfix": "arc",
@@ -66,7 +67,6 @@
       "scope": "expr"
     }
   },
-
   "suggest.completionItemKindLabels": {
     "constructor": "\ufb25",
     "keyword": "\uf1de",
@@ -116,5 +116,8 @@
   },
   "colors.enable": false,
   "colors.highlightPriority": 1000,
-  "workspace.ignoredFolders": ["$HOME/.rustup/**", "$HOME/.cargo/**"]
+  "workspace.ignoredFolders": [
+    "$HOME/.rustup/**",
+    "$HOME/.cargo/**"
+  ]
 }
