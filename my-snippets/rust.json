@@ -4,11 +4,22 @@
       "pfn"
     ],
     "body": [
-      "pub fn ${1:fname}() ${2} {",
-      "${0}",
+      "pub fn ${1:fname}(${2}) ${3} {",
+      "  ${0}",
       "}"
     ],
     "description": "字母"
+  },
+  "main": {
+    "prefix": [
+      "main"
+    ],
+    "body": [
+      "pub fn main() ${3} {",
+      "  ${0}",
+      "}"
+    ],
+    "description": "mina 函数"
   },
   "pubstruct": {
     "prefix": [
@@ -16,7 +27,7 @@
     ],
     "body": [
       "pub fn ${1:fname}() ${2} {",
-      "${0}",
+      "  ${0}",
       "}"
     ],
     "description": "字母"
@@ -27,7 +38,7 @@
     ],
     "body": [
       "async pub fn ${1:fname}() ${2} {",
-      "${0}",
+      "  ${0}",
       "}"
     ],
     "description": "字母"

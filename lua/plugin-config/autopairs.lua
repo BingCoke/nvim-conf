@@ -4,7 +4,7 @@ local Rule = require("nvim-autopairs.rule")
 npairs.setup({
   check_ts = true,
   fast_wrap = {
-    map = "<M-e>",
+    map = "<a-e>",
     chars = { "{", "[", "(" ,'"', "'" },
     pattern = [=[[%'%"%>%]%)%}%,]]=],
     end_key = "$",
@@ -14,6 +14,7 @@ npairs.setup({
     highlight_grey = "Comment",
   },
 })
+
 
 local ts_conds = require("nvim-autopairs.ts-conds")
 

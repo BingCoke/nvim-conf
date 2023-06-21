@@ -40,7 +40,12 @@ end
 require("luasnip.loaders.from_vscode").lazy_load({ paths = { "./my-snippets" } })
 require("luasnip.loaders.from_vscode").lazy_load()
 
+require("luasnip.loaders.from_lua").lazy_load({ paths = "./snippets" })
+
 cmp.setup({
+  experimental = {
+    --ghost_text = true, -- this feature conflict with copilot.vim's preview.
+  },
   snippet = {
     expand = function(args)
       require("luasnip").lsp_expand(args.body)
@@ -101,18 +106,18 @@ cmp.setup({
   -- configure lspkind for vs-code like icons
   --formatting = require("cmp.lspkind").formatting,
   formatting = {
-    fields = { "abbr", "kind", "menu" },
+    --  fields = { "abbr", "kind", "menu" },
     duplicates = {
       buffer = 1,
       path = 1,
       nvim_lsp = 0,
       luasnip = 1,
     },
-    format = lspkind.cmp_format({
+    --[[ format = lspkind.cmp_format({
       mode = "symbol",
       maxwidth = 30,      -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
       ellipsis_char = "...", -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
-    }),
+    }), ]]
   },
   window = {
     -- 弹窗设置出来一个边框
@@ -147,12 +152,37 @@ cmp.setup.cmdline(":", {
 -- auto pair
 local cmp_autopairs = require("nvim-autopairs.completion.cmp")
 local handlers = require("nvim-autopairs.completion.handlers")
+local ts_utils = require("nvim-treesitter.ts_utils")
+
+local ts_node_func_parens_disabled = {
+  -- ecma
+  named_imports = true,
+  -- rust
+  use_declaration = true,
+}
+
+--local default_handler = cmp_autopairs.filetypes["*"]["("].handler
+--[[ cmp_autopairs.filetypes["*"]["("].handler = function(char, item, bufnr, rules, commit_character)
+  local node_type = ts_utils.get_node_at_cursor():type()
+  if ts_node_func_parens_disabled[node_type] then
+    if item.data then
+      item.data.funcParensDisabled = true
+    else
+      char = ""
+    end
+  end
+  print(vim.inspect({ char, item, bufnr, rules, commit_character }))
+  default_handler(char, item, bufnr, rules, commit_character)
+end ]]
 
 cmp.event:on(
   "confirm_done",
   cmp_autopairs.on_confirm_done({
     filetypes = {
-      -- "*" is a alias to all filetypes
+      sh = false,
+      css = false,
+      html = false,
+      rust = false,
       ["*"] = {
         ["("] = {
           kind = {
@@ -162,60 +192,9 @@ cmp.event:on(
           handler = handlers["*"],
         },
       },
-      rust = {
-        ["("] = {
-          kind = {
-            cmp.lsp.CompletionItemKind.Function,
-            cmp.lsp.CompletionItemKind.Method,
-          },
-          ---@param char string
-          ---@param item table item completion
-          ---@param bufnr number buffer number
-          ---@param rules table
-          ---@param commit_character table<string>
-          handler = function(char, item, bufnr, rules, commit_character)
-            -- Your handler function. Inpect with print(vim.inspect{char, item, bufnr, rules, commit_character})
-          end,
-        },
-      },
-      lua = {
-        ["("] = {
-          kind = {
-            cmp.lsp.CompletionItemKind.Function,
-            cmp.lsp.CompletionItemKind.Method,
-          },
-          ---@param char string
-          ---@param item table item completion
-          ---@param bufnr number buffer number
-          ---@param rules table
-          ---@param commit_character table<string>
-          handler = function(char, item, bufnr, rules, commit_character)
-            -- Your handler function. Inpect with print(vim.inspect{char, item, bufnr, rules, commit_character})
-          end,
-        },
-      },
-      python = {
-        ["("] = {
-          kind = {
-            cmp.lsp.CompletionItemKind.Function,
-            cmp.lsp.CompletionItemKind.Method,
-          },
-          ---@param char string
-          ---@param item table item completion
-          ---@param bufnr number buffer number
-          ---@param rules table
-          ---@param commit_character table<string>
-          handler = function(char, item, bufnr, rules, commit_character)
-            -- Your handler function. Inpect with print(vim.inspect{char, item, bufnr, rules, commit_character})
-          end,
-        },
-      },
-      -- Disable for tex
-      tex = false,
     },
   })
 )
-cmp.event:on("confirm_done", cmp_autopairs.on_confirm_done())
 
 local api = vim.api
 local function generate_highlight()
@@ -236,9 +215,10 @@ local function generate_highlight()
   api.nvim_command("highlight! link CmpItemKindProperty CmpItemKindKeyword")
   api.nvim_command("highlight! link CmpItemKindUnit CmpItemKindKeyword")
 
-
-
   --api.nvim_command("highlight CmpItemMenu CmpItemKindKeyword")
 end
 
 generate_highlight()
+
+-- 创建自定义命令
+vim.cmd('command! -nargs=0 SnipEdit lua require("my.command").snip_edit();')

@@ -3,32 +3,32 @@ require('dashboard').setup {
   config = {
     center = {
       {
-        icon = "  ",
+        icon = "                  ",
         desc = "Projects                            ",
         action = "Telescope projects",
       },
       {
-        icon = "  ",
+        icon = "                  ",
         desc = "current                            ",
         action = "Telescope find_files",
       },
       {
-        icon = "  ",
+        icon = "                  ",
         desc = "Recently files                      ",
         action = "Telescope oldfiles",
       },
       {
-        icon = "  ",
+        icon = "                  ",
         desc = "Edit Snippets                    ",
         action = "edit ~/.config/nvim/my-snippets",
       },
       {
-        icon = "  ",
+        icon = "                  ",
         desc = "Edit Projects                       ",
         action = "edit ~/.local/share/nvim/project_nvim/project_history",
       },
       {
-        icon = "  ",
+        icon = "                  ",
         desc = "Edit .zshrc                        ",
         action = "edit ~/.zshrc",
       },

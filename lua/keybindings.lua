@@ -8,6 +8,7 @@ local opt = { noremap = true, silent = true }
 map("n", "Q", "q", opt)
 map("n", "q", "", opt)
 map("i", "<c-`>", "`", opt)
+map("i", "<c-;>", "<esc>A;", opt)
 -- 取消 s 默认功能
 -- map("n", "s", "", opt)
 -- windows 分屏快捷键
@@ -42,15 +43,14 @@ map("t", "<A-h>", [[ <C-\><C-N><C-w>h ]], opt)
 map("t", "<A-j>", [[ <C-\><C-N><C-w>j ]], opt)
 map("t", "<A-k>", [[ <C-\><C-N><C-w>k ]], opt)
 map("t", "<A-l>", [[ <C-\><C-N><C-w>l ]], opt)
-
 map("v", "<a-c>", "\"+y", opt)
 map("v", "<c-c>", "\"+y", opt)
 -- visual模式下缩进代码
 map("v", "<", "<gv", opt)
 map("v", ">", ">gv", opt)
 -- 上下移动选中文本
-map("v", "J", ":move '>+1<CR>gv-gv", opt)
-map("v", "K", ":move '<-2<CR>gv-gv", opt)
+map("v", "<a-j>", ":move '>+1<CR>gv-gv", opt)
+map("v", "<a-k>", ":move '<-2<CR>gv-gv", opt)
 
 -- 上下滚动浏览
 map("n", "<C-j>", "4j", opt)
@@ -79,7 +79,8 @@ local pluginKeys = {}
 map("n", "<C-p>", ":Telescope find_files<CR>", opt)
 -- 全局搜索
 map("n", "<C-f>", ":Telescope live_grep<CR>", opt)
-map("n", "<leader>p", ":Telescope lsp_workspace_symbols<CR>", opt)
+
+map("n", "<leader>p", ":Telescope lsp_dynamic_workspace_symbols<CR>", opt)
 -- 查看tab show window
 map("n", "<leader>sw", ":Telescope buffers<CR>", opt)
 

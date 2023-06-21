@@ -1,10 +1,12 @@
----@diagnostic disable: unused-localplpl
+---@diagnostic disable: unused-local
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
 local language = {
+  "ruby",
   "awk",
   "c",
   "cpp",
+  "dart",
   "rust",
   "go",
   "python",
@@ -19,7 +21,7 @@ local language = {
   "typescript",
   "xml",
   "sh",
-  "toml"
+  "toml",
 }
 
 if not vim.loop.fs_stat(lazypath) then
@@ -36,7 +38,6 @@ end
 vim.opt.rtp:prepend(lazypath)
 -- Example using a list of specs with the default options
 require("lazy").setup({
-
   {
     "simrat39/symbols-outline.nvim",
     config = function(opts, self)
@@ -44,12 +45,16 @@ require("lazy").setup({
     end,
     ft = language,
   },
+  --[[ {
+    "dstein64/nvim-scrollview"
+  }, ]]
   -- autopairs
   {
     "windwp/nvim-autopairs",
     config = function()
       require("plugin-config.autopairs")
     end,
+    ft = language,
   },
   --markdonw preview
   --[[ {
@@ -63,8 +68,6 @@ require("lazy").setup({
   }, ]]
   {
     "iamcco/markdown-preview.nvim",
-    --cmd = "cd app && npm install",
-    --opts = function() vim.g.mkdp_filetypes = { "markdown" } end,
     config = function()
       vim.g.mkdp_path_to_chrome = "google-chrome-stable"
       vim.g.mkdp_theme = "dark"
@@ -80,6 +83,7 @@ require("lazy").setup({
       require("plugin-config.fterm").setup()
       require("plugin-config.fterm").config()
     end,
+    event = "VeryLazy",
   },
   -- tokyngingt
   {
@@ -100,6 +104,7 @@ require("lazy").setup({
     config = function(self, opts)
       require("plugin-config.neotree")
     end,
+    event = "VeryLazy",
   },
   -- 文件树拓展 project
   {
@@ -107,12 +112,12 @@ require("lazy").setup({
     config = function()
       require("plugin-config.project")
     end,
+    event = "VeryLazy",
   },
   -- language ts
   {
     "jose-elias-alvarez/typescript.nvim",
-    config = function()
-    end,
+    config = function() end,
     ft = { "js", "ts" },
   }, -- additional functionality for typescript server (e.g. rename file & update imports)
   -- 加载
@@ -129,6 +134,7 @@ require("lazy").setup({
   },
   {
     "romgrk/barbar.nvim",
+    event = "VimEnter",
     dependencies = {
       "lewis6991/gitsigns.nvim", -- OPTIONAL: for git status
       --"nvim-tree/nvim-web-devicons", -- OPTIONAL: for file icons
@@ -143,23 +149,11 @@ require("lazy").setup({
       require("plugin-config.barbar")
     end,
   },
-  --[[ {
-    "willothy/nvim-cokeline",
-    dependencies = "kyazdani42/nvim-web-devicons",
-    config = function()
-      require("plugin-config.cokeline")
-    end,
-  }, ]]
 
-  --[[ {
-    "Shatur/neovim-session-manager",
-    config = function(self, opts)
-      require("plugin-config.session-manager")
-    end,
-  }, ]]
   -- telescope
   {
     "nvim-telescope/telescope.nvim",
+    event = "VeryLazy",
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-telescope/telescope-ui-select.nvim",
@@ -177,15 +171,9 @@ require("lazy").setup({
       require("plugin-config.nvim-web-devicions")
     end,
   },
-  --[[ {
-    "goolord/alpha-nvim",
-    config = function()
-      require("alpha").setup(require("alpha.themes.dashboard").config)
-    end,
-  }, ]]
   {
     "glepnir/dashboard-nvim",
-    -- event = "VimEnter",
+    event = "VimEnter",
     config = function()
       require("plugin-config.dashboard")
     end,
@@ -200,15 +188,47 @@ require("lazy").setup({
       "williamboman/mason-lspconfig.nvim",
       "williamboman/mason.nvim",
       "onsails/lspkind.nvim",
-      "lvimuser/lsp-inlayhints.nvim",
+      {
+        "lvimuser/lsp-inlayhints.nvim",
+        init = function(self)
+          require("lsp.inlayghints")
+          vim.api.nvim_create_autocmd("LspAttach", {
+            group = vim.api.nvim_create_augroup("LspAttach_inlayhints", {}),
+            callback = function(args)
+              if not (args.data and args.data.client_id) then
+                return
+              end
+              local client = vim.lsp.get_client_by_id(args.data.client_id)
+              require("lsp-inlayhints").on_attach(client, args.buf)
+            end,
+          })
+        end,
+        ft = language,
+      },
     },
     config = function()
       require("lsp.mason")
       require("lsp.lsp")
-      require("lsp.lspkind")
-      require("lsp.inlayghints")
     end,
     ft = language,
+  },
+  {
+    "folke/neodev.nvim",
+    config = function(self, opts)
+      require("neodev").setup({
+        -- add any options here, or leave empty to use the default settings
+      })
+    end,
+    ft = {
+      "lua",
+    },
+  },
+  {
+    "onsails/lspkind.nvim",
+    config = function(self, opts)
+      require("lsp.lspkind")
+    end,
+    event = "VeryLazy",
   },
   -- JSON 增强
   {
@@ -231,13 +251,12 @@ require("lazy").setup({
   {
     "ray-x/lsp_signature.nvim",
     config = function()
-      local cfg = {
-        floating_window = false,
-      } -- add your config here
-      require("lsp_signature").setup(cfg)
+      require("lsp.lsp_signature")
     end,
     ft = language,
+    enabled = false,
   },
+
   -- language go
   {
     "ray-x/go.nvim",
@@ -248,25 +267,25 @@ require("lazy").setup({
     --event = "BufEnter *.go",
     ft = "go",
   },
-  -- language rust
-  --[[ {
-    --"simrat39/rust-tools.nvim", -- rust server
-    dir = "/home/bk/tmp/rust-tools.nvim",
-    dependencies = {
-      "neovim/nvim-lspconfig",
-      "mfussenegger/nvim-dap",
-    },
-    config = function()
-      require("language.rust")
-    end,
-    event = "BufEnter Cargo.toml",
-    ft = { "rust" },
-  }, ]]
   -- language ts
   {
     "jose-elias-alvarez/typescript.nvim",
     ft = { "js", "ts" },
   }, -- additional functionality for typescript server (e.g. rename file & update imports)
+  {
+    "windwp/nvim-ts-autotag",
+    config = function(self, opts)
+      require("nvim-ts-autotag").setup()
+    end,
+    ft = language,
+  },
+  {
+    "norcalli/nvim-colorizer.lua",
+    config = function(self, opts)
+      require("colorizer").setup()
+    end,
+  },
+
   -- dap
   {
     "mfussenegger/nvim-dap",
@@ -293,7 +312,7 @@ require("lazy").setup({
       "honza/vim-snippets",
       "rafamadriz/friendly-snippets", -- useful snippets
     },
-    event = "BufEnter",
+    event = "BufReadPre",
     config = function(self, opts)
       require("luasnip").config.setup({
         history = true,
@@ -311,8 +330,9 @@ require("lazy").setup({
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
       "L3MON4D3/LuaSnip",
+      "hrsh7th/cmp-nvim-lsp-signature-help",
     },
-    event = "BufEnter",
+    event = "VeryLazy",
     config = function()
       require("lsp.cmp")
     end,
@@ -355,24 +375,26 @@ require("lazy").setup({
       require("lsp.null-ls")
     end,
     ft = language,
+    --enabled = false,
   },
   -- 高亮当前单词
   {
     "RRethy/vim-illuminate",
     config = function()
-      vim.g.Illuminate_delay = 20
+      require("plugin-config.illuminate")
     end,
     ft = language,
   },
   --[[ {
-    "stevearc/overseer.nvim",
-    opts = {},
-    config = function(self, opts)
-      require("overseer").setup()
-    end,
-    ft = language,
+    "neoclide/coc.nvim",
+    build = "yarn install --frozen-lockfile",
+    config = function (self, opts)
+      require("coc.coc_tab")
+      require("coc.coc_flush")
+      require("coc.coc-basic")
+      require("coc.coc-need")
+    end
   }, ]]
-
   -- treesitter configuration
   {
     "nvim-treesitter/nvim-treesitter",
@@ -394,7 +416,10 @@ require("lazy").setup({
     ft = language,
   },
   -- 输入法切换，当模式成为 normal模式的时候
-  "h-hg/fcitx.nvim",
+  {
+    "h-hg/fcitx.nvim",
+    event = "BufReadPre",
+  },
   -- 标签智能补全
   -- use 'windwp/nvim-ts-autotag'
   -- 注释
@@ -405,15 +430,24 @@ require("lazy").setup({
     end,
     ft = language,
   },
+  {
+    "jbyuki/venn.nvim",
+    --ft = "markdonw",
+    config = function(self, opts) end,
+  },
+  {
+    "yaocccc/nvim-hl-mdcodeblock.lua",
+    config = function(self, opts)
+      require("hl-mdcodeblock").setup({
+        -- option
+      })
+    end,
+    ft = { "markdonw" },
+  },
   -- 线
   {
     "yaocccc/nvim-hlchunk",
-    config = function()
-    end,
+    config = function() end,
     ft = language,
   },
-  --[[ {
-    "stevearc/overseer.nvim",
-    opts = {},
-  }, ]]
 })

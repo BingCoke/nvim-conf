@@ -4,7 +4,6 @@ if not status then
   return
 end
 
-
 local formatting = null_ls.builtins.formatting
 
 null_ls.setup({
@@ -30,17 +29,10 @@ null_ls.setup({
         "json",
         "yaml",
         "graphql",
-        "markdown",
-        "sh",
-        "xml"
       },
       prefer_local = "node_modules/.bin",
     }),
-    -- formatting.fixjson,
     -- formatting.black.with({ extra_args = { "--fast" } }),
   },
-  -- 保存自动格式化
-  on_attach = function(client)
-
-  end,
+  diagnostics_format = "[#{s}] #{m}",
 })

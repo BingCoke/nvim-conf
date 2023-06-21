@@ -23,7 +23,7 @@ local symbol_map = {
   Struct = "פּ",
   Event = "",
   Operator = "",
-  TypeParameter = "",
+  TypeParameter = "P",
 }
 
 require("lspkind").init({

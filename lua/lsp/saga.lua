@@ -19,12 +19,11 @@ require("lspsaga").setup({
   },
   lightbulb = {
     enable = false,
-    enable_in_insert = true,
-    sign = true,
-    sign_priority = 40,
-    virtual_text = true,
   },
   finder = {
+    max_height = 0.5,
+    min_width = 30,
+    force_max_height = false,
     keys = {
       jump_to = "p",
       expand_or_jump = "o",
@@ -42,7 +41,7 @@ require("lspsaga").setup({
     --jump_num_shortcut = true,
     keys = {
       exec_action = "o",
-      quit =  "q" ,
+      quit = "q",
       expand_or_jump = "<CR>",
       quit_in_show = { "q", "<ESC>" },
     },
