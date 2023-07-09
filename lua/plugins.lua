@@ -1,4 +1,3 @@
----@diagnostic disable: unused-local
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
 local language = {
@@ -10,7 +9,6 @@ local language = {
   "rust",
   "go",
   "python",
-  "javascript",
   "html",
   "css",
   "markdown",
@@ -19,9 +17,13 @@ local language = {
   "json",
   "lua",
   "typescript",
+  "typescriptreact",
   "xml",
   "sh",
   "toml",
+  "typst",
+  "sql",
+  "jsonc",
 }
 
 if not vim.loop.fs_stat(lazypath) then
@@ -39,33 +41,46 @@ vim.opt.rtp:prepend(lazypath)
 -- Example using a list of specs with the default options
 require("lazy").setup({
   {
+    "folke/noice.nvim",
+    event = "VeryLazy",
+    dependencies = {
+      -- if you lazy-load any plugin below, make sure to add proper `module="..."` entries
+      "MunifTanjim/nui.nvim",
+      -- OPTIONAL:
+      --   `nvim-notify` is only needed, if you want to use the notification view.
+      --   If not available, we use `mini` as the fallback
+      "rcarriga/nvim-notify",
+    },
+    config = function(self, opts)
+      require("plugin-config.noice")
+    end,
+  },
+  {
     "simrat39/symbols-outline.nvim",
     config = function(opts, self)
       require("plugin-config.symbols-outline")
     end,
     ft = language,
   },
-  --[[ {
-    "dstein64/nvim-scrollview"
-  }, ]]
+  {
+    "folke/flash.nvim",
+    event = "VeryLazy",
+    opts = {},
+    config = function(self, opts)
+      require("plugin-config.flash")
+    end,
+  },
   -- autopairs
   {
     "windwp/nvim-autopairs",
+    dependencies = {
+      "hrsh7th/nvim-cmp",
+    },
     config = function()
       require("plugin-config.autopairs")
     end,
     ft = language,
   },
-  --markdonw preview
-  --[[ {
-    "edluffy/hologram.nvim",
-    config = function(self, opts)
-      require("hologram").setup({
-        auto_display = true, -- WIP automatic markdown image display, may be prone to breaking
-      })
-    end,
-    ft = { "markdown" },
-  }, ]]
   {
     "iamcco/markdown-preview.nvim",
     config = function()
@@ -91,6 +106,7 @@ require("lazy").setup({
     config = function()
       require("colorscheme")
     end,
+    event = { "UIEnter" },
   },
   {
     "nvim-neo-tree/neo-tree.nvim",
@@ -98,13 +114,12 @@ require("lazy").setup({
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-tree/nvim-web-devicons",
-      --"nvim-tree/nvim-web-devicons", -- not strictly required, but recommended
       "MunifTanjim/nui.nvim",
     },
     config = function(self, opts)
       require("plugin-config.neotree")
     end,
-    event = "VeryLazy",
+    event = { "VeryLazy" },
   },
   -- 文件树拓展 project
   {
@@ -114,36 +129,28 @@ require("lazy").setup({
     end,
     event = "VeryLazy",
   },
-  -- language ts
-  {
-    "jose-elias-alvarez/typescript.nvim",
-    config = function() end,
-    ft = { "js", "ts" },
-  }, -- additional functionality for typescript server (e.g. rename file & update imports)
   -- 加载
-  --  use ('j-hui/fidget.nvim')
   -- -- lualine
   {
     "nvim-lualine/lualine.nvim",
     dependencies = {
       "nvim-tree/nvim-web-devicons",
+      "folke/tokyonight.nvim",
     },
     config = function()
       require("plugin-config.lualine")
     end,
+    event = "VeryLazy",
   },
   {
     "romgrk/barbar.nvim",
-    event = "VimEnter",
+    event = { "VeryLazy" },
     dependencies = {
       "lewis6991/gitsigns.nvim", -- OPTIONAL: for git status
       --"nvim-tree/nvim-web-devicons", -- OPTIONAL: for file icons
       -- 页面关闭
       "moll/vim-bbye",
     },
-    init = function()
-      vim.g.barbar_auto_setup = false
-    end,
     config = function(self, opts)
       vim.g.barbar_auto_setup = false
       require("plugin-config.barbar")
@@ -157,6 +164,8 @@ require("lazy").setup({
     dependencies = {
       "nvim-lua/plenary.nvim",
       "nvim-telescope/telescope-ui-select.nvim",
+      --"nvim-telescope/telescope-project.nvim",
+      --"nvim-telescope/telescope-file-browser.nvim",
     },
     config = function()
       require("plugin-config.telescope")
@@ -170,10 +179,11 @@ require("lazy").setup({
     config = function(self, opts)
       require("plugin-config.nvim-web-devicions")
     end,
+    event = "VeryLazy",
   },
   {
     "glepnir/dashboard-nvim",
-    event = "VimEnter",
+    event = "UIEnter",
     config = function()
       require("plugin-config.dashboard")
     end,
@@ -188,30 +198,37 @@ require("lazy").setup({
       "williamboman/mason-lspconfig.nvim",
       "williamboman/mason.nvim",
       "onsails/lspkind.nvim",
-      {
-        "lvimuser/lsp-inlayhints.nvim",
-        init = function(self)
-          require("lsp.inlayghints")
-          vim.api.nvim_create_autocmd("LspAttach", {
-            group = vim.api.nvim_create_augroup("LspAttach_inlayhints", {}),
-            callback = function(args)
-              if not (args.data and args.data.client_id) then
-                return
-              end
-              local client = vim.lsp.get_client_by_id(args.data.client_id)
-              require("lsp-inlayhints").on_attach(client, args.buf)
-            end,
-          })
-        end,
-        ft = language,
-      },
+      "jose-elias-alvarez/typescript.nvim",
     },
     config = function()
       require("lsp.mason")
       require("lsp.lsp")
     end,
     ft = language,
+    event = { "VeryLazy" },
   },
+  {
+    "lvimuser/lsp-inlayhints.nvim",
+    config = function(self)
+      require("lsp.inlayghints")
+      vim.api.nvim_create_autocmd("LspAttach", {
+        group = vim.api.nvim_create_augroup("LspAttach_inlayhints", {}),
+        callback = function(args)
+          if not (args.data and args.data.client_id) then
+            return
+          end
+          local client = vim.lsp.get_client_by_id(args.data.client_id)
+          require("lsp-inlayhints").on_attach(client, args.buf)
+        end,
+      })
+    end,
+    ft = language,
+  },
+  {
+    "SeniorMars/typst.nvim",
+    event = "VeryLazy",
+  },
+
   {
     "folke/neodev.nvim",
     config = function(self, opts)
@@ -222,6 +239,18 @@ require("lazy").setup({
     ft = {
       "lua",
     },
+  },
+  {
+    "someone-stole-my-name/yaml-companion.nvim",
+    dependencies = {
+      "neovim/nvim-lspconfig",
+      "nvim-lua/plenary.nvim",
+      "nvim-telescope/telescope.nvim",
+    },
+    config = function()
+      require("telescope").load_extension("yaml_schema")
+    end,
+    event = "VeryLazy",
   },
   {
     "onsails/lspkind.nvim",
@@ -238,6 +267,12 @@ require("lazy").setup({
       require("language.json")
     end,
     ft = "json",
+  },
+  --- flutter
+  {
+    "akinsho/flutter-tools.nvim",
+    event = "LspAttach",
+    config = function(self, opts) end,
   },
   {
     "glepnir/lspsaga.nvim",
@@ -269,10 +304,6 @@ require("lazy").setup({
   },
   -- language ts
   {
-    "jose-elias-alvarez/typescript.nvim",
-    ft = { "js", "ts" },
-  }, -- additional functionality for typescript server (e.g. rename file & update imports)
-  {
     "windwp/nvim-ts-autotag",
     config = function(self, opts)
       require("nvim-ts-autotag").setup()
@@ -284,6 +315,7 @@ require("lazy").setup({
     config = function(self, opts)
       require("colorizer").setup()
     end,
+    event = "BufReadPre",
   },
 
   -- dap
@@ -293,6 +325,11 @@ require("lazy").setup({
       "jay-babu/mason-nvim-dap.nvim",
       "rcarriga/nvim-dap-ui",
       "theHamsta/nvim-dap-virtual-text",
+      "mxsdev/nvim-dap-vscode-js",
+      {
+        "microsoft/vscode-js-debug",
+        build = "npm install --legacy-peer-deps && npx gulp vsDebugServerBundle && mv dist out",
+      },
     },
     config = function()
       require("dap.dap")
@@ -300,7 +337,17 @@ require("lazy").setup({
       require("dap.dap-ui")
       require("dap.dap-keymap")
     end,
-    ft = { "rust", "go", "python", "shell" },
+    ft = {
+      "rust",
+      "go",
+      "python",
+      "shell",
+      "dart",
+      "typescript",
+      "typescriptreact",
+      "javascript",
+      "javascriptreact",
+    },
   },
   --- cmp
   -- 常见编程语言代码段
@@ -330,7 +377,6 @@ require("lazy").setup({
       "hrsh7th/cmp-buffer",
       "hrsh7th/cmp-path",
       "L3MON4D3/LuaSnip",
-      "hrsh7th/cmp-nvim-lsp-signature-help",
     },
     event = "VeryLazy",
     config = function()
@@ -385,16 +431,6 @@ require("lazy").setup({
     end,
     ft = language,
   },
-  --[[ {
-    "neoclide/coc.nvim",
-    build = "yarn install --frozen-lockfile",
-    config = function (self, opts)
-      require("coc.coc_tab")
-      require("coc.coc_flush")
-      require("coc.coc-basic")
-      require("coc.coc-need")
-    end
-  }, ]]
   -- treesitter configuration
   {
     "nvim-treesitter/nvim-treesitter",
@@ -432,8 +468,7 @@ require("lazy").setup({
   },
   {
     "jbyuki/venn.nvim",
-    --ft = "markdonw",
-    config = function(self, opts) end,
+    ft = "markdown",
   },
   {
     "yaocccc/nvim-hl-mdcodeblock.lua",
@@ -442,12 +477,42 @@ require("lazy").setup({
         -- option
       })
     end,
-    ft = { "markdonw" },
+    ft = { "markdown" },
   },
   -- 线
   {
     "yaocccc/nvim-hlchunk",
     config = function() end,
+    ft = language,
+  },
+  {
+    "lukas-reineke/indent-blankline.nvim",
+    config = function(self, opts)
+      vim.g.indent_blankline_filetype_exclude = {
+        "lspinfo",
+        "packer",
+        "checkhealth",
+        "help",
+        "man",
+        "dashboard",
+        "",
+      }
+
+      vim.g.indentLine_fileTypeExclude = {
+        "lspinfo",
+        "packer",
+        "checkhealth",
+        "help",
+        "man",
+        "dashboard",
+        "",
+      }
+      require("indent_blankline").setup({
+        -- for example, context is off by default, use this to turn it on
+        show_current_context = true,
+        show_current_context_start = true,
+      })
+    end,
     ft = language,
   },
 })

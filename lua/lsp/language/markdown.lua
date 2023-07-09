@@ -1,8 +1,22 @@
 local M = {}
-function M.markdown_todo()
-  print("hell")
-  local line = vim.api.nvim_get_current_line()
 
+function M.markdown_head()
+  local line = vim.api.nvim_get_current_line()
+  local prefix = string.sub(line, 1, 1)
+  local new = ""
+  if prefix == "#" then
+    new = "#"
+  else
+    new = "# "
+  end
+  vim.api.nvim_set_current_line(new .. line)
+  local currentPos = vim.api.nvim_win_get_cursor(0)
+  local newPos = { currentPos[1], currentPos[2] + 1 }
+  vim.api.nvim_win_set_cursor(0, newPos)
+end
+
+function M.markdown_todo()
+  local line = vim.api.nvim_get_current_line()
   local prefix = string.sub(line, 1, 5)
 
   if prefix == "- [x]" or prefix == "- [ ]" then
@@ -34,9 +48,12 @@ function M.setup(lspconfig, capabilities, on_attach)
         -- 复用 opt 参数
         local opt = { silent = true, buffer = bufnr, noremap = true }
         --local opt = { noremap = true, silent = true, buffer = v2 }
---        print("set cl ")
+        --        print("set cl ")
         --vim.api.nvim_set_keymap("i", "<C-l>", M.markdown_todo, opt)
-        keymap.set("i", "<c-j>", M.markdown_todo, opt)
+        keymap.set("i", "<c-l>", M.markdown_todo, opt)
+        keymap.set("i", "<c-h>", M.markdown_head, opt)
+
+        keymap.set("n", "<leader>m", ":MarkdownPreview<CR>", opt)
 
         local venn_enabled = vim.inspect(vim.b.venn_enabled)
         if venn_enabled == "nil" then

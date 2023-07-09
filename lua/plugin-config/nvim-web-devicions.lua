@@ -34,6 +34,9 @@ require("nvim-web-devicons").setup({
     ['docker-compose.yaml'] = {
       icon = "",
     },
+    svg = {
+      icon = ""
+    }
   },
 
 })

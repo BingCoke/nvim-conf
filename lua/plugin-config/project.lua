@@ -8,11 +8,11 @@ end
 vim.g.nvim_tree_respect_buf_cwd = 1
 
 project.setup({
-  silent_chdir = true,
   detection_methods = { "pattern", "lsp" },
   patterns = { ".git", "_darcs", ".hg", ".bzr", ".svn", "Makefile", "package.json", ".sln", ".idea" },
   show_hidden = true,
   exclude_dirs = { "~/.cargo/*" },
+  scope_chdir = 'tab'
 })
 
 local status, telescope = pcall(require, "telescope")

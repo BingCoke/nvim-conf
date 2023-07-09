@@ -37,7 +37,7 @@ function M.setup(lspconfig, capabilities, on_attach)
 
   }
   }) ]]
-  lspconfig["pyright"].setup({
+  --[[ lspconfig["pyright"].setup({
     capabilities = py_cap,
     on_attach = on_attach,
     root_dir = util.root_pattern(unpack(root_files)),
@@ -51,6 +51,10 @@ function M.setup(lspconfig, capabilities, on_attach)
         },
       },
     },
+  }) ]]
+  lspconfig.pylsp.setup({
+    capabilities = py_cap,
+    on_attach = on_attach,
   })
 end
 

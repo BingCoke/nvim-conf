@@ -14,8 +14,8 @@ require("lspsaga").setup({
     },
   },
   scroll_preview = {
-    scroll_down = "<C-d>",
-    scroll_up = "<C-u>",
+    scroll_down = "<C-b>",
+    scroll_up = "<C-f>",
   },
   lightbulb = {
     enable = false,

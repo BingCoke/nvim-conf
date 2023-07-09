@@ -35,7 +35,6 @@ local dap = require("dap")
 local debug_open = function()
   dapui.open()
   vim.api.nvim_command("DapVirtualTextEnable")
-  vim.api.nvim_command("NvimTreeClose")
 end
 local debug_close = function()
   dap.repl.close()

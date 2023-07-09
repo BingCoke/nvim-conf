@@ -13,6 +13,6 @@ vim.g.hlchunk_files = "*.ts,*.js,*.json,*.go,*.c,*.cpp,*.rs,*.h,*.hpp,*.lua,*.py
 
 --illuminatedCurWord xxx guibg=#3b4261
 
-
 --require("language.utils").setup()
 --vim
+-- gruvbox

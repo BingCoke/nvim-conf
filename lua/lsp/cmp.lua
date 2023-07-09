@@ -98,8 +98,8 @@ cmp.setup({
   preselect = cmp.PreselectMode.None,
   -- sources for autocompletion
   sources = cmp.config.sources({
-    { name = "nvim_lsp" },
     { name = "luasnip" },
+    { name = "nvim_lsp" },
     { name = "buffer" }, -- text within current buffer
     { name = "path" }, -- file system paths
   }),
@@ -113,11 +113,6 @@ cmp.setup({
       nvim_lsp = 0,
       luasnip = 1,
     },
-    --[[ format = lspkind.cmp_format({
-      mode = "symbol",
-      maxwidth = 30,      -- prevent the popup from showing more than provided characters (e.g 50 will not show more than 50 characters)
-      ellipsis_char = "...", -- when popup menu exceed maxwidth, the truncated part would show ellipsis_char instead (must define maxwidth first)
-    }), ]]
   },
   window = {
     -- 弹窗设置出来一个边框
@@ -128,6 +123,8 @@ cmp.setup({
       winhighlight = "Normal:CmpDoc",
       max_width = 20,
     },
+  },
+  sorting = {
   },
 })
 
@@ -149,52 +146,14 @@ cmp.setup.cmdline(":", {
   }),
 })
 
--- auto pair
-local cmp_autopairs = require("nvim-autopairs.completion.cmp")
-local handlers = require("nvim-autopairs.completion.handlers")
-local ts_utils = require("nvim-treesitter.ts_utils")
-
-local ts_node_func_parens_disabled = {
-  -- ecma
-  named_imports = true,
-  -- rust
-  use_declaration = true,
-}
-
---local default_handler = cmp_autopairs.filetypes["*"]["("].handler
---[[ cmp_autopairs.filetypes["*"]["("].handler = function(char, item, bufnr, rules, commit_character)
-  local node_type = ts_utils.get_node_at_cursor():type()
-  if ts_node_func_parens_disabled[node_type] then
-    if item.data then
-      item.data.funcParensDisabled = true
-    else
-      char = ""
-    end
-  end
-  print(vim.inspect({ char, item, bufnr, rules, commit_character }))
-  default_handler(char, item, bufnr, rules, commit_character)
-end ]]
-
-cmp.event:on(
-  "confirm_done",
-  cmp_autopairs.on_confirm_done({
-    filetypes = {
-      sh = false,
-      css = false,
-      html = false,
-      rust = false,
-      ["*"] = {
-        ["("] = {
-          kind = {
-            cmp.lsp.CompletionItemKind.Function,
-            cmp.lsp.CompletionItemKind.Method,
-          },
-          handler = handlers["*"],
-        },
-      },
-    },
-  })
-)
+cmp.setup.filetype("javascript", {
+  sources = cmp.config.sources({
+    { name = "nvim_lsp" },
+    { name = "luasnip" },
+    { name = "buffer" }, -- text within current buffer
+    { name = "path" }, -- file system paths
+  }),
+})
 
 local api = vim.api
 local function generate_highlight()

@@ -16,12 +16,11 @@ local m = extras.m
 local l = extras.l
 local postfix = require("luasnip.extras.postfix").postfix
 
+
 return {
   postfix(".lpr", {
     f(function(_, parent)
-      return 'print('
-          .. parent.snippet.env.POSTFIX_MATCH
-          .. ")"
+      return "print(" .. parent.snippet.env.POSTFIX_MATCH .. ")"
     end, {}),
   }),
   postfix(".br", {
@@ -33,4 +32,3 @@ return {
     l("[" .. l.POSTFIX_MATCH .. "]"),
   }),
 }
-

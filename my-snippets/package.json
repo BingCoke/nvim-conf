@@ -20,6 +20,10 @@
       {
         "language": "python",
         "path": "./py.json"
+      },
+      {
+        "language": "css",
+        "path": "./css.json"
       }
     ]
   }

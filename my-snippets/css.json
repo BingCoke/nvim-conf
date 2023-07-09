@@ -1,0 +1,14 @@
+{
+  "background-color": {
+    "prefix": "bac",
+    "body": "background-color: ${0:0};"
+  },
+  "background-img": {
+    "prefix": "baci",
+    "body": "background-image: ${0:0};"
+  },
+  "clear": {
+    "prefix": "*",
+    "body": "* {\n\r  margin: 0;\n\r  padding: 0;${1}\n}\n${0}"
+  }
+}

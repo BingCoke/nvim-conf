@@ -8,29 +8,18 @@ map("n", "<c-l>", "<Cmd>BufferNext<CR>", opts)
 map("n", "<A-i>", "<Cmd>BufferMovePrevious<CR>", opts)
 map("n", "<A-o>", "<Cmd>BufferMoveNext<CR>", opts)
 -- Goto buffer in position...
-map("n", "<A-1>", "<Cmd>BufferGoto 1<CR>", opts)
-map("n", "<A-2>", "<Cmd>BufferGoto 2<CR>", opts)
-map("n", "<A-3>", "<Cmd>BufferGoto 3<CR>", opts)
-map("n", "<A-4>", "<Cmd>BufferGoto 4<CR>", opts)
-map("n", "<A-5>", "<Cmd>BufferGoto 5<CR>", opts)
-map("n", "<A-6>", "<Cmd>BufferGoto 6<CR>", opts)
-map("n", "<A-7>", "<Cmd>BufferGoto 7<CR>", opts)
-map("n", "<A-8>", "<Cmd>BufferGoto 8<CR>", opts)
-map("n", "<A-9>", "<Cmd>BufferGoto 9<CR>", opts)
-map("n", "<A-0>", "<Cmd>BufferLast<CR>", opts)
+map("n", "<leader>1", "<Cmd>BufferGoto 1<CR>", opts)
+map("n", "<leader>2", "<Cmd>BufferGoto 2<CR>", opts)
+map("n", "<leader>3", "<Cmd>BufferGoto 3<CR>", opts)
+map("n", "<leader>4", "<Cmd>BufferGoto 4<CR>", opts)
+map("n", "<leader>5", "<Cmd>BufferGoto 5<CR>", opts)
+map("n", "<leader>6", "<Cmd>BufferGoto 6<CR>", opts)
+map("n", "<leader>7", "<Cmd>BufferGoto 7<CR>", opts)
+map("n", "<leader>8", "<Cmd>BufferGoto 8<CR>", opts)
+map("n", "<leader>9", "<Cmd>BufferGoto 9<CR>", opts)
+map("n", "<leader>0", "<Cmd>BufferLast<CR>", opts)
 
 
-
-map("i", "<A-1>", "<Cmd>BufferGoto 1<CR>", opts)
-map("i", "<A-2>", "<Cmd>BufferGoto 2<CR>", opts)
-map("i", "<A-3>", "<Cmd>BufferGoto 3<CR>", opts)
-map("i", "<A-4>", "<Cmd>BufferGoto 4<CR>", opts)
-map("i", "<A-5>", "<Cmd>BufferGoto 5<CR>", opts)
-map("i", "<A-6>", "<Cmd>BufferGoto 6<CR>", opts)
-map("i", "<A-7>", "<Cmd>BufferGoto 7<CR>", opts)
-map("i", "<A-8>", "<Cmd>BufferGoto 8<CR>", opts)
-map("i", "<A-9>", "<Cmd>BufferGoto 9<CR>", opts)
-map("i", "<A-0>", "<Cmd>BufferLast<CR>", opts)
 -- Pin/unpin buffer
 --map('n', '<A-p>', '<Cmd>BufferPin<CR>', opts)
 -- Close buffer
@@ -53,7 +42,7 @@ map("n", "<Space>bl", "<Cmd>BufferOrderByLanguage<CR>", opts)
 require("barbar").setup({
   separator = { left = "", right = "" },
   -- Enable/disable auto-hiding the tab bar when there is a single buffer
-  auto_hide = true,
+  auto_hide = false,
   exclude_ft = {},
   exclude_name = {},
   -- A buffer to this direction will be focused (if it exists) when closing the current buffer.

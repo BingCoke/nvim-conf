@@ -7,15 +7,30 @@ end
 treesitter.setup({
   -- 安装 language parser
   -- :TSInstallInfo 命令查看支持的语言
-  ensure_installed = { "rust", "json", "html", "css", "vim", "lua", "javascript", "typescript", "vue", "tsx", "java",
-    "yaml", "go" ,"markdown", "markdown_inline"},
+  ensure_installed = {
+    "rust",
+    "json",
+    "html",
+    "css",
+    "vim",
+    "lua",
+    "javascript",
+    "typescript",
+    "vue",
+    "tsx",
+    "java",
+    "yaml",
+    "go",
+    "markdown",
+    "markdown_inline",
+  },
   -- 启用代码高亮模块
   highlight = {
     enable = true,
     additional_vim_regex_highlighting = false,
     disable = function(_, bufnr)
       return vim.api.nvim_buf_line_count(bufnr) > 5000
-    end
+    end,
   },
   rainbow = {
     enable = true,
@@ -46,8 +61,14 @@ treesitter.setup({
   indent = {
     enable = true,
   },
+  autotag = {
+    enable = true,
+    enable_rename = true,
+    enable_close = true,
+    enable_close_on_slash = true,
+  },
 })
-local ts_utils = require 'nvim-treesitter.ts_utils'
+local ts_utils = require("nvim-treesitter.ts_utils")
 -- 开启 Folding 模块
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"

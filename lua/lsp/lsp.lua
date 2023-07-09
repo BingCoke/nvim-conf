@@ -6,6 +6,8 @@ local language = {
   "rust",
   "markdown",
   "yaml",
+  "flutter",
+  "typescript",
 }
 
 -- import lspconfig plugin safely
@@ -24,8 +26,6 @@ vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.s
 
 vim.cmd("hi LspSignatureActiveParameter guibg=#3b4261")
 
--- import typescript plugin safely
-
 local keymap = vim.keymap -- for conciseness
 
 -- enable keybinds only for when lsp server available
@@ -39,8 +39,7 @@ local on_attach = function(client, bufnr)
   keymap.set("n", "<a-n>", "<cmd>lua require('illuminate').goto_next_reference(true)<CR>", opts)
 
   -- set keybinds
-  keymap.set("n", "gr", "<cmd>Lspsaga lsp_finder<CR>", opts) -- show definition, references
-  keymap.set("n", "gp", "<cmd>Lspsaga peek_definition<CR>", opts)
+  keymap.set("n", "gr", "<cmd>Lspsaga lsp_finder<CR>", opts)     -- show definition, references
   --keymap.set("n", "gd", "<Cmd>lua vim.lsp.buf.definition()<CR>", opts) -- got to declaration
   keymap.set("n", "gD", "<cmd>Lspsaga peek_definition<CR>", opts) -- see definition and make edits in window
   keymap.set("n", "gd", "<cmd>Lspsaga goto_definition<CR>")
@@ -66,11 +65,23 @@ local on_attach = function(client, bufnr)
     require("lspsaga.diagnostic"):goto_next({ severity = vim.diagnostic.severity.ERROR })
   end)
 
-  keymap.set("n", "K", "<cmd>Lspsaga hover_doc<CR>", opts)      -- show documentation for what is under cursor
+  vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
   keymap.set("n", "<A-a>", "<cmd>Lspsaga hover_doc<CR>", opts)  -- show documentation for what is under cursor
   keymap.set("n", "<leader>o", "<cmd>LSoutlineToggle<CR>", opts) -- see outline on right hand side
 
   keymap.set("n", "<leader>f", ":lua vim.lsp.buf.format()<CR>", opts)
+
+  vim.keymap.set({ "i" }, "<c-d>", function()
+    if not require("noice.lsp").scroll(4) then
+      return "<c-d>"
+    end
+  end, opts)
+
+  vim.keymap.set({ "i" }, "<c-u>", function()
+    if not require("noice.lsp").scroll(-4) then
+      return "<c-u>"
+    end
+  end, opts)
 
   -- typescript specific keymaps (e.g. rename file and update imports)
   if client.name == "tsserver" then
@@ -126,8 +137,10 @@ lspconfig["awk_ls"].setup({
 lspconfig["html"].setup({
   capabilities = default_capabilities,
   on_attach = function(client, bufnr)
-    client.resolved_capabilities.document_formatting = false
-    client.resolved_capabilities.document_range_formatting = false
+    if client ~= nil then
+      client.resolved_capabilities.document_formatting = false
+      client.resolved_capabilities.document_range_formatting = false
+    end
     on_attach(client, bufnr)
   end,
   init_options = {
@@ -144,37 +157,14 @@ lspconfig["html"].setup({
   },
 })
 
-lspconfig["cssls"].setup({
+lspconfig.tailwindcss.setup({
   capabilities = default_capabilities,
   on_attach = on_attach,
 })
--- configure emmet language server
-lspconfig["emmet_ls"].setup({
+
+lspconfig["cssls"].setup({
   capabilities = default_capabilities,
   on_attach = on_attach,
-  filetypes = {
-    "css",
-    "eruby",
-    "html",
-    "javascript",
-    "javascriptreact",
-    "less",
-    "sass",
-    "scss",
-    "svelte",
-    "pug",
-    "typescriptreact",
-    "vue",
-  },
-  init_options = {
-    html = {
-      options = {
-        -- For possible options, see: https://github.com/emmetio/emmet/blob/master/src/config.ts#L79-L267
-        --["bem.enabled"] = false,
-        --["comment.enabled"] = false
-      },
-    },
-  },
 })
 
 lspconfig["lemminx"].setup({
@@ -208,11 +198,16 @@ lspconfig["dartls"].setup({
   on_attach = on_attach,
 })
 
+lspconfig.typst_lsp.setup({
+  capabilities = capabilities,
+  on_attach = on_attach,
+})
+
 M.on_attach = on_attach
 M.capabilities = capabilities
 M.default_capabilities = default_capabilities
 
-vim.cmd("command! -nargs=0 OpenInGoogle !google-chrome-stable % &;")
+vim.cmd("command! -nargs=0 OpenInGoogle !google-chrome-stable  --new-window % &;")
 vim.cmd("command! -nargs=0 OpenThunar !thunar % &;")
 
 return M

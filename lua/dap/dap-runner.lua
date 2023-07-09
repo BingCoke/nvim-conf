@@ -27,6 +27,9 @@ local dap_rs = require("dap.dap-rs")
 dap_rs.setup()
 M.config.rust = dap_rs
 
+local dap_ts = require("dap.dap-ts")
+dap_ts.setup()
 
+M.config.ts = dap_ts
 
 return M
