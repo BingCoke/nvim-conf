@@ -9,7 +9,6 @@ local c = ls.choice_node
 local d = ls.dynamic_node
 local r = ls.restore_node
 local events = require("luasnip.util.events")
-require("nihao")
 local ai = require("luasnip.nodes.absolute_indexer")
 local extras = require("luasnip.extras")
 local fmt = extras.fmt

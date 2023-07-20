@@ -19,15 +19,7 @@ local postfix = require("luasnip.extras.postfix").postfix
 return {
   postfix(".lpr", {
     f(function(_, parent)
-      return "print(" .. parent.snippet.env.POSTFIX_MATCH .. ")"
+      return "console.log(" .. parent.snippet.env.POSTFIX_MATCH .. ")"
     end, {}),
-  }),
-  postfix(".br", {
-    f(function(_, parent)
-      return "[" .. parent.snippet.env.POSTFIX_MATCH .. "]"
-    end, {}),
-  }),
-  postfix(".brl", {
-    l("[" .. l.POSTFIX_MATCH .. "]"),
   }),
 }

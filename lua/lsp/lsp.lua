@@ -15,6 +15,9 @@ local lspconfig_status, lspconfig = pcall(require, "lspconfig")
 if not lspconfig_status then
   return
 end
+vim.diagnostic.config({
+  update_in_insert = false,
+})
 
 -- config lsp signature
 vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
@@ -39,17 +42,17 @@ local on_attach = function(client, bufnr)
   keymap.set("n", "<a-n>", "<cmd>lua require('illuminate').goto_next_reference(true)<CR>", opts)
 
   -- set keybinds
-  keymap.set("n", "gr", "<cmd>Lspsaga lsp_finder<CR>", opts)     -- show definition, references
+  keymap.set("n", "gr", "<CMD>Lspsaga finder ref<CR>", opts) -- show definition, references
   --keymap.set("n", "gd", "<Cmd>lua vim.lsp.buf.definition()<CR>", opts) -- got to declaration
-  keymap.set("n", "gD", "<cmd>Lspsaga peek_definition<CR>", opts) -- see definition and make edits in window
-  keymap.set("n", "gd", "<cmd>Lspsaga goto_definition<CR>")
+  keymap.set("n", "gD", "<CMD>Glance definitions<CR>", opts)
+  keymap.set("n", "gd", "<cmd>Lspsaga goto_definition<CR>", opts)
   -- Go to type definition
-  keymap.set("n", "gy", "<cmd>Lspsaga goto_type_definition<CR>")
-  keymap.set("n", "gt", "<cmd>Lspsaga peek_type_definition<CR>")
-  keymap.set("n", "gi", "<cmd>lua vim.lsp.buf.implementation()()<CR>", opts)    -- go to implementation
+  keymap.set("n", "gt", "<CMD>Glance type_definitions<CR>", opts)
+  keymap.set("n", "gy", "<CMD>:Lspsaga goto_type_definition<CR>", opts)
+
+  keymap.set("n", "gi", "<CMD>Lspsaga finder imp<CR>", opts)
 
   keymap.set("n", "<leader>s", "<cmd>Lspsaga code_action<CR>", opts)            -- see available code actions
-  --keymap.set("n", "gi", "<cmd>lua vim.lsp.buf.code_action()<CR>", opts)           -- see available code actions
   keymap.set("n", "<leader>rn", "<cmd>Lspsaga rename<CR>", opts)                -- smart rename
 
   keymap.set("n", "<leader>D", "<cmd>Lspsaga show_line_diagnostics <CR>", opts) -- show  diagnostics for line

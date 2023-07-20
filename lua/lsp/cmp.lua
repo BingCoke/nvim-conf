@@ -23,6 +23,34 @@ local has_words_before = function()
   return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
 end
 
+local kind_icons = {
+  Text = "",
+  Method = "",
+  Function = "",
+  Constructor = "",
+  Field = "",
+  Variable = "",
+  Class = "ﴯ",
+  Interface = "",
+  Module = "",
+  Property = "ﰠ",
+  Unit = "",
+  Value = "",
+  Enum = "",
+  Keyword = "",
+  Snippet = "",
+  Color = "",
+  File = "",
+  Reference = "",
+  Folder = "",
+  EnumMember = "",
+  Constant = "",
+  Struct = "",
+  Event = "",
+  Operator = "",
+  TypeParameter = "",
+}
+
 local function border(hl_name)
   return {
     { "╭", hl_name },
@@ -113,6 +141,20 @@ cmp.setup({
       nvim_lsp = 0,
       luasnip = 1,
     },
+    format = function(entry, item)
+      if item.kind == "Color" then
+        item = require("cmp-tailwind-colors").format(entry, item)
+
+        if item.kind ~= "Color" then
+          item.menu = "Color"
+          return item
+        end
+      end
+
+      item.menu = item.kind
+      item.kind = kind_icons[item.kind] .. " "
+      return item
+    end,
   },
   window = {
     -- 弹窗设置出来一个边框
@@ -124,8 +166,7 @@ cmp.setup({
       max_width = 20,
     },
   },
-  sorting = {
-  },
+  sorting = {},
 })
 
 -- / 查找模式使用 buffer 源
@@ -141,7 +182,6 @@ cmp.setup.cmdline(":", {
   mapping = cmp.mapping.preset.cmdline(),
   sources = cmp.config.sources({
     { name = "path" },
-  }, {
     { name = "cmdline" },
   }),
 })
@@ -150,6 +190,15 @@ cmp.setup.filetype("javascript", {
   sources = cmp.config.sources({
     { name = "nvim_lsp" },
     { name = "luasnip" },
+    { name = "buffer" }, -- text within current buffer
+    { name = "path" }, -- file system paths
+  }),
+})
+cmp.setup.filetype("css", {
+  sources = cmp.config.sources({
+    { name = "nvim_lsp" },
+    { name = "luasnip" },
+    { name = "cmp-tw2css" },
     { name = "buffer" }, -- text within current buffer
     { name = "path" }, -- file system paths
   }),

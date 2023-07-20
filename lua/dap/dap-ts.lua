@@ -5,7 +5,7 @@ local M = {}
 function M.setup()
   local dap = require("dap")
   require("dap-vscode-js").setup({
-    -- node_path = "node", -- Path of node executable. Defaults to $NODE_PATH, and then "node"
+    node_path = "node", -- Path of node executable. Defaults to $NODE_PATH, and then "node"
     -- debugger_path = "(runtimedir)/site/pack/packer/opt/vscode-js-debug", -- Path to vscode-js-debug installation.
     -- debugger_cmd = { "js-debug-adapter" }, -- Command to use to launch the debug server. Takes precedence over `node_path` and `debugger_path`.
     -- debugger_path = vim.fn.stdpath("data") .. "/lazy/vscode-js-debug",
@@ -34,6 +34,20 @@ function M.setup()
         name = "Launch Chrome",
         request = "launch",
         url = "http://localhost:3000",
+      },
+      {
+        type = "pwa-node",
+        request = "launch",
+        name = "Launch node",
+        program = "${file}",
+        cwd = "${workspaceFolder}",
+      },
+      {
+        type = "pwa-node",
+        request = "attach",
+        name = "node Attach",
+        processId = require("dap.utils").pick_process,
+        cwd = "${workspaceFolder}",
       },
     }
   end

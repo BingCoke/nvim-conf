@@ -10,8 +10,8 @@ lspconfig["jsonls"].setup({
   settings = {
     json = {
       -- for get more schemas https://www.schemastore.org/json/
-      schemas = require("schemastore").yaml.schemas(),
-      --[[ schemas = {
+      --schemas = require("schemastore").yaml.schemas(),
+      schemas = {
         {
           fileMatch = { "package.json" },
           url = "https://json.schemastore.org/package.json",
@@ -20,7 +20,7 @@ lspconfig["jsonls"].setup({
           fileMatch = { "tsconfig.json", "tsconfig.*.json" },
           url = "http://json.schemastore.org/tsconfig",
         },
-      }, ]]
+      },
     },
   },
 })

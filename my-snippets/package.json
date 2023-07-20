@@ -24,7 +24,16 @@
       {
         "language": "css",
         "path": "./css.json"
+      },
+      {
+        "language": ["javascriptreact","typescriptreact"],
+        "path": "./react.json"
+      },
+      {
+        "language": ["javascript","typescript"],
+        "path": "./ts.json"
       }
+
     ]
   }
 }

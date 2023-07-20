@@ -31,11 +31,86 @@ require("noice").setup({
     bottom_search = true,       -- use a classic bottom cmdline for search
     command_palette = true,     -- position the cmdline and popupmenu together
     long_message_to_split = true, -- long messages will be sent to a split
-    inc_rename = true,         -- enables an input dialog for inc-rename.nvim
-    lsp_doc_border = true,     -- add a border to hover docs and signature help
+    inc_rename = true,          -- enables an input dialog for inc-rename.nvim
+    lsp_doc_border = true,      -- add a border to hover docs and signature help
   },
   cmdline = {
     view = "cmdline",
+  },
+  routes = {
+    {
+      filter = {
+        event = "msg_show",
+        kind = "",
+        find = "written",
+      },
+      opts = { skip = true },
+    },
+    {
+      filter = {
+        event = "msg_show",
+        kind = "",
+        find = "ago",
+      },
+      opts = { skip = true },
+    },
+    --Already at newest change
+    {
+      filter = {
+        event = "msg_show",
+        kind = "",
+        find = "change",
+      },
+      opts = { skip = true },
+    },
+    {
+      filter = {
+        event = "msg_show",
+        kind = "",
+        find = "fewer",
+      },
+      opts = { skip = true },
+    },
+    {
+      filter = {
+        event = "msg_show",
+        kind = "",
+        find = "more",
+      },
+      opts = { skip = true },
+    },
+    {
+      filter = {
+        event = "msg_show",
+        kind = "",
+        find = "--No lines",
+      },
+      opts = { skip = true },
+    },
+    -- Neo-tree
+    {
+      filter = {
+        event = "notify",
+        kind = "info",
+        find = "[Neo-tree]",
+      },
+      opts = { skip = true },
+    },
+    {
+      filter = {
+        event = "lsp",
+        kind = "progess",
+        any = {
+
+          cond = function(message)
+            print(message)
+            local client = vim.tbl_get(message.opts, "progess", "client")
+            return client == "null-ls" or client == "dartls"
+          end,
+        },
+      },
+      opts = { skip = true },
+    },
   },
 })
 local keymap = vim.keymap

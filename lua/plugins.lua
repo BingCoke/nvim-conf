@@ -15,15 +15,17 @@ local language = {
   "yaml",
   "yml",
   "json",
+  "jsonc",
   "lua",
-  "typescript",
-  "typescriptreact",
   "xml",
   "sh",
   "toml",
   "typst",
   "sql",
-  "jsonc",
+  "typescript",
+  "typescriptreact",
+  "javascript",
+  "javascriptreact",
 }
 
 if not vim.loop.fs_stat(lazypath) then
@@ -127,7 +129,7 @@ require("lazy").setup({
     config = function()
       require("plugin-config.project")
     end,
-    event = "VeryLazy",
+    lazy = true,
   },
   -- 加载
   -- -- lualine
@@ -225,8 +227,9 @@ require("lazy").setup({
     ft = language,
   },
   {
-    "SeniorMars/typst.nvim",
-    event = "VeryLazy",
+    "kaarmu/typst.vim",
+    ft = "typst",
+    lazy = false,
   },
 
   {
@@ -266,7 +269,7 @@ require("lazy").setup({
       -- code
       require("language.json")
     end,
-    ft = "json",
+    ft = language,
   },
   --- flutter
   {
@@ -275,21 +278,19 @@ require("lazy").setup({
     config = function(self, opts) end,
   },
   {
-    "glepnir/lspsaga.nvim",
+    "nvimdev/lspsaga.nvim",
     branch = "main",
     config = function()
       require("lsp.saga")
     end,
     ft = language,
   }, -- enhanced lsp uis
-  -- lsp_signature
   {
-    "ray-x/lsp_signature.nvim",
-    config = function()
-      require("lsp.lsp_signature")
+    "DNLHC/glance.nvim",
+    config = function(self, opts)
+      require("plugin-config.glance")
     end,
     ft = language,
-    enabled = false,
   },
 
   -- language go
@@ -311,9 +312,9 @@ require("lazy").setup({
     ft = language,
   },
   {
-    "norcalli/nvim-colorizer.lua",
+    "NvChad/nvim-colorizer.lua",
     config = function(self, opts)
-      require("colorizer").setup()
+      require("plugin-config.color")
     end,
     event = "BufReadPre",
   },
@@ -358,6 +359,14 @@ require("lazy").setup({
       "saadparwaiz1/cmp_luasnip",
       "honza/vim-snippets",
       "rafamadriz/friendly-snippets", -- useful snippets
+      "jcha0713/cmp-tw2css",
+      {
+        "js-everts/cmp-tailwind-colors",
+        opts = {},
+        config = function()
+          require("cmp-tailwind-colors").setup({})
+        end,
+      },
     },
     event = "BufReadPre",
     config = function(self, opts)

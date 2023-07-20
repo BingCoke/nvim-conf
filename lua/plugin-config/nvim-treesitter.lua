@@ -68,7 +68,6 @@ treesitter.setup({
     enable_close_on_slash = true,
   },
 })
-local ts_utils = require("nvim-treesitter.ts_utils")
 -- 开启 Folding 模块
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"

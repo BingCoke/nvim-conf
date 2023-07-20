@@ -1,0 +1,10 @@
+{
+  "effect": {
+    "prefix": "effect",
+    "body": [
+      "useEffect(()=>{",
+      "  ${1}",
+      "},[${2}]);"
+    ]
+  }
+}

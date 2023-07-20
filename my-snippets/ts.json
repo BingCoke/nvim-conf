@@ -1,0 +1,11 @@
+{
+  "print": {
+    "prefix": [
+      "cl"
+    ],
+    "body": [
+      "console.log($1);"
+    ],
+    "description": "打印"
+  }
+}
