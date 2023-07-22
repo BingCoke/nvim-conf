@@ -323,6 +323,7 @@ require("lazy").setup({
   {
     "mfussenegger/nvim-dap",
     dependencies = {
+      "Weissle/persistent-breakpoints.nvim",
       "jay-babu/mason-nvim-dap.nvim",
       "rcarriga/nvim-dap-ui",
       "theHamsta/nvim-dap-virtual-text",
@@ -348,6 +349,7 @@ require("lazy").setup({
       "typescriptreact",
       "javascript",
       "javascriptreact",
+      "dart",
     },
   },
   --- cmp
