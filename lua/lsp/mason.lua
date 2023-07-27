@@ -5,7 +5,6 @@ local mason = require "mason"
 local mason_lspconfig = require "mason-lspconfig"
 
 -- import mason-null-ls plugin safely
-local mason_null_ls = require "mason-null-ls"
 
 -- enable mason
 mason.setup()
@@ -23,7 +22,7 @@ mason_lspconfig.setup({
   },
 })
 
-mason_null_ls.setup({
+--[[ mason_null_ls.setup({
   -- list of formatters & linters for mason to install
   ensure_installed = {
     "prettierd", -- ts/js formatter
@@ -32,4 +31,4 @@ mason_null_ls.setup({
   },
   -- auto-install configured formatters & linters (with null-ls)
   automatic_installation = true,
-})
+}) ]]

@@ -1,21 +1,23 @@
 -- local typescript_setup, typescript = pcall(require, "typescript")
-local typescript = require("typescript")
 local M = {}
 
 function M.setup(lsp, default_capabilities, on_attach)
-  require("typescript").setup({
-    debug = false, -- enable debug logging for commands
-    server = {   -- pass options to lspconfig's setup method
-      on_attach = function(client, bufnr)
-        if client ~= nil then
-          client.resolved_capabilities.document_formatting = false
-          client.resolved_capabilities.document_range_formatting = false
-        end
-        on_attach(client, bufnr)
-      end,
-      capabilities = default_capabilities,
-    },
-  }) -- configure typescript server with plugin
+	require("typescript-tools").setup({
+		on_attach = function(cli, buf)
+			on_attach(cli, buf)
+		end,
+		capabilities = default_capabilities,
+		--handlers = { ... },
+		settings = {
+			-- spawn additional tsserver instance to calculate diagnostics on it
+			separate_diagnostic_server = true,
+			-- "change"|"insert_leave" determine when the client asks the server about diagnostic
+			publish_diagnostic_on = "insert_leave",
+			-- array of strings("fix_all"|"add_missing_imports"|"remove_unused")
+			-- specify commands exposed as code_actions
+			expose_as_code_action = {},
+		},
+	})
 end
 
 return M

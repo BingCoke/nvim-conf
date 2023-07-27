@@ -17,9 +17,9 @@ local l = extras.l
 local postfix = require("luasnip.extras.postfix").postfix
 
 return {
-  postfix(".lpr", {
-    f(function(_, parent)
-      return "console.log(" .. parent.snippet.env.POSTFIX_MATCH .. ")"
-    end, {}),
-  }),
+	postfix(".lpr", {
+		f(function(_, parent)
+			return "console.log(" .. parent.snippet.env.POSTFIX_MATCH .. ")"
+		end, {}),
+	}),
 }

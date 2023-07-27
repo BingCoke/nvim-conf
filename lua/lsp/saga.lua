@@ -37,7 +37,7 @@ require("lspsaga").setup({
   },
   diagnostic = {
     show_code_action = false,
-    --show_source = true,
+    show_source = true,
     --jump_num_shortcut = true,
     keys = {
       exec_action = "o",

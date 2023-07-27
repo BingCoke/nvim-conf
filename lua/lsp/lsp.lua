@@ -7,7 +7,7 @@ local language = {
   "markdown",
   "yaml",
   "flutter",
-  "typescript",
+  -- "typescript",
 }
 
 -- import lspconfig plugin safely
@@ -72,7 +72,7 @@ local on_attach = function(client, bufnr)
   keymap.set("n", "<A-a>", "<cmd>Lspsaga hover_doc<CR>", opts)  -- show documentation for what is under cursor
   keymap.set("n", "<leader>o", "<cmd>LSoutlineToggle<CR>", opts) -- see outline on right hand side
 
-  keymap.set("n", "<leader>f", ":lua vim.lsp.buf.format()<CR>", opts)
+  keymap.set("n", "<leader>f", "<cmd>GuardFmt<CR>", opts)
 
   vim.keymap.set({ "i" }, "<c-d>", function()
     if not require("noice.lsp").scroll(4) then
@@ -208,6 +208,7 @@ lspconfig.typst_lsp.setup({
 
 M.on_attach = on_attach
 M.capabilities = capabilities
+M.lspconfig = lspconfig
 M.default_capabilities = default_capabilities
 
 vim.cmd("command! -nargs=0 OpenInGoogle !google-chrome-stable  --new-window % &;")
