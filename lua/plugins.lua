@@ -112,7 +112,6 @@ require("lazy").setup({
 	},
 	{
 		"nvim-neo-tree/neo-tree.nvim",
-		branch = "v2.x",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"nvim-tree/nvim-web-devicons",
@@ -121,7 +120,7 @@ require("lazy").setup({
 		config = function(self, opts)
 			require("plugin-config.neotree")
 		end,
-		event = { "VeryLazy" },
+		-- event = { "VeryLazy" },
 	},
 	-- 文件树拓展 project
 	{
@@ -166,8 +165,6 @@ require("lazy").setup({
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"nvim-telescope/telescope-ui-select.nvim",
-			--"nvim-telescope/telescope-project.nvim",
-			--"nvim-telescope/telescope-file-browser.nvim",
 		},
 		config = function()
 			require("plugin-config.telescope")
@@ -228,7 +225,7 @@ require("lazy").setup({
 	{
 		"kaarmu/typst.vim",
 		ft = "typst",
-		lazy = false,
+		event = "VeryLazy",
 	},
 
 	{

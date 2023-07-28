@@ -1,6 +1,6 @@
 -- utf8
 vim.g.encoding = "UTF-8"
-vim.o.fileencoding = 'utf-8'
+vim.o.fileencoding = "utf-8"
 -- jkhl 移动时光标周围保留8行
 vim.o.scrolloff = 3
 vim.o.sidescrolloff = 3
@@ -44,7 +44,7 @@ vim.bo.autoread = true
 -- 禁止折行
 vim.wo.wrap = false
 -- 光标在行首尾时<Left><Right>可以跳到下一行
-vim.o.whichwrap = '<,>,[,]'
+vim.o.whichwrap = "<,>,[,]"
 -- 允许隐藏被修改过的buffer
 vim.o.hidden = true
 -- 鼠标支持
@@ -81,3 +81,6 @@ vim.o.showtabline = 2
 -- 使用增强状态栏插件后不再需要 vim 的模式提示
 vim.o.showmode = true
 
+-- css关闭自动注释
+vim.cmd("autocmd BufEnter *.css set formatoptions-=cro")
+vim.cmd("autocmd BufEnter *.css setlocal formatoptions-=cro")

@@ -3,7 +3,7 @@ local ft = require('Comment.ft')
 ft.set('json', {'"/**/" : \'%s\''})
 local opt = {
     ---Add a space b/w comment and the line
-    padding = true,
+    padding = false,
     ---Whether the cursor should stay at its position
     sticky = true,
     ---Lines to be ignored while (un)comment
@@ -46,6 +46,7 @@ local opt = {
 }
 comment.setup(opt)
 -- gb 是块注释 gc是行注释
+
 
 --[[ {
     ---Add a space b/w comment and the line
