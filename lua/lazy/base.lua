@@ -90,6 +90,6 @@ return {
 		config = function()
 			require("ccc").setup({})
 		end,
-		enable = false,
+		event = "VeryLazy",
 	},
 }
