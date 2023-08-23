@@ -1,7 +1,7 @@
 -- set 断点的图标
 local dap_breakpoint = {
 	error = {
-		text = "🐞",
+		text = "E",
 		texthl = "LspDiagnosticsSignError",
 		linehl = "",
 		numhl = "",

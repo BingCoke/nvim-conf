@@ -1,5 +1,15 @@
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 
+local border_chars = {
+	{ "╭" },
+	{ "─" },
+	{ "╮" },
+	{ "│" },
+	{ "╯" },
+	{ "─" },
+	{ "╰" },
+	{ "│" },
+}
 if not vim.loop.fs_stat(lazypath) then
 	vim.fn.system({
 		"git",
@@ -22,12 +32,17 @@ require("lazy").setup({
 	{ import = "lazy.code" },
 	{ import = "lazy.useful" },
 }, {
+	ui = {
+		--border = "solider",
+		border = border_chars,
+	},
 	performance = {
 		rtp = {
 			disabled_plugins = {
 				"gzip",
+				"matchit",
 				"matchparen",
-				"netrwPlugin",
+				--"netrwPlugin",
 				"tarPlugin",
 				"tohtml",
 				"tutor",

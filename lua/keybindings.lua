@@ -1,7 +1,6 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
-
 local map = vim.api.nvim_set_keymap
 -- 复用 opt 参数
 local opt = { noremap = true, silent = true }
@@ -27,7 +26,7 @@ map("n", "<A-k>", "<C-w>k", opt)
 map("n", "<A-l>", "<C-w>l", opt)
 --map("n", "gx", "<Plug>NetrwBrowseX", opt)
 
-vim.s = 12;
+vim.s = 12
 -- 左右比例控制
 map("n", "<C-Left>", ":vertical resize -2<CR>", opt)
 map("n", "<C-Right>", ":vertical resize +2<CR>", opt)
@@ -44,7 +43,7 @@ map("t", "<A-j>", [[ <C-\><C-N><C-w>j ]], opt)
 map("t", "<A-k>", [[ <C-\><C-N><C-w>k ]], opt)
 map("t", "<A-l>", [[ <C-\><C-N><C-w>l ]], opt)
 
-map("v", "<c-c>", "\"+y", opt)
+map("v", "<c-c>", '"+y', opt)
 -- visual模式下缩进代码
 map("v", "<", "<gv", opt)
 map("v", ">", ">gv", opt)
@@ -64,10 +63,10 @@ map("v", "<C-u>", "9k", opt)
 map("v", "<C-d>", "9j", opt)
 -- 设置退出并,保存
 
-map("n", "<leader>q", ":wq<CR>", opt)
-map("n", "<leader>i", ":q<CR>", opt)
-map("n", "<leader>w", ":w<CR>", {})
-map("n", "<leader>W", ":w !sudo tee %<CR>", {})
+map("n", "<leader>q", "<cmd>wq<CR>", opt)
+map("n", "<leader>i", "<cmd>q<CR>", opt)
+map("n", "<leader>w", "<cmd>w<CR>", {})
+map("n", "<leader>W", "<cmd>w !sudo tee %<CR>", {})
 
 -- 设置插件快捷键
 local pluginKeys = {}
@@ -86,11 +85,9 @@ map("n", "<leader>sw", ":Telescope buffers<CR>", opt)
 
 -- dap
 
-
 -- treesitter
 
-map("n","<c-w>","<c-w>w",opt)
-
+map("n", "<c-w>", "<c-w>w", opt)
 
 -- Telescope 列表中 插入模式快捷键
 pluginKeys.telescopeList = {
@@ -115,6 +112,6 @@ pluginKeys.telescopeList = {
 -- alt+m 键 打开关闭tree
 --map("n", "<A-m>", ":NvimTreeToggle<CR>", opt)
 
-vim.keymap.set('n', '<leader>t', ':SymbolsOutline<CR>', { noremap = true, silent = false })
+vim.keymap.set("n", "<leader>t", "<cmd>SymbolsOutline<CR>", { noremap = true, silent = false })
 
 return pluginKeys

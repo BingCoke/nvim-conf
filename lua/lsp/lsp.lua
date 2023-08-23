@@ -196,11 +196,6 @@ lspconfig["volar"].setup({
 	on_attach = on_attach,
 })
 
-lspconfig["dartls"].setup({
-	capabilities = capabilities,
-	on_attach = on_attach,
-})
-
 lspconfig.typst_lsp.setup({
 	capabilities = capabilities,
 	on_attach = on_attach,
@@ -209,6 +204,20 @@ lspconfig.volar.setup({
 	capabilities = capabilities,
 	on_attach = on_attach,
 })
+
+lspconfig.kotlin_language_server.setup({
+	capabilities = capabilities,
+	on_attach = on_attach,
+})
+
+--[[require("vintellij").setup({
+	debug = false,
+	common_capabilities = default_capabilities,
+	common_on_attach = on_attach,
+	filetypes = {
+		"kotlin",
+	},
+})]]
 
 M.on_attach = on_attach
 M.capabilities = capabilities

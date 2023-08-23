@@ -31,6 +31,7 @@ return {
 			"javascript",
 			"javascriptreact",
 			"dart",
+			"kotlin",
 		},
 	},
 }

@@ -25,6 +25,7 @@ local language = {
 	"typescriptreact",
 	"javascript",
 	"javascriptreact",
+	"kotlin",
 }
 return {
 	------- LSP -----
@@ -116,6 +117,9 @@ return {
 	--- flutter
 	{
 		"akinsho/flutter-tools.nvim",
+		requires = {
+			"stevearc/dressing.nvim", -- optional for vim.ui.select
+		},
 		event = "LspAttach",
 	},
 	{
@@ -157,7 +161,26 @@ return {
 		config = function(self, opts)
 			require("plugin-config.color")
 		end,
-		event = "BufReadPre",
+		ft = {
+			"css",
+			"scss",
+			"html",
+			"javascript",
+			"javascriptreact",
+		},
+	},
+	{
+		"dinhhuy258/vintellij",
+		branch = "lsp",
+		config = function() end,
+	},
+	{
+		"dart-lang/dart-vim-plugin",
+		ft = "dart",
+		config = function()
+			vim.g.dart_corelib_highlight = false
+			vim.g.dart_format_on_save = false
+		end,
 	},
 }
 

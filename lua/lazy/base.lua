@@ -5,7 +5,7 @@ return {
 		config = function()
 			require("colorscheme")
 		end,
-		event = { "UIEnter" },
+		lazy = true,
 	},
 	{
 		"nvim-neo-tree/neo-tree.nvim",
@@ -17,7 +17,6 @@ return {
 		config = function(self, opts)
 			require("plugin-config.neotree")
 		end,
-		event = { "VeryLazy" },
 	},
 	{
 		"ahmedkhalf/project.nvim",
@@ -39,7 +38,7 @@ return {
 	},
 	{
 		"romgrk/barbar.nvim",
-		event = { "VeryLazy" },
+		--event = { "VeryLazy" },
 		dependencies = {
 			"lewis6991/gitsigns.nvim", -- OPTIONAL: for git status
 			--"nvim-tree/nvim-web-devicons", -- OPTIONAL: for file icons
@@ -53,7 +52,7 @@ return {
 	},
 	{
 		"nvim-telescope/telescope.nvim",
-		event = "VeryLazy",
+		lazy = true,
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"nvim-telescope/telescope-ui-select.nvim",
@@ -85,5 +84,12 @@ return {
 	{
 		"h-hg/fcitx.nvim",
 		event = "BufReadPre",
+	},
+	{
+		"uga-rosa/ccc.nvim",
+		config = function()
+			require("ccc").setup({})
+		end,
+		enable = false,
 	},
 }

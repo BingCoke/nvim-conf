@@ -45,11 +45,12 @@ flash.setup({
       keys = { "f", "F", "t", "T", ";", "," },
       highlight = {
         backdrop = true,
-        label = { before = false, after = false },
+        --label = { before = false, after = false },
       },
     },
   },
 })
+
 map("n", "q", function()
   require("flash").jump()
 end, opt)

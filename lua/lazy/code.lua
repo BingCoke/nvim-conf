@@ -24,6 +24,7 @@ local language = {
 	"typescriptreact",
 	"javascript",
 	"javascriptreact",
+	"kotlin",
 }
 
 return {

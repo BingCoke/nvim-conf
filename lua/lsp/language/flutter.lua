@@ -1,7 +1,28 @@
 local M = {}
 local keymap = vim.keymap -- for conciseness
--- {
---[[ "name": "my_app",
+
+function M.setup(lspconfig, capabilities, on_attach)
+
+	require("flutter-tools").setup({
+		dev_tools = {
+			autostart = true, -- autostart devtools server if not detected
+			auto_open_browser = true, -- Automatically opens devtools in the browser
+		},
+		widget_guides = {
+			enabled = true,
+		},
+		lsp = {
+			on_attach = on_attach,
+			capabilities = capabilities,
+			color = {
+				enabled = true,
+			},
+			settings = {
+				--enableSdkFormatter = false,
+			},
+		},
+		-- {
+		--[[ "name": "my_app",
             "request": "launch",
             "type": "dart"
         },
@@ -17,25 +38,32 @@ local keymap = vim.keymap -- for conciseness
             "type": "dart",
             "flutterMode": "release"
         } ]]
-
-function M.setup(lspconfig, capabilities, on_attach)
-  require("flutter-tools").setup({
-    ui = {
-      notification_style = "plugin",
-    },
-    lsp = {
-      on_attach = on_attach,
-      capabilities = capabilities,
-    },
-    debugger = {
-      enabled = true,
-      run_via_dap = true,
-      register_configurations = function(paths)
-        require("dap").configurations.dart = {}
-        require("dap.ext.vscode").load_launchjs()
-      end,
-    },
-  })
+		debugger = {
+			enabled = true,
+			run_via_dap = true,
+			register_configurations = function(paths)
+				require("dap").configurations.dart = {
+					{
+						name = "launch",
+						request = "launch",
+						type = "dart",
+					},
+					{
+						name = "profile",
+						request = "launch",
+						type = "dart",
+						flutterMode = "profile",
+					},
+					{
+						name = "release",
+						request = "launch",
+						type = "dart",
+						flutterMode = "release",
+					},
+				}
+			end,
+		},
+	})
 end
 
 return M

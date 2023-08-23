@@ -3,17 +3,6 @@ local Rule = require("nvim-autopairs.rule")
 
 npairs.setup({
 	check_ts = false,
-
-	fast_wrap = {
-		map = "<a-e>",
-		chars = { "{", "[", "(", '"', "'" },
-		pattern = [=[[%'%"%>%]%)%}%,]]=],
-		end_key = "$",
-		keys = "qwertyuiopzxcvbnmasdfghjkl",
-		check_comma = true,
-		highlight = "Search",
-		highlight_grey = "Comment",
-	},
 })
 
 -- auto pair
@@ -34,7 +23,7 @@ local handlers = require("nvim-autopairs.completion.handlers")
   default_handler(char, item, bufnr, rules, commit_character)
 end ]]
 
-local cmp_status, cmp = pcall(require, "cmp")
+--[[local cmp_status, cmp = pcall(require, "cmp")
 if not cmp_status then
 	return
 end
@@ -51,6 +40,7 @@ cmp.event:on(
 			javascriptreact = false,
 			typescript = false,
 			typescriptreact = false,
+			dart = false,
 			["*"] = {
 				["("] = {
 					kind = {
@@ -62,4 +52,4 @@ cmp.event:on(
 			},
 		},
 	})
-)
+)]]
