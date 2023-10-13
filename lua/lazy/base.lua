@@ -5,7 +5,6 @@ return {
 		config = function()
 			require("colorscheme")
 		end,
-		lazy = true,
 	},
 	{
 		"nvim-neo-tree/neo-tree.nvim",
@@ -91,5 +90,32 @@ return {
 			require("ccc").setup({})
 		end,
 		event = "VeryLazy",
+	},
+	{
+		"nvim-neorg/neorg",
+		enable = false,
+		build = ":Neorg sync-parsers",
+		dependencies = { "nvim-lua/plenary.nvim" },
+		config = function()
+			require("neorg").setup({
+				load = {
+					["core.defaults"] = {}, -- Loads default behaviour
+					["core.concealer"] = {}, -- Adds pretty icons to your documents
+					["core.integrations.treesitter"] = {},
+					["core.completion"] = {
+						config = {
+							engine = "nvim-cmp",
+						},
+					},
+					["core.dirman"] = { -- Manages Neorg workspaces
+						config = {
+							workspaces = {
+								work = "~/work",
+							},
+						},
+					},
+				},
+			})
+		end,
 	},
 }

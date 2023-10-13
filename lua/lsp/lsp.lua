@@ -6,9 +6,10 @@ local language = {
 	"rust",
 	"markdown",
 	"yaml",
-	"flutter",
+	--"flutter",
 	-- "typescript",
 }
+--vim.lsp.set_log_level("debug")
 
 -- import lspconfig plugin safely
 local lspconfig_status, lspconfig = pcall(require, "lspconfig")
@@ -24,12 +25,28 @@ vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.s
 	-- Use a sharp border with `FloatBorder` highlights
 	border = "single",
 	title = { { "signature", "TitleString" } },
-	--opt.title = { { "input", "TitleString" } }
 })
 
 vim.cmd("hi LspSignatureActiveParameter guibg=#3b4261")
 
 local keymap = vim.keymap -- for conciseness
+
+local function addSymbolAtLineEnd(symbol)
+	local line_contents = vim.api.nvim_get_current_line()
+
+	local last_char = line_contents:sub(-1)
+	local setCur = ""
+	if last_char == symbol then
+		setCur = line_contents:sub(0, string.len(line_contents) - 1)
+	else
+		setCur = line_contents .. symbol
+	end
+	vim.api.nvim_set_current_line(setCur)
+
+	local line = vim.fn.line(".")
+	local line_end = vim.fn.col("$")
+	vim.fn.cursor(line, line_end)
+end
 
 -- enable keybinds only for when lsp server available
 local on_attach = function(client, bufnr)
@@ -63,12 +80,13 @@ local on_attach = function(client, bufnr)
 	-- Diagnostic jump with filters such as only jumping to an error
 	keymap.set("n", "[e", function()
 		require("lspsaga.diagnostic"):goto_prev({ severity = vim.diagnostic.severity.ERROR })
-	end)
+	end, opts)
 	keymap.set("n", "]e", function()
 		require("lspsaga.diagnostic"):goto_next({ severity = vim.diagnostic.severity.ERROR })
-	end)
+	end, opts)
 
 	vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+
 	keymap.set("n", "<A-a>", "<cmd>Lspsaga hover_doc<CR>", opts) -- show documentation for what is under cursor
 	keymap.set("n", "<leader>o", "<cmd>LSoutlineToggle<CR>", opts) -- see outline on right hand side
 
@@ -86,16 +104,31 @@ local on_attach = function(client, bufnr)
 		end
 	end, opts)
 
+	keymap.set("i", "<c-;>", function()
+		addSymbolAtLineEnd(";")
+	end, opts)
+
+	keymap.set({ "i" }, "<c-.>", function()
+		addSymbolAtLineEnd(".")
+	end, opts)
+
 	-- typescript specific keymaps (e.g. rename file and update imports)
-	if client.name == "tsserver" then
+	if client.name == "typescript-tools" then
 		keymap.set("n", "<leader>rf", ":TypescriptRenameFile<CR>", opts) -- rename file and update imports
-		keymap.set("n", "<leader>oi", ":TypescriptOrganizeImports<CR>", opts) -- organize imports (not in youtube nvim video)
+		keymap.set(
+			"n",
+			"<leader>oi",
+			"<cmd>TSToolsAddMissingImports<CR><cmd>TSToolsRemoveUnused<CR><cmd>EslintFixAll<CR>",
+			opts
+		) -- organize imports (not in youtube nvim video)
 		keymap.set("n", "<leader>ru", ":TypescriptRemoveUnused<CR>", opts) -- remove unused variables (not in youtube nvim video)
+		keymap.set("n", "<leader>el", "<cmd>EslintFixAll<CR>", opts) -- remove unused variables (not in youtube nvim video)
 	end
 end
 
 -- used to enable autocompletion (assign to every lsp server config)
-local capabilities = vim.lsp.protocol.make_client_capabilities()
+local capabilities = require("cmp_nvim_lsp").default_capabilities()
+--local capabilities = vim.lsp.protocol.make_client_capabilities()
 capabilities.textDocument.foldingRange = {
 	dynamicRegistration = false,
 	lineFoldingOnly = true,
@@ -110,14 +143,15 @@ local default_capabilities = require("cmp_nvim_lsp").default_capabilities()
 
 -- Change the Diagnostic symbols in the sign column (gutter)
 -- (not in youtube nvim video)
-local signs = { Error = " ", Warn = " ", Hint = "ﴞ ", Info = " " }
+local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
+
 for type, icon in pairs(signs) do
 	local hl = "DiagnosticSign" .. type
 	vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
 end
 
 for index, value in ipairs(language) do
-	require("lsp.language." .. value).setup(lspconfig, capabilities, on_attach)
+	require("lsp.language." .. value).setup(lspconfig, default_capabilities, on_attach)
 end
 
 -- configure cpp clangd
@@ -148,8 +182,6 @@ lspconfig["html"].setup({
 	end,
 	init_options = {
 		provideFormatter = false,
-		embeddedLanguages = { css = true, javascript = true },
-		configurationSection = { "html", "css", "javascript" },
 	},
 	settings = {
 		html = {
@@ -161,13 +193,73 @@ lspconfig["html"].setup({
 })
 
 lspconfig.tailwindcss.setup({
+	capabilities = capabilities,
+	on_attach = on_attach,
+	settings = {
+		tailwindCSS = {
+			experimental = {
+				-- https://github.com/paolotiu/tailwind-intellisense-regex-list#tailwind-merge
+				classRegex = {
+					{ "tv\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]" },
+					{ "(?:twMerge|twJoin)\\(([^\\);]*)[\\);]", "[`'\"`]([^'\"`,;]*)[`'\"`]" },
+					{ "classNames\\(([^)]*)\\)", "[\"'`]([^\"'`]*)[\"'`]" },
+				},
+				purgeLayersByDefault = true,
+			},
+			classAttributes = { "class", "classList", "className", ".*Style", ".*Class" },
+		},
+	},
+})
+
+--[[require("lspconfig").cssmodules_ls.setup({
+	on_attach = on_attach,
 	capabilities = default_capabilities,
+})]]
+
+lspconfig.eslint.setup({
+	capabilities = capabilities,
 	on_attach = on_attach,
 })
 
+lspconfig.stylelint_lsp.setup({
+	filetypes = {
+		"css",
+		"less",
+		"scss",
+		"sugarss",
+		"vue",
+		"wxss",
+	},
+	capabilities = capabilities,
+	on_attach = function(a, b)
+		on_attach(a, b)
+
+		local opts = { noremap = true, silent = true, buffer = b }
+		keymap.set("n", "<leader>f", function()
+			vim.cmd("GuardFmt")
+			vim.lsp.buf.format()
+		end, opts)
+	end,
+	settings = {
+		stylelintplus = {
+			autoFixOnFormat = true,
+		},
+	},
+})
 lspconfig["cssls"].setup({
 	capabilities = default_capabilities,
 	on_attach = on_attach,
+	settings = {
+		css = { validate = true, lint = {
+			unknownAtRules = "ignore",
+		} },
+		scss = { validate = true, lint = {
+			unknownAtRules = "ignore",
+		} },
+		less = { validate = true, lint = {
+			unknownAtRules = "ignore",
+		} },
+	},
 })
 
 lspconfig["lemminx"].setup({
@@ -200,12 +292,11 @@ lspconfig.typst_lsp.setup({
 	capabilities = capabilities,
 	on_attach = on_attach,
 })
-lspconfig.volar.setup({
+lspconfig.kotlin_language_server.setup({
 	capabilities = capabilities,
 	on_attach = on_attach,
 })
-
-lspconfig.kotlin_language_server.setup({
+lspconfig["prismals"].setup({
 	capabilities = capabilities,
 	on_attach = on_attach,
 })

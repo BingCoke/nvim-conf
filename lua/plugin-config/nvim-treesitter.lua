@@ -23,13 +23,14 @@ treesitter.setup({
 		"go",
 		"markdown",
 		"markdown_inline",
+		"dart",
 	},
 	-- 启用代码高亮模块
 	highlight = {
 		enable = true,
 		additional_vim_regex_highlighting = false,
 		disable = function(_, bufnr)
-			return vim.api.nvim_buf_line_count(bufnr) > 5000
+			return vim.api.nvim_buf_line_count(bufnr) > 3000
 		end,
 	},
 	rainbow = {
@@ -48,7 +49,7 @@ treesitter.setup({
 	},
 	-- 启用增量选择模块
 	incremental_selection = {
-		enable = true,
+		enable = false,
 		keymaps = {
 			init_selection = "<CR>",
 			node_incremental = "<CR>",
@@ -57,13 +58,17 @@ treesitter.setup({
 	},
 	-- 启用代码缩进模块 (=)
 	indent = {
-		enable = false,
+		enable = true,
+		disable = {
+			"dart",
+			"css",
+		},
 	},
 	autotag = {
 		enable = true,
 		enable_rename = true,
 		enable_close = true,
-		enable_close_on_slash = true,
+		enable_close_on_slash = false,
 	},
 })
 -- 开启 Folding 模块
@@ -72,3 +77,11 @@ vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 -- 默认不要折叠
 -- https://stackoverflow.com/questions/8316139/how-to-set-the-default-to-unfolded-when-you-open-a-file
 vim.opt.foldlevel = 99
+
+local parser = require("nvim-treesitter.parsers").get_parser_configs()
+
+--[[parser.dart = {
+	indent = {
+		enable = false,
+	},
+}]]

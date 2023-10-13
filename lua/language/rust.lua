@@ -7,15 +7,8 @@ function M.setup()
 end
 
 
---local inputuils = require("my.input")
---local rt_dap = require("rust-tools.dap")
-
-local dapuil = require("dap.dap-utils")
 
 local lldb_path = "/usr/lib/codelldb/"
-
-local codelldb_path = lldb_path .. "adapter/codelldb"
-local liblldb_path = lldb_path .. "lldb/lib/liblldb.so"
 
 -- The liblldb extension is .so for linux and .dylib for macOS
 --[[ rt.setup({

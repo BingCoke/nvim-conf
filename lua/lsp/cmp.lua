@@ -3,25 +3,17 @@ local cmp_status, cmp = pcall(require, "cmp")
 if not cmp_status then
 	return
 end
+
 local luasnip = require("luasnip")
+
 -- import lspkind plugin safely
 local lspkind_status, lspkind = pcall(require, "lspkind")
 if not lspkind_status then
 	return
 end
 
--- load vs-code like snippets from plugins (e.g. friendly-snippets)
-
-local feedkey = function(key, mode)
-	vim.api.nvim_feedkeys(vim.api.nvim_replace_termcodes(key, true, true, true), mode, true)
-end
---
-
-local has_words_before = function()
-	unpack = unpack or table.unpack
-	local line, col = unpack(vim.api.nvim_win_get_cursor(0))
-	return col ~= 0 and vim.api.nvim_buf_get_lines(0, line - 1, line, true)[1]:sub(col, col):match("%s") == nil
-end
+local types = require("cmp.types")
+local compare = cmp.config.compare
 
 local kind_icons = {
 	Text = "",
@@ -70,17 +62,18 @@ require("luasnip.loaders.from_vscode").lazy_load()
 
 require("luasnip.loaders.from_lua").lazy_load({ paths = "./snippets" })
 
+--require("cmp_nvim_ultisnips").setup {}
+
+local t = function(str)
+	return vim.api.nvim_replace_termcodes(str, true, true, true)
+end
+
 cmp.setup({
-	experimental = {
-		--ghost_text = true, -- this feature conflict with copilot.vim's preview.
-	},
 	snippet = {
 		expand = function(args)
 			require("luasnip").lsp_expand(args.body)
+			--vim.fn["UltiSnips#Anon"](args.body)
 		end,
-	},
-	view = {
-		--entries = {name = 'native' }
 	},
 	mapping = {
 		["<c-k>"] = cmp.mapping.select_prev_item(), -- previous suggestion
@@ -89,55 +82,51 @@ cmp.setup({
 		["<C-u>"] = cmp.mapping.scroll_docs(-4),
 		["<C-d>"] = cmp.mapping.scroll_docs(4),
 
-		["<A-Space>"] = cmp.mapping.complete({
-			config = {
-				sources = {
-					{ name = "nvim_lsp" },
-					{ name = "luasnip" },
-					{ name = "buffer" }, -- text within current buffer
-					{ name = "path" }, -- file system paths
-				},
-			},
-		}), -- show completion suggestions
+		["<A-Space>"] = cmp.mapping.complete(), -- show completion suggestions
 
 		["<C-e>"] = cmp.mapping.abort(), -- close completion window
-		["<CR>"] = cmp.mapping.confirm({ select = false }),
 		["<Tab>"] = cmp.mapping.confirm({ select = true, behavior = cmp.ConfirmBehavior.Insert }),
 
-		-- 自定义代码段跳转到下一个参数
 		["<c-l>"] = cmp.mapping(function(fallback)
 			if luasnip.jumpable(1) then
 				luasnip.jump(1)
 			else
 				fallback()
 			end
+
+			--[[if vim.fn["UltiSnips#CanJumpForwards"]() == 1 then
+				vim.api.nvim_feedkeys(t("<Plug>(ultisnips_jump_forward)"), "m", true)
+			else
+				fallback()
+			end]]
 		end, { "i", "s" }),
 
 		["<c-h>"] = cmp.mapping(function(fallback)
 			if luasnip.jumpable(-1) then
 				luasnip.jump(-1)
+			else
+				fallback()
 			end
+			--[[if vim.fn["UltiSnips#CanJumpBackwards"]() == 1 then
+				return vim.api.nvim_feedkeys(t("<Plug>(ultisnips_jump_backward)"), "m", true)
+			else
+				fallback()
+			end]]
 		end, { "i", "s" }),
 	},
-	-- 阻止预选则
 	preselect = cmp.PreselectMode.None,
 	-- sources for autocompletion
 	sources = cmp.config.sources({
-		{ name = "luasnip" },
-		{ name = "nvim_lsp" },
-		{ name = "buffer" }, -- text within current buffer
-		{ name = "path" }, -- file system paths
-	}),
-	-- configure lspkind for vs-code like icons
-	--formatting = require("cmp.lspkind").formatting,
-	formatting = {
-		--  fields = { "abbr", "kind", "menu" },
-		duplicates = {
-			buffer = 1,
-			path = 1,
-			nvim_lsp = 0,
-			luasnip = 1,
+		{
+			name = "nvim_lsp",
 		},
+		{ name = "luasnip" },
+		{ name = "npm" },
+		{ name = "path" },
+	}, {
+		{ name = "buffer" },
+	}),
+	formatting = {
 		format = function(entry, item)
 			if item.kind == "Color" then
 				item = require("cmp-tailwind-colors").format(entry, item)
@@ -154,16 +143,25 @@ cmp.setup({
 		end,
 	},
 	window = {
-		-- 弹窗设置出来一个边框
 		completion = cmp.config.window.bordered(),
-		-- doc边框
 		documentation = {
 			border = border("CmpDocBorder"),
 			winhighlight = "Normal:CmpDoc",
 			max_width = 20,
 		},
 	},
-	sorting = {},
+	sorting = {
+		comparators = {
+			compare.offset,
+			compare.exact,
+			compare.score,
+			compare.recently_used,
+			compare.locality,
+			compare.kind,
+			compare.length,
+			compare.order,
+		},
+	},
 })
 
 -- / 查找模式使用 buffer 源
@@ -183,23 +181,93 @@ cmp.setup.cmdline(":", {
 	}),
 })
 
-cmp.setup.filetype("javascript", {
-	sources = cmp.config.sources({
-		{ name = "nvim_lsp" },
-		{ name = "luasnip" },
-		{ name = "buffer" }, -- text within current buffer
-		{ name = "path" }, -- file system paths
-	}),
+cmp.setup.filetype("dart", {
+	sorting = {
+		comparators = {
+			compare.score, -- based on :  score = score + ((#sources - (source_index - 1)) * sorting.priority_weight)
+			function(entry1, entry2)
+				local kind1 = entry1:get_kind() --- @type lsp.CompletionItemKind | number
+				local kind2 = entry2:get_kind() --- @type lsp.CompletionItemKind | number
+
+				if kind1 == types.lsp.CompletionItemKind.Method and kind2 == types.lsp.CompletionItemKind.Method then
+					return nil
+				end
+				if kind1 ~= types.lsp.CompletionItemKind.Method and kind2 ~= types.lsp.CompletionItemKind.Method then
+					return nil
+				end
+				if kind1 == types.lsp.CompletionItemKind.Method then
+					return true
+				end
+				if kind2 == types.lsp.CompletionItemKind.Method then
+					return false
+				end
+				return nil
+			end,
+			compare.offset,
+			compare.exact,
+			compare.score,
+			compare.recently_used,
+			compare.locality,
+			compare.kind,
+			compare.sort_text,
+			compare.length,
+			compare.order,
+			compare.scopes, -- what?
+			-- compare.sort_text,
+		},
+	},
 })
+
 cmp.setup.filetype("css", {
 	sources = cmp.config.sources({
-		{ name = "nvim_lsp" },
+		{
+			name = "nvim_lsp",
+		},
 		{ name = "luasnip" },
 		{ name = "cmp-tw2css" },
 		{ name = "buffer" }, -- text within current buffer
 		{ name = "path" }, -- file system paths
 	}),
 })
+
+local js = { "javascript", "typescript", "typescriptreact", "javascriptreact" }
+
+for key, value in pairs(js) do
+	cmp.setup.filetype(value, {
+		sorting = {
+			comparators = {
+				function(entry1, entry2)
+					local kind1 = entry1:get_kind() --- @type lsp.CompletionItemKind | number
+					local kind2 = entry2:get_kind() --- @type lsp.CompletionItemKind | number
+					if
+						kind1 == types.lsp.CompletionItemKind.Text
+						and kind2 == types.lsp.CompletionItemKind.Property
+					then
+						return false
+					end
+					if
+						kind2 == types.lsp.CompletionItemKind.Text
+						and kind1 == types.lsp.CompletionItemKind.Property
+					then
+						return true
+					end
+
+					return nil
+				end,
+				compare.offset,
+				compare.exact,
+				compare.score, -- based on :  score = score + ((#sources - (source_index - 1)) * sorting.priority_weight)
+				compare.recently_used,
+				compare.locality,
+				compare.kind,
+				compare.length,
+				compare.order,
+				-- compare.scopes, -- what?
+				-- compare.sort_text,
+			},
+		},
+	})
+end
 
 local api = vim.api
 local function generate_highlight()

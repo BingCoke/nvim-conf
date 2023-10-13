@@ -96,7 +96,7 @@ require("neo-tree").setup({
       ["<cr>"] = "open",
       ["n"] = "revert_preview",
       ["<tab>"] = { "toggle_preview" },
-      ["l"] = "focus_preview",
+      --["l"] = "focus_preview",
       --["<tab>"] = "focus_preview",
       ["S"] = "open_split",
       ["s"] = "open_vsplit",
@@ -105,18 +105,18 @@ require("neo-tree").setup({
       ["t"] = "open_tabnew",
       -- ["<cr>"] = "open_drop",
       -- ["t"] = "open_tab_drop",
-      --["w"] = "open_with_window_picker",
+      ["w"] = "",
       --["P"] = "toggle_preview", -- enter preview mode, which shows the current node without focusing
       ["C"] = "close_node",
       -- ['C'] = 'close_all_subnodes',
-      ["w"] = "close_all_nodes",
-      --["Z"] = "expand_all_nodes",
+      ["W"] = "close_all_nodes",
+      ["Z"] = "expand_all_nodes",
       ["a"] = {
         "add",
         -- this command supports BASH style brace expansion ("x{a,b,c}" -> xa,xb,xc). see `:h neo-tree-file-actions` for details
         -- some commands may take optional config options, see `:h neo-tree-mappings` for details
         config = {
-          show_path = "none", -- "none", "relative", "absolute"
+          show_path = "relative", -- "none", "relative", "absolute"
         },
       },
       ["A"] = "add_directory", -- also accepts the optional config.show_path option like "add". this also supports BASH style brace expansion.

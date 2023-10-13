@@ -14,14 +14,12 @@ ft("rust"):fmt("rustfmt")
         :lint('golangci') ]]
 
 -- multiple files register
-ft("typescript,javascript,typescriptreact,html,css,scss"):fmt("prettier")
-
-ft("json"):fmt("lsp")
-ft("kotlin"):fmt("lsp")
-ft("dart"):fmt("lsp")
+ft("typescript,javascript,typescriptreact,html,scss,ts"):fmt("prettier")
+ft("css"):fmt("prettier")
 
 -- call setup LAST
 require("guard").setup({
 	-- the only option for the setup function
 	fmt_on_save = false,
+	lsp_as_default_formatter = true,
 })

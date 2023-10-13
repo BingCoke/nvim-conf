@@ -26,14 +26,25 @@
         "path": "./css.json"
       },
       {
-        "language": ["javascriptreact","typescriptreact"],
+        "language": [
+          "javascriptreact",
+          "typescriptreact"
+        ],
         "path": "./react.json"
       },
       {
-        "language": ["javascript","typescript"],
+        "language": [
+          "javascript",
+          "typescript"
+        ],
         "path": "./ts.json"
+      },
+      {
+        "language": [
+          "html"
+        ],
+        "path": "./html.json"
       }
-
     ]
   }
 }

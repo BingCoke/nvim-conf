@@ -7,9 +7,10 @@ local opt = { noremap = true, silent = true }
 map("n", "Q", "q", opt)
 map("n", "q", "", opt)
 map("i", "<c-`>", "`", opt)
-map("i", "<c-;>", "<esc>A;", opt)
+
 -- 取消 s 默认功能
 map("n", "s", "", opt)
+
 -- windows 分屏快捷键
 map("n", "<leader>sv", ":vsp<CR>", opt)
 map("n", "<leader>sh", ":sp<CR>", opt)
@@ -28,15 +29,15 @@ map("n", "<A-l>", "<C-w>l", opt)
 
 vim.s = 12
 -- 左右比例控制
-map("n", "<C-Left>", ":vertical resize -2<CR>", opt)
-map("n", "<C-Right>", ":vertical resize +2<CR>", opt)
+map("n", "<C-Left>", "<cmd>vertical resize -2<CR>", opt)
+map("n", "<C-Right>", "<cmd>vertical resize +2<CR>", opt)
 -- 上下比例控制
-map("n", "<C-Down>", ":resize -2<CR>", opt)
-map("n", "<C-Up>", ":resize +2<CR>", opt)
+map("n", "<C-Down>", "<cmd>resize -2<CR>", opt)
+map("n", "<C-Up>", "<cmd>resize +2<CR>", opt)
 -- Terminal相关
 -- 打开terminal
-map("n", "<leader>h", ":sp | terminal<CR>", opt)
-map("n", "<leader>v", ":vsp | terminal<CR>", opt)
+map("n", "<leader>h", "<cmd>sp | terminal<CR>", opt)
+map("n", "<leader>v", "<cmd>vsp | terminal<CR>", opt)
 map("t", "<esc>", "<C-\\><C-n>", opt)
 map("t", "<A-h>", [[ <C-\><C-N><C-w>h ]], opt)
 map("t", "<A-j>", [[ <C-\><C-N><C-w>j ]], opt)
@@ -48,8 +49,8 @@ map("v", "<c-c>", '"+y', opt)
 map("v", "<", "<gv", opt)
 map("v", ">", ">gv", opt)
 -- 上下移动选中文本
-map("v", "<a-j>", ":move '>+1<CR>gv-gv", opt)
-map("v", "<a-k>", ":move '<-2<CR>gv-gv", opt)
+map("v", "<a-j>", "<cmd>move '>+1<CR>gv-gv", opt)
+map("v", "<a-k>", "<cmd>move '<-2<CR>gv-gv", opt)
 
 -- 上下滚动浏览
 map("n", "<C-j>", "4j", opt)
@@ -75,13 +76,13 @@ local pluginKeys = {}
 -- 设置文件搜索
 -- Telescope
 -- 查找文件
-map("n", "<C-p>", ":Telescope find_files<CR>", opt)
+map("n", "<C-p>", "<cmd>Telescope find_files<CR>", opt)
 -- 全局搜索
-map("n", "<C-f>", ":Telescope live_grep<CR>", opt)
+map("n", "<C-f>", "<cmd>Telescope live_grep<CR>", opt)
 
-map("n", "<leader>p", ":Telescope lsp_dynamic_workspace_symbols<CR>", opt)
+map("n", "<leader>p", "<cmd>Telescope lsp_dynamic_workspace_symbols<CR>", opt)
 -- 查看tab show window
-map("n", "<leader>sw", ":Telescope buffers<CR>", opt)
+map("n", "<leader>sw", "<cmd>Telescope buffers<CR>", opt)
 
 -- dap
 

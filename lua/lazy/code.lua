@@ -25,6 +25,14 @@ local language = {
 	"javascript",
 	"javascriptreact",
 	"kotlin",
+	"prisma",
+}
+local ts = {
+	"html",
+	"typescript",
+	"typescriptreact",
+	"javascript",
+	"javascriptreact",
 }
 
 return {
@@ -38,6 +46,9 @@ return {
 	},
 	{
 		"nvimdev/guard.nvim",
+		dependencies = {
+			"nvimdev/guard-collection",
+		},
 		config = function(self, opts)
 			require("plugin-config.guard")
 		end,
@@ -85,6 +96,7 @@ return {
 	},
 	{
 		"lukas-reineke/indent-blankline.nvim",
+		main = "ibl",
 		config = function(self, opts)
 			vim.g.indent_blankline_filetype_exclude = {
 				"lspinfo",
@@ -93,9 +105,7 @@ return {
 				"help",
 				"man",
 				"dashboard",
-				"",
 			}
-
 			vim.g.indentLine_fileTypeExclude = {
 				"lspinfo",
 				"packer",
@@ -103,14 +113,24 @@ return {
 				"help",
 				"man",
 				"dashboard",
-				"",
 			}
-			require("indent_blankline").setup({
-				-- for example, context is off by default, use this to turn it on
-				show_current_context = true,
-				show_current_context_start = true,
-			})
+			require("ibl").setup({})
 		end,
 		ft = language,
+	},
+	{
+		"numToStr/prettierrc.nvim",
+		ft = ts,
+	},
+	{
+		"zbirenbaum/copilot.lua",
+		event = "VeryLazy",
+		config = function()
+			require("copilot").setup({
+				suggestion = {
+					auto_trigger = true,
+				},
+			})
+		end,
 	},
 }

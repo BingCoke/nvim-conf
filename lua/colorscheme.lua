@@ -1,4 +1,4 @@
-local colorscheme = "tokyonight-storm"
+local colorscheme = "tokyonight"
 
 require("tokyonight").setup({
   -- your configuration comes here
@@ -28,13 +28,10 @@ require("tokyonight").setup({
 local status_ok, _ = pcall(vim.cmd, "colorscheme " .. colorscheme)
 
 if not status_ok then
-  vim.notify("colorscheme " .. colorscheme .. " 没有找到！")
-  return
+	vim.notify("colorscheme " .. colorscheme .. " 没有找到！")
+	return
 end
 
-pcall(vim.cmd, "hi CocMenuSel ctermbg=237 guibg=#425d6e")
-pcall(vim.cmd, "hi DiagnosticUnnecessary guifg=#545c7e")
-pcall(vim.cmd, "hi Visual guibg=#3654a7")
 vim.cmd("hi LspInlayHint guifg=#7aa2f7 guibg=#3b4261")
 vim.cmd("highlight FidgetTitle ctermfg=110 guifg=#6cb6eb")
 vim.cmd("highlight link FidgetTitle Variable")

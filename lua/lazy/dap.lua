@@ -34,4 +34,13 @@ return {
 			"kotlin",
 		},
 	},
+	{
+		"sultanahamer/nvim-dap-reactnative",
+		ft = {
+			"typescript",
+			"typescriptreact",
+			"javascript",
+			"javascriptreact",
+		},
+	},
 }

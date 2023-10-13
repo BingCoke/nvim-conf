@@ -1,6 +1,10 @@
 return {
 	{
 		"L3MON4D3/LuaSnip",
+		-- follow latest release.
+		version = "2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
+		-- install jsregexp (optional!).
+		build = "make install_jsregexp",
 		dependencies = {
 			"saadparwaiz1/cmp_luasnip",
 			"honza/vim-snippets",
@@ -21,6 +25,7 @@ return {
 				--region_check_events = 'CursorMoved'
 			})
 		end,
+		--enabled = false,
 	},
 	-- cmp
 	{
@@ -32,6 +37,7 @@ return {
 			"hrsh7th/cmp-buffer",
 			"hrsh7th/cmp-path",
 			"L3MON4D3/LuaSnip",
+			--"SirVer/ultisnips",
 		},
 		event = "VeryLazy",
 		config = function()
@@ -65,6 +71,14 @@ return {
 		config = function()
 			require("plugin-config.autopairs")
 		end,
-    event = "VeryLazy"
+		event = "VeryLazy",
+	},
+	{
+		"David-Kunz/cmp-npm",
+		dependencies = { "nvim-lua/plenary.nvim" },
+		ft = "json",
+		config = function()
+			require("cmp-npm").setup({})
+		end,
 	},
 }

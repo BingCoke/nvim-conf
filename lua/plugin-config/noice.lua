@@ -1,4 +1,9 @@
 require("noice").setup({
+	messages = {
+		--view = "mini",
+		view_error = "mini", -- view for errors
+		view_warn = "mini", -- view for warnings
+	},
 	lsp = {
 		progress = {
 			enabled = true,
@@ -39,6 +44,7 @@ require("noice").setup({
 	},
 	cmdline = {
 		view = "cmdline",
+		enabled= true
 	},
 	routes = {
 		{
@@ -87,6 +93,14 @@ require("noice").setup({
 				event = "msg_show",
 				kind = "",
 				find = "--No lines",
+			},
+			opts = { skip = true },
+		},
+		{
+			filter = {
+				event = "notify",
+				kind = "",
+				find = "Flutter",
 			},
 			opts = { skip = true },
 		},

@@ -26,6 +26,7 @@ local language = {
 	"javascript",
 	"javascriptreact",
 	"kotlin",
+	"prisma",
 }
 return {
 	------- LSP -----
@@ -91,12 +92,18 @@ return {
 	},
 	{
 		"pmizio/typescript-tools.nvim",
+		--dir = "/home/bk/tmp/typescript-tools.nvim",
 		dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
-		event = "VeryLazy",
 		config = function(self, opts)
 			local mlsp = require("lsp.lsp")
 			require("lsp.language.typescript").setup(mlsp.lspconfig, mlsp.default_capabilities, mlsp.on_attach)
 		end,
+		ft = {
+			"javascript",
+			"javascriptreact",
+			"typescript",
+			"typescriptreact",
+		},
 	},
 	{
 		"onsails/lspkind.nvim",
@@ -117,10 +124,18 @@ return {
 	--- flutter
 	{
 		"akinsho/flutter-tools.nvim",
+		--dir = "/home/bk/tmp/flutter-tools.nvim",
 		requires = {
 			"stevearc/dressing.nvim", -- optional for vim.ui.select
+			"mfussenegger/nvim-dap",
+			"neovim/nvim-lspconfig",
 		},
-		event = "LspAttach",
+
+		config = function()
+			local mlsp = require("lsp.lsp")
+			require("lsp.language.flutter").setup(mlsp.lspconfig, mlsp.default_capabilities, mlsp.on_attach)
+		end,
+		ft = "dart",
 	},
 	{
 		"nvimdev/lspsaga.nvim",
@@ -151,9 +166,7 @@ return {
 	-- language ts
 	{
 		"windwp/nvim-ts-autotag",
-		config = function(self, opts)
-			require("nvim-ts-autotag").setup()
-		end,
+		dependencies = "nvim-treesitter/nvim-treesitter",
 		ft = language,
 	},
 	{
@@ -166,16 +179,38 @@ return {
 			"scss",
 			"html",
 			"javascript",
+			"typescript",
+			"typescriptreact",
 			"javascriptreact",
 		},
 	},
 	{
 		"dart-lang/dart-vim-plugin",
 		config = function()
-			vim.g.dart_corelib_highlight = false
 			vim.g.dart_format_on_save = false
+			vim.g.dart_style_guide = 2
+			vim.g.dart_trailing_comma_indent = true
 		end,
 		ft = "dart",
 	},
+	{
+		"NMAC427/guess-indent.nvim",
+		enable = false,
+		config = function()
+			require("guess-indent").setup({
+				auto_cmd = true, -- Set to false to disable automatic execution
+				override_editorconfig = false, -- Set to true to override settings set by .editorconfig
+				filetype_exclude = { -- A list of filetypes for which the auto command gets disabled
+					"netrw",
+					"tutor",
+				},
+				buftype_exclude = { -- A list of buffer types for which the auto command gets disabled
+					"help",
+					"nofile",
+					"terminal",
+					"prompt",
+				},
+			})
+		end,
+	},
 }
-

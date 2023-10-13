@@ -8,35 +8,36 @@ local util = require("dap.dap-utils")
 local input = require("my.input")
 
 require("persistent-breakpoints").setup({
-  load_breakpoints_event = { "BufReadPost" },
+	load_breakpoints_event = { "BufReadPre" },
 })
+
 local persistent_breakpoints_api = require("persistent-breakpoints.api")
 
 -- Set breakpoints, get variable values, step into/out of functions, etc.
 vim.keymap.set("n", "<leader>k", function()
-  local expr = util.eval_expr
-  if expr ~= nil and expr == "" then
-    expr = nil
-  end
-  require("dapui").eval(expr, { context = "hover", enter = true })
+	local expr = util.eval_expr
+	if expr ~= nil and expr == "" then
+		expr = nil
+	end
+	require("dapui").eval(expr, { context = "hover", enter = true })
 end)
 
 -- 设置参数
 vim.keymap.set("n", "<leader>-", util.set_args())
 -- 设置eval的条件
 vim.keymap.set("n", "<leader>=", function()
-  util.set_eval_expr()
+	util.set_eval_expr()
 end)
 
 vim.keymap.set("n", "<F1>", function()
-  dapui.toggle({})
+	dapui.toggle({})
 end)
 
 vim.keymap.set("n", "<F2>", persistent_breakpoints_api.clear_all_breakpoints)
 
 vim.keymap.set("n", "<F3>", function()
-  dapui.close({})
-  dap.terminate()
+	dapui.close({})
+	dap.terminate()
 end)
 
 vim.keymap.set("n", "<F4>", dap.run_to_cursor)
@@ -47,12 +48,12 @@ vim.keymap.set("n", "<F8>", dap.step_out)
 
 -- Start debugging session
 vim.keymap.set("n", "<F9>", function()
-  dap_runner.run()
+	dap_runner.run()
 end)
 
 -- runlast 这里的args仍然是之前的 即使你更改了
 vim.keymap.set("n", "<F10>", function()
-  dap.run_last()
+	dap.run_last()
 end)
 
 vim.keymap.set("n", "<F11>", persistent_breakpoints_api.toggle_breakpoint)
