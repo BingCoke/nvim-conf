@@ -5,7 +5,6 @@ if not status then
 end
 
 -- nvim-tree 支持
-vim.g.nvim_tree_respect_buf_cwd = 1
 
 project.setup({
 	detection_methods = { "pattern", "lsp" },
@@ -25,7 +24,6 @@ project.setup({
 	},
 	show_hidden = true,
 	exclude_dirs = { "~/.cargo/*" },
-	scope_chdir = "tab",
 })
 
 local status, telescope = pcall(require, "telescope")

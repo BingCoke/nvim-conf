@@ -120,9 +120,12 @@ cmp.setup({
 		{
 			name = "nvim_lsp",
 		},
-		{ name = "luasnip" },
-		{ name = "npm" },
-		{ name = "path" },
+		{
+			name = "luasnip",
+		},
+		{
+			name = "path",
+		},
 	}, {
 		{ name = "buffer" },
 	}),
@@ -130,7 +133,6 @@ cmp.setup({
 		format = function(entry, item)
 			if item.kind == "Color" then
 				item = require("cmp-tailwind-colors").format(entry, item)
-
 				if item.kind ~= "Color" then
 					item.menu = "Color"
 					return item
