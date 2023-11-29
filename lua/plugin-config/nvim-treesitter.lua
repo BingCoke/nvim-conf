@@ -62,6 +62,7 @@ treesitter.setup({
 		disable = {
 			"dart",
 			"css",
+			"typescript",
 		},
 	},
 	autotag = {

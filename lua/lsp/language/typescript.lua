@@ -39,6 +39,7 @@ function M.setup(lsp, default_capabilities, on_attach)
 		capabilities = capabilities,
 		settings = {
 			separate_diagnostic_server = true,
+			publish_diagnostic_on = "change",
 			expose_as_code_action = {},
 			preferences = {
 				includeCompletionsForModuleExports = true,
