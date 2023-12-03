@@ -17,7 +17,7 @@ end
 vim.wo.cursorline = true
 -- 显示左侧图标指示列
 vim.opt_local.signcolumn = "yes"
---vim.wo.signcolumn = "yes"
+vim.wo.signcolumn = "yes"
 vim.opt_local.spell = false
 vim.opt_local.wrap = false
 vim.opt_local.statuscolumn = " "
