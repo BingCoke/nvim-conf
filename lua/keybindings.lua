@@ -14,6 +14,7 @@ map("n", "s", "", opt)
 -- windows 分屏快捷键
 map("n", "<leader>sv", ":vsp<CR>", opt)
 map("n", "<leader>sh", ":sp<CR>", opt)
+
 -- 关闭当前
 map("n", "<leader>sc", "<C-w>c", opt)
 map("n", "<A-d>", "<C-w>c", opt)
@@ -30,7 +31,16 @@ map("n", "<A-l>", "<C-w>l", opt)
 vim.s = 12
 -- 左右比例控制
 map("n", "<C-Left>", "<cmd>vertical resize -2<CR>", opt)
-map("n", "<C-Right>", "<cmd>vertical resize +2<CR>", opt)
+map("n", "<C-Right>", "<cmd>vertical resize +2<cr>", opt)
+
+map("n", "<esc>", "<cmd>noh<cr><esc>", opt)
+map("i", "<esc>", "<cmd>noh<cr><esc>", opt)
+
+-- save file
+map("i", "<C-s>", "<cmd>w<cr><esc>", opt)
+map("x", "<C-s>", "<cmd>w<cr><esc>", opt)
+map("n", "<C-s>", "<cmd>w<cr><esc>", opt)
+map("s", "<C-s>", "<cmd>w<cr><esc>", opt)
 -- 上下比例控制
 map("n", "<C-Down>", "<cmd>resize -2<CR>", opt)
 map("n", "<C-Up>", "<cmd>resize +2<CR>", opt)
@@ -64,9 +74,8 @@ map("v", "<C-u>", "9k", opt)
 map("v", "<C-d>", "9j", opt)
 -- 设置退出并,保存
 
-map("n", "<leader>q", "<cmd>wq<CR>", opt)
-map("n", "<leader>i", "<cmd>q<CR>", opt)
-map("n", "<leader>w", "<cmd>w<CR>", {})
+map("n", "<leader>q", "<cmd>w<CR>", opt)
+map("n", "<leader>i", "<cmd>qa<CR>", opt)
 map("n", "<leader>W", "<cmd>w !sudo tee %<CR>", {})
 
 -- 设置插件快捷键

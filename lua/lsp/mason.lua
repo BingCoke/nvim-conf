@@ -15,9 +15,16 @@ mason_lspconfig.setup({
 	ensure_installed = {
 		"tsserver",
 		"html",
+		"lua_ls",
 		"cssls",
 		"tailwindcss",
 		"emmet_ls",
 		"clangd",
+		"shfmt",
+		"gopls",
+		"dockerls",
+		"docker_compose_language_service",
+		"marksman",
+		"pyright",
 	},
 })

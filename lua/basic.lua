@@ -1,3 +1,4 @@
+vim.g.root_spec = { "lsp", { ".git", "lua" }, "cwd" }
 -- utf8
 vim.g.encoding = "UTF-8"
 vim.o.fileencoding = "utf-8"
@@ -5,20 +6,28 @@ vim.o.fileencoding = "utf-8"
 vim.o.scrolloff = 3
 vim.o.sidescrolloff = 3
 -- 使用相对行号
-vim.wo.number = false
+--vim.wo.number = true
 --vim.wo.relativenumber = true
+
+if vim.fn.has("nvim-0.10") == 1 then
+	vim.opt.smoothscroll = true
+end
 
 -- 高亮所在行
 vim.wo.cursorline = true
 -- 显示左侧图标指示列
-vim.wo.signcolumn = "no"
+vim.opt_local.signcolumn = "yes"
+--vim.wo.signcolumn = "yes"
+vim.opt_local.spell = false
+vim.opt_local.wrap = false
+vim.opt_local.statuscolumn = " "
+vim.opt_local.conceallevel = 3
+
 -- 右侧参考线，超过表示代码太长了，考虑换行
 -- 缩进2个空格等于一个Tab
 vim.o.tabstop = 2
 vim.bo.tabstop = 2
 vim.o.softtabstop = 2
-
-
 vim.o.shiftround = true
 -- >> << 时移动长度
 vim.o.shiftwidth = 2
@@ -40,6 +49,7 @@ vim.bo.softtabstop = 2
 vim.o.ignorecase = true
 vim.o.smartcase = true
 -- 搜索不要高亮
+-- niao
 vim.o.hlsearch = false
 -- 边输入边搜索
 vim.o.incsearch = true

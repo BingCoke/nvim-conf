@@ -8,4 +8,5 @@ require("keybindings")
 -- 插件设置
 require("plugins")
 
+
 vim.g.hlchunk_files = "*.ts,*.js,*.json,*.go,*.c,*.cpp,*.rs,*.h,*.hpp,*.lua,*.py,*.dart"
