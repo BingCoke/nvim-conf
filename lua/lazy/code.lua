@@ -102,6 +102,13 @@ return {
 	-- 注释
 	{
 		"numToStr/comment.nvim",
+		dependencies = {
+			{
+
+				"JoosepAlviste/nvim-ts-context-commentstring",
+				opts = {},
+			},
+		},
 		config = function()
 			require("plugin-config.coment")
 		end,

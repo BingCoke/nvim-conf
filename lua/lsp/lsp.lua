@@ -6,7 +6,7 @@ local language = {
 	"rust",
 	"markdown",
 	"yaml",
-	--"flutter",
+	-- "flutter",
 	-- "typescript",
 }
 --vim.lsp.set_log_level("debug")

@@ -16,7 +16,6 @@ end
 -- 高亮所在行
 vim.wo.cursorline = true
 -- 显示左侧图标指示列
-vim.opt_local.signcolumn = "yes"
 vim.wo.signcolumn = "yes"
 vim.opt_local.spell = false
 vim.opt_local.wrap = false
@@ -101,3 +100,5 @@ vim.o.showmode = true
 -- css关闭自动注释
 vim.cmd("autocmd BufEnter *.css set formatoptions-=cro")
 vim.cmd("autocmd BufEnter *.css setlocal formatoptions-=cro")
+vim.cmd("autocmd BufEnter *.lua set formatoptions-=cro")
+vim.cmd("autocmd BufEnter *.lua setlocal formatoptions-=cro")
