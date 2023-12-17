@@ -90,8 +90,6 @@ local on_attach = function(client, bufnr)
 	keymap.set("n", "<A-a>", "<cmd>Lspsaga hover_doc<CR>", opts) -- show documentation for what is under cursor
 	keymap.set("n", "<leader>o", "<cmd>LSoutlineToggle<CR>", opts) -- see outline on right hand side
 
-	keymap.set("n", "<leader>f", "<cmd>GuardFmt<CR>", opts)
-
 	vim.keymap.set({ "i" }, "<c-d>", function()
 		if not require("noice.lsp").scroll(4) then
 			return "<c-d>"
@@ -115,14 +113,7 @@ local on_attach = function(client, bufnr)
 	-- typescript specific keymaps (e.g. rename file and update imports)
 	if client.name == "typescript-tools" then
 		keymap.set("n", "<leader>rf", ":TypescriptRenameFile<CR>", opts) -- rename file and update imports
-		keymap.set(
-			"n",
-			"<leader>oi",
-			"<cmd>TSToolsAddMissingImports<CR><cmd>TSToolsRemoveUnused<CR><cmd>EslintFixAll<CR>",
-			opts
-		) -- organize imports (not in youtube nvim video)
 		keymap.set("n", "<leader>ru", ":TypescriptRemoveUnused<CR>", opts) -- remove unused variables (not in youtube nvim video)
-		keymap.set("n", "<leader>el", "<cmd>EslintFixAll<CR>", opts) -- remove unused variables (not in youtube nvim video)
 	end
 end
 
@@ -192,6 +183,11 @@ lspconfig["html"].setup({
 	},
 })
 
+lspconfig.biome.setup({
+	capabilities = default_capabilities,
+	on_attach = on_attach,
+})
+
 lspconfig.tailwindcss.setup({
 	capabilities = capabilities,
 	on_attach = on_attach,
@@ -211,15 +207,20 @@ lspconfig.tailwindcss.setup({
 	},
 })
 
---[[require("lspconfig").cssmodules_ls.setup({
-	on_attach = on_attach,
-	capabilities = default_capabilities,
-})]]
-
-lspconfig.eslint.setup({
+--[[lspconfig.eslint.setup({
 	capabilities = capabilities,
 	on_attach = on_attach,
-})
+	filetypes = {
+		"css",
+		"less",
+		"scss",
+		"sugarss",
+		"vue",
+		"wxss",
+		"html",
+		"yaml",
+	},
+})]]
 
 lspconfig.stylelint_lsp.setup({
 	filetypes = {
@@ -233,12 +234,6 @@ lspconfig.stylelint_lsp.setup({
 	capabilities = capabilities,
 	on_attach = function(a, b)
 		on_attach(a, b)
-
-		local opts = { noremap = true, silent = true, buffer = b }
-		keymap.set("n", "<leader>f", function()
-			vim.cmd("GuardFmt")
-			vim.lsp.buf.format()
-		end, opts)
 	end,
 	settings = {
 		stylelintplus = {
@@ -338,15 +333,6 @@ lspconfig["prismals"].setup({
 	capabilities = capabilities,
 	on_attach = on_attach,
 })
-
---[[require("vintellij").setup({
-	debug = false,
-	common_capabilities = default_capabilities,
-	common_on_attach = on_attach,
-	filetypes = {
-		"kotlin",
-	},
-})]]
 
 M.on_attach = on_attach
 M.capabilities = capabilities

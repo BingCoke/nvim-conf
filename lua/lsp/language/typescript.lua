@@ -19,19 +19,22 @@ function M.setup(lsp, default_capabilities, on_attach)
 
 	require("typescript-tools").setup({
 		on_attach = function(cli, buf)
+			local conform = require("conform")
+			local opts = { noremap = true, silent = true, buffer = buf }
+
+			vim.keymap.set({ "n", "v" }, "<leader>l", function()
+				conform.format({
+					formatters = { "biomeLint" },
+					lsp_fallback = true,
+					timeout_ms = 500,
+				})
+			end)
 			on_attach(cli, buf)
 		end,
 		root_dir = function(fname)
 			-- INFO: stealed from:
 			-- https://github.com/neovim/nvim-lspconfig/blob/master/lua/lspconfig/server_configurations/tsserver.lua#L22
 			local root_dir = util.root_pattern(".git")(fname)
-
-			-- INFO: this is needed to make sure we don't pick up root_dir inside node_modules
-			--[[local node_modules_index = root_dir and root_dir:find("node_modules", 1, true)
-			if node_modules_index and node_modules_index > 0 then
-				root_dir = root_dir:sub(1, node_modules_index - 2)
-			end]]
-
 			return root_dir
 		end,
 

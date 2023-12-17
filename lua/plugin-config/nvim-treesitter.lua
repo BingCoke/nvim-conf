@@ -16,8 +16,8 @@ treesitter.setup({
 		"lua",
 		"javascript",
 		"typescript",
-		"vue",
 		"tsx",
+		"vue",
 		"java",
 		"yaml",
 		"go",
@@ -49,7 +49,7 @@ treesitter.setup({
 	},
 	-- 启用增量选择模块
 	incremental_selection = {
-		enable = false,
+		enable = true,
 		keymaps = {
 			init_selection = "<CR>",
 			node_incremental = "<CR>",
@@ -62,7 +62,7 @@ treesitter.setup({
 		disable = {
 			"dart",
 			"css",
-			"typescript",
+			--"typescript",
 		},
 	},
 	autotag = {
@@ -78,11 +78,4 @@ vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 -- 默认不要折叠
 -- https://stackoverflow.com/questions/8316139/how-to-set-the-default-to-unfolded-when-you-open-a-file
 vim.opt.foldlevel = 99
-
 local parser = require("nvim-treesitter.parsers").get_parser_configs()
-
---[[parser.dart = {
-	indent = {
-		enable = false,
-	},
-}]]

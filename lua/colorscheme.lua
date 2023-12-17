@@ -12,8 +12,8 @@ require("tokyonight").setup({
 		-- Value is any valid attr-list value for `:help nvim_set_hl`
 		comments = { italic = true, bold = true },
 		keywords = { italic = true, bold = true },
-		functions = {},
-		variables = {},
+		-- functions = { italic = true },
+		-- variables = { italic = true },
 		-- Background styles. Can be "dark", "transparent" or "normal"
 		-- sidebars = "storm", -- style for sidebars, see below
 		-- floats = "storm", -- style for floating windows

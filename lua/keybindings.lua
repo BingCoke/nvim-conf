@@ -17,6 +17,7 @@ map("n", "<leader>sh", ":sp<CR>", opt)
 
 -- 关闭当前
 map("n", "<leader>sc", "<C-w>c", opt)
+
 map("n", "<A-d>", "<C-w>c", opt)
 map("i", "<A-d>", "<C-w>c", opt)
 -- 关闭其他
@@ -41,6 +42,10 @@ map("i", "<C-s>", "<cmd>w<cr><esc>", opt)
 map("x", "<C-s>", "<cmd>w<cr><esc>", opt)
 map("n", "<C-s>", "<cmd>w<cr><esc>", opt)
 map("s", "<C-s>", "<cmd>w<cr><esc>", opt)
+
+
+map("n", "<leader>w", "<cmd>w<cr><esc>", opt)
+
 -- 上下比例控制
 map("n", "<C-Down>", "<cmd>resize -2<CR>", opt)
 map("n", "<C-Up>", "<cmd>resize +2<CR>", opt)
@@ -55,9 +60,11 @@ map("t", "<A-k>", [[ <C-\><C-N><C-w>k ]], opt)
 map("t", "<A-l>", [[ <C-\><C-N><C-w>l ]], opt)
 
 map("v", "<c-c>", '"+y', opt)
+
 -- visual模式下缩进代码
 map("v", "<", "<gv", opt)
 map("v", ">", ">gv", opt)
+
 -- 上下移动选中文本
 map("v", "<a-j>", "<cmd>move '>+1<CR>gv-gv", opt)
 map("v", "<a-k>", "<cmd>move '<-2<CR>gv-gv", opt)
@@ -67,6 +74,7 @@ map("n", "<C-j>", "4j", opt)
 map("n", "<C-k>", "4k", opt)
 map("v", "<C-j>", "4j", opt)
 map("v", "<C-k>", "4k", opt)
+
 -- ctrl u / ctrl + d  只移动9行，默认移动半屏
 map("n", "<C-u>", "9k", opt)
 map("n", "<C-d>", "9j", opt)
