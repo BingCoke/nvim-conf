@@ -222,9 +222,7 @@ cmp.setup.filetype("dart", {
 
 cmp.setup.filetype("css", {
 	sources = cmp.config.sources({
-		{
-			name = "nvim_lsp",
-		},
+		{ name = "nvim_lsp" },
 		{ name = "luasnip" },
 		{ name = "cmp-tw2css" },
 		{ name = "buffer" }, -- text within current buffer
@@ -289,8 +287,6 @@ local function generate_highlight()
 	api.nvim_command("highlight! CmpItemKindKeyword guibg=NONE guifg=#D4D4D4")
 	api.nvim_command("highlight! link CmpItemKindProperty CmpItemKindKeyword")
 	api.nvim_command("highlight! link CmpItemKindUnit CmpItemKindKeyword")
-
-	--api.nvim_command("highlight CmpItemMenu CmpItemKindKeyword")
 end
 
 generate_highlight()

@@ -1,7 +1,5 @@
 local map = vim.keymap.set
 
-
-
 -- 复用 opt 参数
 local opt = { noremap = true, silent = true }
 local flash = require("flash")

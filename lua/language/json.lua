@@ -9,8 +9,6 @@ lspconfig["jsonls"].setup({
 	on_attach = lspconf.on_attach,
 	settings = {
 		json = {
-			-- for get more schemas https://www.schemastore.org/json/
-			--schemas = require("schemastore").yaml.schemas(),
 			schemas = {
 				{
 					fileMatch = { "package.json" },
@@ -19,6 +17,10 @@ lspconfig["jsonls"].setup({
 				{
 					fileMatch = { "tsconfig.json", "tsconfig.*.json" },
 					url = "http://json.schemastore.org/tsconfig",
+				},
+				{
+					fileMatch = { "biome.json" },
+					url = "https://biomejs.dev/schemas/1.4.1/schema.json",
 				},
 			},
 		},

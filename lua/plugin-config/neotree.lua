@@ -1,4 +1,3 @@
-
 -- If you want icons for diagnostic errors, you'll need to define them somewhere:
 vim.fn.sign_define("DiagnosticSignError", { text = " ", texthl = "DiagnosticSignError" })
 vim.fn.sign_define("DiagnosticSignWarn", { text = " ", texthl = "DiagnosticSignWarn" })
@@ -23,6 +22,9 @@ require("neo-tree").setup({
 	--       end
 	--   end , -- this sorts files and directories descendantly
 	default_component_configs = {
+		file_size = {
+			enable = false,
+		},
 		container = {
 			enable_character_fade = true,
 		},
@@ -229,7 +231,6 @@ require("neo-tree").setup({
 local opt = { noremap = true, silent = true }
 
 vim.keymap.set("n", "sg", ":Neotree<space>git_status<CR>", opt)
-vim.keymap.set("n", "\\", ":Neotree float toggle reveal<CR>", opt)
-vim.keymap.set("n", "|", ":Neotree source=filesystem position=float toggle<CR>", opt)
--- vim.keymap.set("n", "<c-m>", ":Neotree source=filesystem position=left reveal toggle<CR>", opt)
+vim.keymap.set("n", "|", ":Neotree float toggle reveal<CR>", opt)
+vim.keymap.set("n", "\\", ":Neotree source=filesystem position=float toggle<CR>", opt)
 vim.keymap.set("n", "<A-m>", ":Neotree source=filesystem position=left toggle<CR>", opt)

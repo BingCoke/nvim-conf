@@ -14,6 +14,8 @@ function M.setup(lsp, default_capabilities, on_attach)
 			"`",
 			"/",
 			"<",
+			"$",
+			"@",
 		},
 	}
 
@@ -27,18 +29,16 @@ function M.setup(lsp, default_capabilities, on_attach)
 					formatters = { "biomeLint" },
 					lsp_fallback = true,
 					timeout_ms = 500,
-				})
+				}, opts)
 			end)
+
 			on_attach(cli, buf)
 		end,
 		root_dir = function(fname)
-			-- INFO: stealed from:
 			-- https://github.com/neovim/nvim-lspconfig/blob/master/lua/lspconfig/server_configurations/tsserver.lua#L22
 			local root_dir = util.root_pattern(".git")(fname)
 			return root_dir
 		end,
-
-		--handlers = { ... },
 		capabilities = capabilities,
 		settings = {
 			separate_diagnostic_server = true,

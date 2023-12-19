@@ -202,7 +202,8 @@ lspconfig.tailwindcss.setup({
 				},
 				purgeLayersByDefault = true,
 			},
-			classAttributes = { "class", "classList", "className", ".*Style", ".*Class", ".*ClassName" },
+			-- classAttributes = { "class", "classList", "className", ".*Style", ".*Class", ".*ClassName" },
+			classAttributes = { "class", "classList", "className", ".*Class", ".*ClassName" },
 		},
 	},
 })
