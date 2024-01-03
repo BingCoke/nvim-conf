@@ -53,6 +53,14 @@ local on_attach = function(client, bufnr)
 	-- keybind options
 	local opts = { noremap = true, silent = true, buffer = bufnr }
 
+	keymap.set({ "n", "v" }, "<leader>f", function()
+		require("conform").format({
+			lsp_fallback = true,
+			timeout_ms = 1000,
+			async = true,
+		})
+	end, opts)
+
 	keymap.set("i", "<c-p>", vim.lsp.buf.signature_help, opts)
 	-- 设置光标
 	keymap.set("n", "<a-p>", "<cmd>lua require('illuminate').goto_prev_reference(true)<CR>", opts)
@@ -88,6 +96,7 @@ local on_attach = function(client, bufnr)
 	vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
 
 	keymap.set("n", "<A-a>", "<cmd>Lspsaga hover_doc<CR>", opts) -- show documentation for what is under cursor
+
 	keymap.set("n", "<leader>o", "<cmd>LSoutlineToggle<CR>", opts) -- see outline on right hand side
 
 	vim.keymap.set({ "i" }, "<c-d>", function()
@@ -183,7 +192,11 @@ lspconfig["html"].setup({
 	},
 })
 
-lspconfig.biome.setup({
+--[[lspconfig.biome.setup({
+	capabilities = default_capabilities,
+	on_attach = on_attach,
+})]]
+lspconfig.eslint.setup({
 	capabilities = default_capabilities,
 	on_attach = on_attach,
 })
@@ -199,29 +212,16 @@ lspconfig.tailwindcss.setup({
 					{ "tv\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]" },
 					{ "(?:twMerge|twJoin)\\(([^\\);]*)[\\);]", "[`'\"`]([^'\"`,;]*)[`'\"`]" },
 					{ "classNames\\(([^)]*)\\)", "[\"'`]([^\"'`]*)[\"'`]" },
+					{ "windVars\\(([^)]*)\\)", "[\"'`]([^\"'`]*)[\"'`]" },
+					{ "cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]" },
 				},
-				purgeLayersByDefault = true,
+				-- purgeLayersByDefault = true,
 			},
 			-- classAttributes = { "class", "classList", "className", ".*Style", ".*Class", ".*ClassName" },
 			classAttributes = { "class", "classList", "className", ".*Class", ".*ClassName" },
 		},
 	},
 })
-
---[[lspconfig.eslint.setup({
-	capabilities = capabilities,
-	on_attach = on_attach,
-	filetypes = {
-		"css",
-		"less",
-		"scss",
-		"sugarss",
-		"vue",
-		"wxss",
-		"html",
-		"yaml",
-	},
-})]]
 
 lspconfig.stylelint_lsp.setup({
 	filetypes = {
@@ -315,11 +315,6 @@ lspconfig["ruby_ls"].setup({
 	on_attach = on_attach,
 })
 
-lspconfig["volar"].setup({
-	capabilities = capabilities,
-	on_attach = on_attach,
-})
-
 lspconfig.typst_lsp.setup({
 	capabilities = capabilities,
 	on_attach = on_attach,
@@ -335,6 +330,14 @@ lspconfig["prismals"].setup({
 	on_attach = on_attach,
 })
 
+lspconfig.phpactor.setup({
+	capabilities = capabilities,
+	on_attach = on_attach,
+})
+--[[lspconfig.intelephense.setup({
+	capabilities = capabilities,
+	on_attach = on_attach,
+})]]
 M.on_attach = on_attach
 M.capabilities = capabilities
 M.lspconfig = lspconfig

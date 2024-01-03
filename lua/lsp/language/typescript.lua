@@ -26,9 +26,10 @@ function M.setup(lsp, default_capabilities, on_attach)
 
 			vim.keymap.set({ "n", "v" }, "<leader>l", function()
 				conform.format({
-					formatters = { "biomeLint" },
+					formatters = { "tsLint" },
 					lsp_fallback = true,
 					timeout_ms = 500,
+					async = true,
 				}, opts)
 			end)
 

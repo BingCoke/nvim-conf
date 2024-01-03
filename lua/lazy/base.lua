@@ -2,10 +2,14 @@ return {
 
 	{
 		"folke/tokyonight.nvim",
+		dependencies = {
+			"EdenEast/nightfox.nvim",
+		},
 		config = function()
 			require("colorscheme")
 		end,
 	},
+
 	{
 		"nvim-neo-tree/neo-tree.nvim",
 		dependencies = {

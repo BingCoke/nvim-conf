@@ -1,4 +1,7 @@
 require("noice").setup({
+	views = {
+		mini = { win_options = { winblend = 0 } },
+	},
 	messages = {
 		--view = "mini",
 		view_error = "mini", -- view for errors
@@ -44,7 +47,7 @@ require("noice").setup({
 	},
 	cmdline = {
 		view = "cmdline",
-		enabled= true
+		enabled = true,
 	},
 	routes = {
 		{
@@ -85,6 +88,14 @@ require("noice").setup({
 				event = "msg_show",
 				kind = "",
 				find = "more",
+			},
+			opts = { skip = true },
+		},
+		{
+			filter = {
+				event = "msg_show",
+				kind = "",
+				find = "indented",
 			},
 			opts = { skip = true },
 		},

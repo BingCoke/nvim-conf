@@ -1,7 +1,8 @@
 vim.g.mapleader = " "
 vim.g.maplocalleader = " "
 
-local map = vim.api.nvim_set_keymap
+--local map = vim.api.nvim_set_keymap
+local map = vim.keymap.set
 -- 复用 opt 参数
 local opt = { noremap = true, silent = true }
 map("n", "Q", "q", opt)
@@ -15,6 +16,9 @@ map("n", "s", "", opt)
 map("n", "<leader>sv", ":vsp<CR>", opt)
 map("n", "<leader>sh", ":sp<CR>", opt)
 
+map({ "n", "v", "i" }, "<c-a>", "<esc>ggVG", opt)
+
+map("n", "<leader>f", "ggVG=<c-o>", opt)
 -- 关闭当前
 map("n", "<leader>sc", "<C-w>c", opt)
 
@@ -42,7 +46,6 @@ map("i", "<C-s>", "<cmd>w<cr><esc>", opt)
 map("x", "<C-s>", "<cmd>w<cr><esc>", opt)
 map("n", "<C-s>", "<cmd>w<cr><esc>", opt)
 map("s", "<C-s>", "<cmd>w<cr><esc>", opt)
-
 
 map("n", "<leader>w", "<cmd>w<cr><esc>", opt)
 

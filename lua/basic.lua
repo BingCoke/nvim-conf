@@ -1,4 +1,5 @@
 vim.g.root_spec = { "lsp", { ".git", "lua" }, "cwd" }
+vim.o.shell = "/bin/bash"
 -- utf8
 vim.g.encoding = "UTF-8"
 vim.o.fileencoding = "utf-8"
