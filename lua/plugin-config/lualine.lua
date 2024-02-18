@@ -1,11 +1,5 @@
 local status, lualine = pcall(require, "lualine")
 if not status then
-	vim.notify("没有找到 lualine")
-	return
-end
-
-local status, lualine = pcall(require, "lualine")
-if not status then
 	return
 end
 
@@ -29,13 +23,12 @@ lualine.setup({
 			},
 		},
 		lualine_x = {
+			"rest",
 			{
 				"diagnostics",
 				sources = { "nvim_diagnostic" },
 				symbols = { error = " ", warn = " ", info = " ", hint = " " },
 			},
-			"flutter_tools_decorations.device",
-			"flutter_tools_decorations.app_version",
 			"encoding",
 			"filetype",
 		},
@@ -56,6 +49,5 @@ lualine.setup({
 		lualine_z = {},
 	},
 	tabline = {},
-	extensions = { "fugitive", "neo-tree", "nvim-dap-ui" },
+	extensions = { "fugitive", "neo-tree", "nvim-dap-ui", "mason", "lazy", "man" },
 })
-

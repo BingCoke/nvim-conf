@@ -57,7 +57,9 @@ local function border(hl_name)
 end
 
 -- load snippets from path/of/your/nvim/config/my-cool-snippets
-require("luasnip.loaders.from_vscode").lazy_load({ paths = { "./my-snippets" } })
+require("luasnip.loaders.from_vscode").lazy_load({ paths = { "./my-snippets", "./friendly-snippets" } })
+--require("luasnip.loaders.from_vscode").lazy_load({ paths = "./fridendly-snippets" })
+
 require("luasnip.loaders.from_vscode").lazy_load()
 
 require("luasnip.loaders.from_lua").lazy_load({ paths = "./snippets" })

@@ -1,9 +1,11 @@
 local conform = require("conform")
 local util = require("conform.util")
 
-local biome = {
+local biomeLint = {
 	command = util.from_node_modules("biome"),
 	stdin = false,
+	cwd = require("conform.util").root_file({ "biome.json" }),
+	require_cwd = true,
 	args = { "lint", "--apply", "$FILENAME" },
 }
 
@@ -15,20 +17,31 @@ local esLint = {
 
 conform.setup({
 	formatters = {
-		tsLint = esLint,
+		esLint = esLint,
+		biomeLint = biomeLint,
+		biome = {
+			cwd = require("conform.util").root_file({ "biome.json" }),
+			require_cwd = true,
+		},
 	},
 	formatters_by_ft = {
-		javascript = { "prettier" },
-		javascriptreact = { "prettier" },
-		typescript = { "prettier" },
-		typescriptreact = { "prettier" },
-		css = { "prettier" },
-		html = { "prettier" },
-		json = { "prettier" },
+		javascript = { { "biome", "prettierd" } },
+		javascriptreact = { "biome", "prettierd" },
+		typescript = { { "biome", "prettierd" } },
+		typescriptreact = { "biome", "prettierd" },
+		xml = { "prettierd" },
+		css = { "prettierd" },
+		html = { "prettierd" },
+		json = { { "biome", "prettierd" } },
 		lua = { "stylua" },
 		yaml = { "yamlfmt" },
 		shell = { "shfmt" },
 		php = { "php_cs_fixer" },
+		-- Use the "*" filetype to run formatters on all filetypes.
+		["*"] = { "codespell" },
+		-- Use the "_" filetype to run formatters on filetypes that don't
+		-- have other formatters configured.
+		["_"] = { "trim_whitespace" },
 	},
 })
 

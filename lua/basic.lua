@@ -1,5 +1,6 @@
 vim.g.root_spec = { "lsp", { ".git", "lua" }, "cwd" }
 vim.o.shell = "/bin/bash"
+vim.opt.shell = "fish"
 -- utf8
 vim.g.encoding = "UTF-8"
 vim.o.fileencoding = "utf-8"
@@ -103,3 +104,11 @@ vim.cmd("autocmd BufEnter *.css set formatoptions-=cro")
 vim.cmd("autocmd BufEnter *.css setlocal formatoptions-=cro")
 vim.cmd("autocmd BufEnter *.lua set formatoptions-=cro")
 vim.cmd("autocmd BufEnter *.lua setlocal formatoptions-=cro")
+
+vim.filetype.add({
+	extension = {
+		astro = "astro",
+		max = "mdx",
+		json = "jsonc",
+	},
+})

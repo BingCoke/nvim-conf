@@ -36,11 +36,12 @@ function M.setup(lspconfig, capabilities, on_attach)
 		dev_log = {
 			enabled = true,
 			notify_errors = true, -- if there is an error whilst running then notify the user
-			open_cmd = "edit", -- command to use to open the log buffer
+			open_cmd = "tabedit",
 		},
 		lsp = {
 			on_attach = on_attach,
 			capabilities = capabilities,
+			inlay_hints = { enabled = true },
 			color = {
 				enabled = true,
 			},

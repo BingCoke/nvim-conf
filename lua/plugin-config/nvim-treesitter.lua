@@ -24,6 +24,11 @@ treesitter.setup({
 		"markdown",
 		"markdown_inline",
 		"dart",
+		"http",
+		"jsonc",
+		"bash",
+		"vim",
+		"vimdoc",
 	},
 	-- 启用代码高亮模块
 	highlight = {
@@ -72,7 +77,9 @@ treesitter.setup({
 		enable_close_on_slash = false,
 	},
 })
+
 -- 开启 Folding 模块
+
 vim.opt.foldmethod = "expr"
 vim.opt.foldexpr = "nvim_treesitter#foldexpr()"
 -- 默认不要折叠

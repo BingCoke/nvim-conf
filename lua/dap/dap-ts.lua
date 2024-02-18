@@ -44,7 +44,7 @@ function M.setup()
 				type = "pwa-chrome",
 				name = "Launch Chrome",
 				request = "launch",
-				url = "http://localhost:8000",
+				url = "http://localhost:3000",
 			},
 			{
 				type = "pwa-node",
@@ -53,12 +53,24 @@ function M.setup()
 				program = "${file}",
 				cwd = "${workspaceFolder}",
 			},
+
 			{
 				type = "pwa-node",
 				request = "attach",
-				name = "node Attach",
+				name = "Node Attach",
 				processId = require("dap.utils").pick_process,
 				cwd = "${workspaceFolder}",
+			},
+			{
+				name = "Next.js: debug full stack",
+				type = "node-terminal",
+				request = "launch",
+				command = "pnpm run dev",
+				serverReadyAction = {
+					pattern = "- Local:.+(https?://.+)",
+					uriFormat = "%s",
+					action = "debugWithChrome",
+				},
 			},
 		}
 	end

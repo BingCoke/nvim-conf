@@ -12,15 +12,51 @@ telescope.setup({
 			"node_modules",
 		},
 		-- 窗口内快捷键
-		mappings = require("keybindings").telescopeList,
+		mappings = {
+			i = {
+				-- 上下移动
+				["<C-j>"] = "move_selection_next",
+				["<C-k>"] = "move_selection_previous",
+				["<Down>"] = "move_selection_next",
+				["<Up>"] = "move_selection_previous",
+				-- 历史记录
+				["<C-n>"] = "cycle_history_next",
+				["<C-p>"] = "cycle_history_prev",
+				-- 关闭窗口
+				["<C-c>"] = "close",
+				-- 预览窗口上下滚动
+				["<C-u>"] = "preview_scrolling_up",
+				["<C-d>"] = "preview_scrolling_down",
+				["<C-l>"] = "results_scrolling_right",
+				["<C-h>"] = "results_scrolling_left",
+				["<c-s>"] = "file_split",
+				["<c-v>"] = "file_vsplit",
+				["<c-o>"] = "select_tab_drop",
+			},
+		},
 	},
 	pickers = {
 		-- 内置 pickers 配置
 		find_files = {
 			-- 查找文件换皮肤，支持的参数有： dropdown, cursor, ivy
 			-- theme = "dropdown",
+			mappings = {
+				i = {
+					["<cr>"] = "select_tab_drop",
+					["<c-o>"] = "select_drop",
+				},
+			},
+		},
+		buffers = {
+			mappings = {
+				i = {
+					["<cr>"] = "select_drop",
+					["<c-o>"] = "select_drop",
+				},
+			},
 		},
 	},
+
 	extensions = {
 		["uo-select"] = {
 			require("telescope.themes").get_dropdown({}),
@@ -28,7 +64,6 @@ telescope.setup({
 		project = {
 			hidden_files = true, -- default: false
 			search_by = "title",
-			-- default for on_project_selected = find project files
 		},
 		file_browser = {
 			-- disables netrw and use telescope-file-browser in its place
@@ -42,11 +77,14 @@ telescope.setup({
 				},
 			},
 		},
+		myprojects = {},
 	},
 })
 
 --require("telescope").load_extension("file_browser")
-require("telescope").load_extension("projects")
+require("telescope").load_extension("myprojects")
+require("telescope").load_extension("my_file_find")
+--require("telescope").load_extension("rest")
 --require'telescope'.extensions.projects.projects{}
 require("telescope").load_extension("ui-select")
 --require("telescope").load_extension("project")

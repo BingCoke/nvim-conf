@@ -27,6 +27,9 @@ local language = {
 	"kotlin",
 	"prisma",
 	"php",
+	"astro",
+	"arduino",
+	"http",
 }
 return {
 	------- LSP -----
@@ -103,6 +106,7 @@ return {
 			"javascriptreact",
 			"typescript",
 			"typescriptreact",
+			"mdx",
 		},
 	},
 	{
@@ -188,6 +192,7 @@ return {
 			"typescript",
 			"typescriptreact",
 			"javascriptreact",
+			"mdx",
 		},
 	},
 	{
@@ -218,6 +223,7 @@ return {
 				},
 			})
 		end,
+		ft = language,
 	},
 	{
 		"folke/trouble.nvim",
@@ -242,5 +248,6 @@ return {
 				require("trouble").toggle("lsp_references")
 			end)
 		end,
+		ft = language,
 	},
 }

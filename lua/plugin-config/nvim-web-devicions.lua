@@ -42,5 +42,29 @@ require("nvim-web-devicons").setup({
 			cterm_color = "65",
 			icon = "",
 		},
+		astro = {
+			icon = "",
+			color = "#EF8547",
+			name = "astro",
+		},
+		arduino = {
+			icon = "",
+			name = "arduino",
+		},
+		ino = {
+			icon = "",
+			color = "#1E9CA5",
+			name = "ino",
+		},
+		http = {
+			icon = "",
+			color = "#EF8547",
+			name = "http",
+		},
+		httpResult = {
+			icon = "",
+			color = "#EF8547",
+			name = "httpResult",
+		},
 	},
 })

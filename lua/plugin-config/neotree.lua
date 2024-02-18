@@ -23,7 +23,7 @@ require("neo-tree").setup({
 	--   end , -- this sorts files and directories descendantly
 	default_component_configs = {
 		file_size = {
-			enable = false,
+			enable = true,
 		},
 		container = {
 			enable_character_fade = true,
@@ -93,22 +93,48 @@ require("neo-tree").setup({
 				nowait = false, -- disable `nowait` if you have existing combos starting with this char that you want to use
 			},
 			["<2-LeftMouse>"] = "open",
-			["<cr>"] = "open",
+			--["<cr>"] = function(state)
+			--	--print(vim.inspect(state))
+			--	state.commands.open_tab_drop()
+			--end,
+			["l"] = "open_drop",
+			["<cr>"] = function(state)
+				local tab_buffers = vim.fn.tabpagebuflist(vim.fn.tabpagenr())
+				-- 遍历缓冲区
+				-- 如果有一个filetype是dashboard 或者两个以上的buffer的filetype是nil或者"" 那么就是open
+				local count = 0
+				for _, bufnr in ipairs(tab_buffers) do
+					local filetype = vim.api.nvim_buf_get_option(bufnr, "filetype")
+					local name = vim.fn.bufname(bufnr)
+					if filetype == "dashboard" then
+						state.commands.open_drop(state)
+						return
+					end
+					if (filetype == nil or filetype == "") and (name == nil or name == "") then
+						count = count + 1
+					end
+				end
+				if count >= 2 then
+					state.commands.open_drop(state)
+					return
+				end
+				state.commands.open_tab_drop(state)
+			end,
 			["n"] = "revert_preview",
 			["<tab>"] = { "toggle_preview" },
 			--["l"] = "focus_preview",
 			--["<tab>"] = "focus_preview",
 			["S"] = "open_split",
 			["s"] = "open_vsplit",
+			["o"] = { "open", nowait = true },
 			-- ["S"] = "split_with_window_picker",
 			-- ["s"] = "vsplit_with_window_picker",
-			["t"] = "open_tabnew",
-			-- ["<cr>"] = "open_drop",
-			-- ["t"] = "open_tab_drop",
+			["t"] = "open_tab_drop",
 			["w"] = "",
 			--["P"] = "toggle_preview", -- enter preview mode, which shows the current node without focusing
 			["C"] = "close_node",
 			-- ['C'] = 'close_all_subnodes',
+
 			["W"] = "close_all_nodes",
 			["Z"] = "expand_all_nodes",
 			["a"] = {
@@ -122,6 +148,7 @@ require("neo-tree").setup({
 			["A"] = "add_directory", -- also accepts the optional config.show_path option like "add". this also supports BASH style brace expansion.
 			["d"] = "delete",
 			["r"] = "rename",
+
 			["y"] = "copy_to_clipboard",
 			["x"] = "cut_to_clipboard",
 			["p"] = "paste_from_clipboard",

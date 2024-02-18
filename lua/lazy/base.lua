@@ -3,7 +3,7 @@ return {
 	{
 		"folke/tokyonight.nvim",
 		dependencies = {
-			"EdenEast/nightfox.nvim",
+			--"EdenEast/nightfox.nvim",
 		},
 		config = function()
 			require("colorscheme")
@@ -12,6 +12,7 @@ return {
 
 	{
 		"nvim-neo-tree/neo-tree.nvim",
+		event = "VeryLazy",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
 			"nvim-tree/nvim-web-devicons",
@@ -39,18 +40,40 @@ return {
 		end,
 		event = "VeryLazy",
 	},
+	--{
+	--	"romgrk/barbar.nvim",
+	--	dependencies = {
+	--		-- 页面关闭
+	--		"moll/vim-bbye",
+	--	},
+	--	config = function(self, opts)
+	--		vim.g.barbar_auto_setup = false
+	--		require("plugin-config.barbar")
+	--	end,
+	--	enabled = false,
+	--},
 	{
-		"romgrk/barbar.nvim",
-		--event = { "VeryLazy" },
+		"akinsho/bufferline.nvim",
+		version = "*",
+		lazy = false,
+		priority = 1000,
+		event = "VeryLazy",
+
 		dependencies = {
-			--"nvim-tree/nvim-web-devicons", -- OPTIONAL: for file icons
-			-- 页面关闭
-			"moll/vim-bbye",
+			"nvim-tree/nvim-web-devicons",
 		},
-		config = function(self, opts)
-			vim.g.barbar_auto_setup = false
-			require("plugin-config.barbar")
+		config = function()
+			require("plugin-config.bufferline")
+			vim.api.nvim_create_autocmd("BufAdd", {
+				callback = function()
+					vim.schedule(function()
+						---@diagnostic disable-next-line: undefined-global
+						pcall(nvim_bufferline)
+					end)
+				end,
+			})
 		end,
+		--event = "VeryLazy",
 	},
 	{
 		"nvim-telescope/telescope.nvim",
@@ -67,15 +90,13 @@ return {
 	-- dashboard-nvim
 	{
 		"nvim-tree/nvim-web-devicons",
-		priority = 70,
 		config = function(self, opts)
 			require("plugin-config.nvim-web-devicions")
 		end,
-		event = "VeryLazy",
 	},
 	{
 		"glepnir/dashboard-nvim",
-		event = "UIEnter",
+		event = "VimEnter",
 		config = function()
 			require("plugin-config.dashboard")
 		end,
@@ -155,5 +176,14 @@ return {
 				})
 			end,
 		},
+	},
+	{
+		"rest-nvim/rest.nvim",
+		--dir = "/home/bk/tmp/rest.nvim",
+		dependencies = { { "nvim-lua/plenary.nvim" } },
+		config = function()
+			require("plugin-config.http")
+		end,
+		ft = "http",
 	},
 }

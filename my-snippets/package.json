@@ -27,23 +27,15 @@
       },
       {
         "language": [
-          "javascriptreact",
-          "typescriptreact"
-        ],
-        "path": "./react.json"
-      },
-      {
-        "language": [
-          "javascript",
-          "typescript"
-        ],
-        "path": "./ts.json"
-      },
-      {
-        "language": [
           "html"
         ],
         "path": "./html.json"
+      },
+      {
+        "language": [
+          "http"
+        ],
+        "path": "./http.json"
       }
     ]
   }

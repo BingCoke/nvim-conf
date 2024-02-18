@@ -8,7 +8,6 @@ return {
 		dependencies = {
 			"saadparwaiz1/cmp_luasnip",
 			"honza/vim-snippets",
-			"rafamadriz/friendly-snippets", -- useful snippets
 			"jcha0713/cmp-tw2css",
 			{
 				"js-everts/cmp-tailwind-colors",

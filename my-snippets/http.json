@@ -1,0 +1,56 @@
+{
+  "Content-Type": {
+    "prefix": "content-type",
+    "body": ["Content-Type: ${1}"]
+  },
+  "Accept": {
+    "prefix": "accept",
+    "body": ["Accept: ${1}"]
+  },
+  "json": {
+    "prefix": "json",
+    "description": "application/json",
+    "body": ["application/json"]
+  },
+  "cjson": {
+    "prefix": "cjson",
+    "description": "content application/json",
+    "body": ["Content-Type: application/json"]
+  },
+  "get": {
+    "prefix": "get",
+    "description": "get request",
+    "body": ["GET ${1}"]
+  },
+  "post": {
+    "prefix": "post",
+    "description": "post request",
+    "body": ["POST ${1}"]
+  },
+  "put": {
+    "prefix": "put",
+    "description": "put request",
+    "body": ["PUT ${1}"]
+  },
+  "DELETE": {
+    "prefix": "delete",
+    "description": "delete request",
+    "body": ["DELETE ${1}"]
+  },
+  "application": {
+    "prefix": "app",
+    "body": ["application/"]
+  },
+  "application/gzip": {
+    "prefix": "application/gzip",
+    "body": ["application/gzip"]
+  },
+  "application/xml": {
+    "prefix": "application/xml",
+    "body": ["application/xml"]
+  },
+  "application/json": {
+    "prefix": "application/json",
+    "body": ["application/json"]
+  }
+}

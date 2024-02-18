@@ -18,20 +18,21 @@ function M.setup(lsp, default_capabilities, on_attach)
 			"@",
 		},
 	}
-
 	require("typescript-tools").setup({
+		inlay_hints = { enabled = true },
 		on_attach = function(cli, buf)
 			local conform = require("conform")
 			local opts = { noremap = true, silent = true, buffer = buf }
 
 			vim.keymap.set({ "n", "v" }, "<leader>l", function()
 				conform.format({
-					formatters = { "tsLint" },
-					lsp_fallback = true,
+					formatters = { { "esLint", "biomeLint" } },
+					lsp_fallback = false,
+					quiet = true,
 					timeout_ms = 500,
 					async = true,
-				}, opts)
-			end)
+				})
+			end, opts)
 
 			on_attach(cli, buf)
 		end,

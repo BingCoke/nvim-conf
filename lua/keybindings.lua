@@ -18,7 +18,6 @@ map("n", "<leader>sh", ":sp<CR>", opt)
 
 map({ "n", "v", "i" }, "<c-a>", "<esc>ggVG", opt)
 
-map("n", "<leader>f", "ggVG=<c-o>", opt)
 -- 关闭当前
 map("n", "<leader>sc", "<C-w>c", opt)
 
@@ -27,16 +26,10 @@ map("i", "<A-d>", "<C-w>c", opt)
 -- 关闭其他
 map("n", "<leader>so", "<C-w>o", opt)
 -- Alt + hjkl  窗口之间跳转
-map("n", "<A-h>", "<C-w>h", opt)
-map("n", "<A-j>", "<C-w>j", opt)
-map("n", "<A-k>", "<C-w>k", opt)
-map("n", "<A-l>", "<C-w>l", opt)
 --map("n", "gx", "<Plug>NetrwBrowseX", opt)
 
 vim.s = 12
 -- 左右比例控制
-map("n", "<C-Left>", "<cmd>vertical resize -2<CR>", opt)
-map("n", "<C-Right>", "<cmd>vertical resize +2<cr>", opt)
 
 map("n", "<esc>", "<cmd>noh<cr><esc>", opt)
 map("i", "<esc>", "<cmd>noh<cr><esc>", opt)
@@ -85,7 +78,7 @@ map("v", "<C-u>", "9k", opt)
 map("v", "<C-d>", "9j", opt)
 -- 设置退出并,保存
 
-map("n", "<leader>q", "<cmd>w<CR>", opt)
+map("n", "<leader>q", "<cmd>qa<CR>", opt)
 map("n", "<leader>i", "<cmd>qa<CR>", opt)
 map("n", "<leader>W", "<cmd>w !sudo tee %<CR>", {})
 
@@ -96,38 +89,43 @@ local pluginKeys = {}
 -- 设置文件搜索
 -- Telescope
 -- 查找文件
-map("n", "<C-p>", "<cmd>Telescope find_files<CR>", opt)
+map("n", "<C-p>", function()
+	vim.cmd([[Neotree close]])
+	local tab_buffers = vim.fn.tabpagebuflist(vim.fn.tabpagenr())
+	--local count = 0
+	for _, bufnr in ipairs(tab_buffers) do
+		local filetype = vim.api.nvim_buf_get_option(bufnr, "filetype")
+		local name = vim.fn.bufname(bufnr)
+		if filetype == "dashboard" then
+			require("telescope").extensions.my_file_find.find_files({})
+			return
+		end
+		--if (filetype == nil or filetype == "") and (name == nil or name == "") then
+		--	count = count + 1
+		--end
+	end
+	--if count >= 2 then
+	--	require("telescope").extensions.my_file_find.find_files({})
+	--	return
+	--end
+	vim.cmd([[Telescope find_files]])
+end, opt)
+
 -- 全局搜索
-map("n", "<C-f>", "<cmd>Telescope live_grep<CR>", opt)
+map("n", "<C-f>", function()
+	vim.cmd([[Neotree close]])
+	vim.cmd([[Telescope live_grep]])
+end, opt)
 
+map("n", "sw", "<cmd>Telescope buffers<CR>", opt)
 map("n", "<leader>p", "<cmd>Telescope lsp_dynamic_workspace_symbols<CR>", opt)
--- 查看tab show window
-map("n", "<leader>sw", "<cmd>Telescope buffers<CR>", opt)
-
 -- dap
 
 -- treesitter
 
 map("n", "<c-w>", "<c-w>w", opt)
 
--- Telescope 列表中 插入模式快捷键
-pluginKeys.telescopeList = {
-	i = {
-		-- 上下移动
-		["<C-j>"] = "move_selection_next",
-		["<C-k>"] = "move_selection_previous",
-		["<Down>"] = "move_selection_next",
-		["<Up>"] = "move_selection_previous",
-		-- 历史记录
-		["<C-n>"] = "cycle_history_next",
-		["<C-p>"] = "cycle_history_prev",
-		-- 关闭窗口
-		["<C-c>"] = "close",
-		-- 预览窗口上下滚动
-		["<C-u>"] = "preview_scrolling_up",
-		["<C-d>"] = "preview_scrolling_down",
-	},
-}
+
 
 -- nvim-tree
 -- alt+m 键 打开关闭tree

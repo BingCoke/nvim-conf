@@ -10,6 +10,7 @@ local language = {
 	-- "typescript",
 }
 --vim.lsp.set_log_level("debug")
+local util = require("lspconfig.util")
 
 -- import lspconfig plugin safely
 local lspconfig_status, lspconfig = pcall(require, "lspconfig")
@@ -52,14 +53,7 @@ end
 local on_attach = function(client, bufnr)
 	-- keybind options
 	local opts = { noremap = true, silent = true, buffer = bufnr }
-
-	keymap.set({ "n", "v" }, "<leader>f", function()
-		require("conform").format({
-			lsp_fallback = true,
-			timeout_ms = 1000,
-			async = true,
-		})
-	end, opts)
+	vim.lsp.inlay_hint.enable(bufnr, true)
 
 	keymap.set("i", "<c-p>", vim.lsp.buf.signature_help, opts)
 	-- 设置光标
@@ -192,10 +186,13 @@ lspconfig["html"].setup({
 	},
 })
 
---[[lspconfig.biome.setup({
+lspconfig.biome.setup({
 	capabilities = default_capabilities,
 	on_attach = on_attach,
-})]]
+	root_dir = util.root_pattern("biome.json"),
+	single_file_support = false,
+})
+
 lspconfig.eslint.setup({
 	capabilities = default_capabilities,
 	on_attach = on_attach,
@@ -334,10 +331,22 @@ lspconfig.phpactor.setup({
 	capabilities = capabilities,
 	on_attach = on_attach,
 })
+
 --[[lspconfig.intelephense.setup({
 	capabilities = capabilities,
 	on_attach = on_attach,
 })]]
+
+lspconfig.arduino_language_server.setup({
+	capabilities = capabilities,
+	on_attach = on_attach,
+})
+local astrocap = require("cmp_nvim_lsp").default_capabilities()
+lspconfig.astro.setup({
+	capabilities = astrocap,
+	on_attach = on_attach,
+})
+
 M.on_attach = on_attach
 M.capabilities = capabilities
 M.lspconfig = lspconfig
