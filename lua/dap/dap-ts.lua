@@ -44,7 +44,10 @@ function M.setup()
 				type = "pwa-chrome",
 				name = "Launch Chrome",
 				request = "launch",
-				url = "http://localhost:3000",
+				url = "http://localhost:34115",
+				port = 9222,
+				protocol = "inspector",
+				sourceMaps = true,
 			},
 			{
 				type = "pwa-node",
@@ -71,6 +74,18 @@ function M.setup()
 					uriFormat = "%s",
 					action = "debugWithChrome",
 				},
+			},
+			{
+				name = "Next.js: debug server-side",
+				type = "node-terminal",
+				request = "launch",
+				command = "npm run dev",
+			},
+			{
+				name = "Next.js: debug client-side",
+				type = "pwa-chrome",
+				request = "launch",
+				url = "http://localhost:3000",
 			},
 		}
 	end

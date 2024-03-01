@@ -341,6 +341,12 @@ lspconfig.arduino_language_server.setup({
 	capabilities = capabilities,
 	on_attach = on_attach,
 })
+
+lspconfig.lemminx.setup({
+	capabilities = capabilities,
+	on_attach = on_attach,
+})
+
 local astrocap = require("cmp_nvim_lsp").default_capabilities()
 lspconfig.astro.setup({
 	capabilities = astrocap,

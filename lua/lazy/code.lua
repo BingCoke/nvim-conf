@@ -50,16 +50,6 @@ return {
 		end,
 		ft = language,
 	},
-	--[[{
-		"nvimdev/guard.nvim",
-		dependencies = {
-			"nvimdev/guard-collection",
-		},
-		config = function(self, opts)
-			require("plugin-config.guard")
-		end,
-		ft = language,
-	},]]
 	{
 		"RRethy/vim-illuminate",
 		config = function()

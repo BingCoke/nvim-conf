@@ -166,7 +166,14 @@ return {
 	-- language go
 	{
 		"ray-x/go.nvim",
-		dependencies = { "ray-x/guihua.lua", "neovim/nvim-lspconfig" },
+		dependencies = {
+			"ray-x/guihua.lua",
+			"neovim/nvim-lspconfig",
+			{
+				"golang/vscode-go",
+				build = "cd extension && npm install && npm run compile"
+			},
+		},
 		config = function()
 			require("language.go")
 		end,

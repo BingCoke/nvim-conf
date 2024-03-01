@@ -50,49 +50,49 @@ rest.setup({
 	search_back = true,
 })
 
-local function getEnvFile(prompt_title, fn)
-	local pattern = "\\.env$"
-	local command = string.format("fd -H '%s'", pattern)
-	local result = io.popen(command):read("*a")
-	-- 初始化一个空表
-	local lines = {}
-
-	-- 分割成行并保存到表中
-	for line in result:gmatch("[^\r\n]+") do
-		table.insert(lines, line)
-	end
-
-	pickers
-		.new({}, {
-			prompt_title = prompt_title,
-			finder = finders.new_table({
-				results = lines,
-			}),
-			attach_mappings = function(prompt_bufnr, map)
-				actions.select_default:replace(function()
-					local selection = action_state.get_selected_entry()
-					actions.close(prompt_bufnr)
-					if selection == nil then
-						return
-					end
-
-					fn(selection[1])
-				end)
-				map("i", "<c-o>", function()
-					local selection = state.get_selected_entry(prompt_bufnr)
-					actions.close(prompt_bufnr)
-					if selection == nil then
-						return
-					end
-					vim.api.nvim_command("tabedit " .. selection[1])
-				end)
-				return true
-			end,
-			previewer = conf.grep_previewer({}),
-		})
-		:find()
-end
-
+--local function getEnvFile(prompt_title, fn)
+--	local pattern = "\\.env$"
+--	local command = string.format("fd -H '%s'", pattern)
+--	local result = io.popen(command):read("*a")
+--	-- 初始化一个空表
+--	local lines = {}
+--
+--	-- 分割成行并保存到表中
+--	for line in result:gmatch("[^\r\n]+") do
+--		table.insert(lines, line)
+--	end
+--
+--	pickers
+--		.new({}, {
+--			prompt_title = prompt_title,
+--			finder = finders.new_table({
+--				results = lines,
+--			}),
+--			attach_mappings = function(prompt_bufnr, map)
+--				actions.select_default:replace(function()
+--					local selection = action_state.get_selected_entry()
+--					actions.close(prompt_bufnr)
+--					if selection == nil then
+--						return
+--					end
+--
+--					fn(selection[1])
+--				end)
+--				map("i", "<c-o>", function()
+--					local selection = state.get_selected_entry(prompt_bufnr)
+--					actions.close(prompt_bufnr)
+--					if selection == nil then
+--						return
+--					end
+--					vim.api.nvim_command("tabedit " .. selection[1])
+--				end)
+--				return true
+--			end,
+--			previewer = conf.grep_previewer({}),
+--		})
+--		:find()
+--end
+--
 vim.api.nvim_create_autocmd({
 	"FileType",
 }, {
@@ -110,10 +110,10 @@ vim.api.nvim_create_autocmd({
 		keymap.set("n", "<F5>", "<cmd>lua require('rest-nvim').run()<cr>", opt)
 		keymap.set("n", "<F6>", "<cmd>lua require('rest-nvim').last()<cr>", opt)
 		keymap.set("n", "<F7>", function()
-			--require("telescope").extensions.rest.select_env()
-			getEnvFile("Select Env", function(file)
-				rest.select_env(file)
-			end)
+			require("telescope").extensions.rest.select_env()
+			--getEnvFile("Select Env", function(file)
+			--	rest.select_env(file)
+			--end)
 		end, opt)
 	end,
 })

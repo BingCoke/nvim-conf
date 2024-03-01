@@ -3,13 +3,15 @@ local M = {
 	last_testpath = "",
 	config = {},
 }
+local restUtil = require("rest-nvim/utils")
+
 local dap = require("dap")
 
 local select = require("my.select")
 local daputil = require("dap.dap-utils")
 
 local function build()
-
+	M.config = {}
 	table.insert(M.config, {
 		name = " Debug",
 		fn = function(opt)
@@ -101,6 +103,39 @@ local function build()
 		end,
 	})
 
+	table.insert(M.config, {
+		name = " Remote debug",
+		fn = function(opt)
+			--local work_dir = opt.work_dir
+			local res = restUtil.get_env_variables()
+			local host = res["host"]
+			local port = res["port"]
+			local to = res["to"]
+			if host == nil then
+				host = ""
+			end
+			if to == nil then
+				to = "${workspaceFolder}"
+			end
+			if port == nil then
+				port = "8080"
+			end
+
+			dap.run({
+				type = "go",
+				name = "remote debug",
+				request = "attach",
+				mode = "remote",
+				--program = work_dir,
+				host = host,
+				port = port,
+				substitutePath = {
+					{ from = "${workspaceFolder}", to = to },
+				},
+			})
+		end,
+	})
+
 end
 
 M.setup = function()
@@ -113,6 +148,11 @@ M.setup = function()
 			command = "dlv",
 			args = { "dap", "-l", "127.0.0.1:${port}" },
 		},
+	}
+	dap.adapters.go = {
+		type = "executable",
+		command = "node",
+		args = { os.getenv("HOME") .. "/.local/share/nvim/lazy/vscode-go/extension/dist/debugAdapter.js" },
 	}
 
 	build()

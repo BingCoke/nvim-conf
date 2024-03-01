@@ -184,6 +184,7 @@ return {
 		config = function()
 			require("plugin-config.http")
 		end,
-		ft = "http",
+		ft = {"http","go"},
+
 	},
 }

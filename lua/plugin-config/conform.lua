@@ -29,7 +29,7 @@ conform.setup({
 		javascriptreact = { "biome", "prettierd" },
 		typescript = { { "biome", "prettierd" } },
 		typescriptreact = { "biome", "prettierd" },
-		xml = { "prettierd" },
+		xml = { { "xmlformatter" } },
 		css = { "prettierd" },
 		html = { "prettierd" },
 		json = { { "biome", "prettierd" } },

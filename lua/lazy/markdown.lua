@@ -76,4 +76,14 @@ return {
 		end,
 		ft = "markdown",
 	},
+	{
+		"Zeioth/markmap.nvim",
+		build = "yarn global add markmap-cli",
+		ft = "markdown",
+		config = function()
+			require("markmap").setup({
+				hide_toolbar = true,
+			})
+		end,
+	},
 }
