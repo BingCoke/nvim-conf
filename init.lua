@@ -8,6 +8,8 @@ require("basic")
 require("keybindings")
 -- 插件设置
 require("plugins")
+
+
 vim.g.hlchunk_files = "*.ts,*.js,*.json,*.go,*.c,*.cpp,*.rs,*.h,*.hpp,*.lua,*.py,*.dart"
 
 vim.o.switchbuf='useopen,usetab,newtab'
@@ -16,7 +18,7 @@ local group = vim.api.nvim_create_augroup("BufLast", { clear = true })
 -- 如果当前关闭的buffer是最后一个buffer
 vim.api.nvim_create_autocmd("BufDelete", {
 	group = group,
-	callback = function(opts)
+	callback = function()
 		local buf = vim.api.nvim_get_current_buf()
 		local opt = { noremap = true, silent = true, buffer = buf }
 		local keymap = vim.keymap -- for conciseness

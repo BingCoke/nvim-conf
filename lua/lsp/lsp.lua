@@ -53,7 +53,7 @@ end
 local on_attach = function(client, bufnr)
 	-- keybind options
 	local opts = { noremap = true, silent = true, buffer = bufnr }
-	vim.lsp.inlay_hint.enable(bufnr, true)
+	--vim.lsp.inlay_hint.enable(bufnr, true)
 
 	keymap.set("i", "<c-p>", vim.lsp.buf.signature_help, opts)
 	-- 设置光标
@@ -65,31 +65,34 @@ local on_attach = function(client, bufnr)
 	--keymap.set("n", "gd", "<Cmd>lua vim.lsp.buf.definition()<CR>", opts) -- got to declaration
 	keymap.set("n", "gD", "<CMD>Glance definitions<CR>", opts)
 	keymap.set("n", "gd", "<cmd>Lspsaga goto_definition<CR>", opts)
+
 	-- Go to type definition
 	keymap.set("n", "gt", "<CMD>Glance type_definitions<CR>", opts)
 	keymap.set("n", "gy", "<CMD>:Lspsaga goto_type_definition<CR>", opts)
 
 	keymap.set("n", "gi", "<CMD>Lspsaga finder imp<CR>", opts)
 
-	keymap.set("n", "<leader>s", "<cmd>Lspsaga code_action<CR>", opts) -- see available code actions
-	keymap.set("n", "<leader>rn", "<cmd>Lspsaga rename<CR>", opts) -- smart rename
+	keymap.set("n", "<leader>s", "<cmd>Lspsaga code_action<CR>", opts)            -- see available code actions
+	keymap.set("n", "<leader>rn", "<cmd>Lspsaga rename<CR>", opts)                -- smart rename
 
 	keymap.set("n", "<leader>D", "<cmd>Lspsaga show_line_diagnostics <CR>", opts) -- show  diagnostics for line
 	keymap.set("n", "<leader>d", "<cmd>Lspsaga show_cursor_diagnostics<CR>", opts) -- show diagnostics for cursor
 
-	keymap.set("n", "[g", "<cmd>Lspsaga diagnostic_jump_prev<CR>", opts) -- jump to previous diagnostic in buffer
-	keymap.set("n", "]g", "<cmd>Lspsaga diagnostic_jump_next<CR>", opts) -- jump to next diagnostic in buffer
+	keymap.set("n", "[g", "<cmd>Lspsaga diagnostic_jump_prev<CR>", opts)          -- jump to previous diagnostic in buffer
+	keymap.set("n", "]g", "<cmd>Lspsaga diagnostic_jump_next<CR>", opts)          -- jump to next diagnostic in buffer
 	-- Diagnostic jump with filters such as only jumping to an error
+
 	keymap.set("n", "[e", function()
+		print("nih")
 		require("lspsaga.diagnostic"):goto_prev({ severity = vim.diagnostic.severity.ERROR })
 	end, opts)
 	keymap.set("n", "]e", function()
 		require("lspsaga.diagnostic"):goto_next({ severity = vim.diagnostic.severity.ERROR })
 	end, opts)
 
-	vim.keymap.set("n", "K", vim.lsp.buf.hover, opts)
+	keymap.set("n", "K", vim.lsp.buf.hover, opts)
 
-	keymap.set("n", "<A-a>", "<cmd>Lspsaga hover_doc<CR>", opts) -- show documentation for what is under cursor
+	keymap.set("n", "<A-a>", "<cmd>Lspsaga hover_doc<CR>", opts)  -- show documentation for what is under cursor
 
 	keymap.set("n", "<leader>o", "<cmd>LSoutlineToggle<CR>", opts) -- see outline on right hand side
 
@@ -206,11 +209,11 @@ lspconfig.tailwindcss.setup({
 			experimental = {
 				-- https://github.com/paolotiu/tailwind-intellisense-regex-list#tailwind-merge
 				classRegex = {
-					{ "tv\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]" },
+					{ "tv\\(([^)]*)\\)",                       "[\"'`]([^\"'`]*).*?[\"'`]" },
 					{ "(?:twMerge|twJoin)\\(([^\\);]*)[\\);]", "[`'\"`]([^'\"`,;]*)[`'\"`]" },
-					{ "classNames\\(([^)]*)\\)", "[\"'`]([^\"'`]*)[\"'`]" },
-					{ "windVars\\(([^)]*)\\)", "[\"'`]([^\"'`]*)[\"'`]" },
-					{ "cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]" },
+					{ "classNames\\(([^)]*)\\)",               "[\"'`]([^\"'`]*)[\"'`]" },
+					{ "windVars\\(([^)]*)\\)",                 "[\"'`]([^\"'`]*)[\"'`]" },
+					{ "cva\\(([^)]*)\\)",                      "[\"'`]([^\"'`]*).*?[\"'`]" },
 				},
 				-- purgeLayersByDefault = true,
 			},
@@ -279,15 +282,24 @@ lspconfig["cssls"].setup({
 	capabilities = default_capabilities,
 	on_attach = on_attach,
 	settings = {
-		css = { validate = true, lint = {
-			unknownAtRules = "ignore",
-		} },
-		scss = { validate = true, lint = {
-			unknownAtRules = "ignore",
-		} },
-		less = { validate = true, lint = {
-			unknownAtRules = "ignore",
-		} },
+		css = {
+			validate = true,
+			lint = {
+				unknownAtRules = "ignore",
+			}
+		},
+		scss = {
+			validate = true,
+			lint = {
+				unknownAtRules = "ignore",
+			}
+		},
+		less = {
+			validate = true,
+			lint = {
+				unknownAtRules = "ignore",
+			}
+		},
 	},
 })
 

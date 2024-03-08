@@ -36,6 +36,18 @@
           "http"
         ],
         "path": "./http.json"
+      },
+      {
+        "language": "go",
+        "path": "./go.json"
+      },
+      {
+        "language": "typescript",
+        "path": "./ts.json"
+      },
+      {
+        "language": "typescriptreact",
+        "path": "./ts-react.json"
       }
     ]
   }

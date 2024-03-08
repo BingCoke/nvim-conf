@@ -1,0 +1,538 @@
+{
+  "destructuring of props": {
+    "prefix": "dp",
+    "body": [
+      "const { ${1:name} } = this.props"
+    ]
+  },
+  "destructuring of state": {
+    "prefix": "ds",
+    "body": [
+      "const { ${1:name} } = this.state"
+    ]
+  },
+  "reactFunctionComponent": {
+    "prefix": "rfc",
+    "body": "import React from 'react'\n\nexport const ${TM_FILENAME_BASE} = (props : {}) => {\n\treturn (\n\t\t<div>\n\t\t\t$0\n\t\t</div>\n\t)\n}",
+    "description": "Creates a React functional component without PropTypes"
+  },
+  "reactFunctionComponentWithEmotion": {
+    "prefix": "rfce",
+    "body": "import { css } from '@emotion/core'\nimport React from 'react'\n\nexport const ${TM_FILENAME_BASE} = (props: {}) => {\n\treturn (\n\t\t<div css={css``}>\n\t\t\t$0\n\t\t</div>\n\t)\n}",
+    "description": "Creates a React functional component with emotion import"
+  },
+  "jsx element": {
+    "prefix": "j",
+    "body": "<${1:elementName}>\n\t$0\n</${1}>",
+    "description": "an element"
+  },
+  "jsx element self closed": {
+    "prefix": "jc",
+    "body": "<${1:elementName} />",
+    "description": "an element self closed"
+  },
+  "jsx elements map": {
+    "prefix": "jm",
+    "body": "{${1:array}.map((item) => <${2:elementName} key={item.id}>\n\t$0\n</${2}>)}",
+    "description": "an element self closed"
+  },
+  "jsx elements map with return": {
+    "prefix": "jmr",
+    "body": "{${1:array}.map((item) => {\n\treturn <${2:elementName} key={item.id}>\n\t$0\n</${2}>\n})}",
+    "description": "an element self closed"
+  },
+  "jsx element wrap selection": {
+    "prefix": "jsx wrap selection with element",
+    "body": "<${1:elementName}>\n\t{$TM_SELECTED_TEXT}\n</${1}>",
+    "description": "an element"
+  },
+  "useState": {
+    "prefix": "us",
+    "body": "const [${1:state}, set${1/(.*)/${1:/capitalize}/}] = useState(${2:initValue})$0",
+    "description": "React useState() hook"
+  },
+  "useEffect": {
+    "prefix": "ue",
+    "body": [
+      "useEffect(() => {",
+      "\t$1",
+      "}, [${3:dependencies}])$0"
+    ],
+    "description": "React useEffect() hook"
+  },
+  "useEffect with cleanup": {
+    "prefix": "uec",
+    "body": [
+      "useEffect(() => {",
+      "\t$1",
+      "\n\treturn () => {",
+      "\t\t$2",
+      "\t}",
+      "}, [${3:dependencies}])$0"
+    ],
+    "description": "React useEffect() hook with a cleanup function"
+  },
+  "createContext": {
+    "prefix": "cc",
+    "body": [
+      "export const $1 = createContext<$2>(",
+      "\t(null as any) as $2",
+      ")"
+    ],
+    "description": "creates a react context"
+  },
+  "useContext": {
+    "prefix": "uc",
+    "body": [
+      "const $1 = useContext($2)$0"
+    ],
+    "description": "React useContext() hook"
+  },
+  "useRef": {
+    "prefix": "ur",
+    "body": [
+      "const ${1:elName}El = useRef(null)$0"
+    ],
+    "description": "React useRef() hook"
+  },
+  "useCallback": {
+    "prefix": "ucb",
+    "body": [
+      "const ${1:memoizedCallback} = useCallback(",
+      "\t() => {",
+      "\t\t${2:doSomething}(${3:a}, ${4:b})",
+      "\t},",
+      "\t[${5:a}, ${6:b}],",
+      ")$0"
+    ],
+    "description": "React useCallback() hook"
+  },
+  "useMemo": {
+    "prefix": "ume",
+    "body": [
+      "const ${1:memoizedValue} = useMemo(() => ${2:computeExpensiveValue}(${3:a}, ${4:b}), [${5:a}, ${6:b}])$0"
+    ],
+    "description": "React useMemo() hook"
+  },
+  "createReactHook": {
+    "prefix": "crh",
+    "body": [
+      "export const use$0 = () => {",
+      "",
+      "}"
+    ],
+    "description": "Create React Hook"
+  },
+  "createReactHookWithName": {
+    "prefix": "crhn",
+    "body": [
+      "export const ${TM_FILENAME_BASE} = () => {",
+      "\t$0",
+      "}"
+    ],
+    "description": "Create React Hook using File name"
+  },
+  "describeBlock": {
+    "prefix": "desc",
+    "body": [
+      "describe('$1', () => {",
+      "  $0",
+      "})",
+      ""
+    ],
+    "description": "Testing `describe` block"
+  },
+  "testBlock": {
+    "prefix": "test",
+    "body": [
+      "test('should $1', () => {",
+      "  $0",
+      "})",
+      ""
+    ],
+    "description": "Testing `test` block"
+  },
+  "itBlock": {
+    "prefix": "tit",
+    "body": [
+      "it('should $1', () => {",
+      "  $0",
+      "})",
+      ""
+    ],
+    "description": "Testing `it` block"
+  },
+  "itAsyncBlock": {
+    "prefix": "tita",
+    "body": [
+      "it('should $1', async () => {",
+      "  $0",
+      "})",
+      ""
+    ],
+    "description": "Testing async `it` block"
+  },
+  "statefulComponent": {
+    "prefix": "rnc",
+    "body": [
+      "import React, { Component } from 'react';",
+      "",
+      "import { View } from 'react-native';",
+      "",
+      "// import { Container } from './styles';",
+      "",
+      "export default class ${1:${TM_DIRECTORY/^.*(\\/|\\\\)([^(\\/|\\\\)]+)$/$2/}} extends Component {",
+      "  render() {",
+      "    return <View />;",
+      "  }",
+      "}",
+      ""
+    ],
+    "description": "Create React Native Stateful Component"
+  },
+  "statelessComponent": {
+    "prefix": "rnsc",
+    "body": [
+      "import React from 'react';",
+      "",
+      "import { View } from 'react-native';",
+      "",
+      "// import { Container } from './styles';",
+      "",
+      "const ${1:${TM_DIRECTORY/^.*(\\/|\\\\)([^(\\/|\\\\)]+)$/$2/}} = () => <View />;",
+      "",
+      "export default ${1:${TM_DIRECTORY/^.*(\\/|\\\\)([^(\\/|\\\\)]+)$/$2/}};",
+      ""
+    ],
+    "description": "Create React Native Stateless Component"
+  },
+  "componentFunctional": {
+    "prefix": "rnfc",
+    "body": [
+      "import React from 'react';",
+      "import { View } from 'react-native';",
+      "",
+      "// import { Container } from './styles';",
+      "",
+      "export default function ${1:${TM_DIRECTORY/^.*(\\/|\\\\)([^(\\/|\\\\)]+)$/$2/}}() {",
+      "  return (",
+      "    <View />",
+      "  );",
+      "}",
+      ""
+    ],
+    "description": "Create React Native Functional Component"
+  },
+  "componentFunctionalTypescript": {
+    "prefix": "rnfcc",
+    "body": [
+      "import React from 'react';",
+      "import { View } from 'react-native';",
+      "",
+      "// import { Container } from './styles';",
+      "",
+      "const ${1:${TM_DIRECTORY/^.*(\\/|\\\\)([^(\\/|\\\\)]+)$/$2/}}: React.FC = () => {",
+      "  return <View />;",
+      "}",
+      "",
+      "export default ${1:${TM_DIRECTORY/^.*(\\/|\\\\)([^(\\/|\\\\)]+)$/$2/}};"
+    ],
+    "description": "Create React Native TypeScript Functional Component"
+  },
+  "Constructor": {
+    "prefix": "ctor",
+    "body": [
+      "/**",
+      " *",
+      " */",
+      "constructor() {",
+      "\tsuper();",
+      "\t$0",
+      "}"
+    ],
+    "description": "Constructor"
+  },
+  "Class Definition": {
+    "prefix": "class",
+    "body": [
+      "class ${1:name} {",
+      "\tconstructor(${2:parameters}) {",
+      "\t\t$0",
+      "\t}",
+      "}"
+    ],
+    "description": "Class Definition"
+  },
+  "Interface Definition": {
+    "prefix": "iface",
+    "body": [
+      "interface ${1:name} {",
+      "\t$0",
+      "}"
+    ],
+    "description": "Interface Definition"
+  },
+  "Public Method Definition": {
+    "prefix": "public method",
+    "body": [
+      "/**",
+      " * ${1:name}",
+      " */",
+      "public ${1:name}() {",
+      "\t$0",
+      "}"
+    ],
+    "description": "Public Method Definition"
+  },
+  "Private Method Definition": {
+    "prefix": "private method",
+    "body": [
+      "private ${1:name}() {",
+      "\t$0",
+      "}"
+    ],
+    "description": "Private Method Definition"
+  },
+  "Import external module.": {
+    "prefix": "import statement",
+    "body": [
+      "import { $0 } from \"${1:module}\";"
+    ],
+    "description": "Import external module."
+  },
+  "Property getter": {
+    "prefix": "get",
+    "body": [
+      "",
+      "public get ${1:value}() : ${2:string} {",
+      "\t${3:return $0}",
+      "}",
+      ""
+    ],
+    "description": "Property getter"
+  },
+  "Log to the console": {
+    "prefix": "log",
+    "body": [
+      "console.log($1);",
+      "$0"
+    ],
+    "description": "Log to the console"
+  },
+  "Log warning to console": {
+    "prefix": "warn",
+    "body": [
+      "console.warn($1);",
+      "$0"
+    ],
+    "description": "Log warning to the console"
+  },
+  "Log error to console": {
+    "prefix": "error",
+    "body": [
+      "console.error($1);",
+      "$0"
+    ],
+    "description": "Log error to the console"
+  },
+  "Define a full property": {
+    "prefix": "prop",
+    "body": [
+      "",
+      "private _${1:value} : ${2:string};",
+      "public get ${1:value}() : ${2:string} {",
+      "\treturn this._${1:value};",
+      "}",
+      "public set ${1:value}(v : ${2:string}) {",
+      "\tthis._${1:value} = v;",
+      "}",
+      ""
+    ],
+    "description": "Define a full property"
+  },
+  "Triple-slash reference": {
+    "prefix": "ref",
+    "body": [
+      "/// <reference path=\"$1\" />",
+      "$0"
+    ],
+    "description": "Triple-slash reference"
+  },
+  "Property setter": {
+    "prefix": "set",
+    "body": [
+      "",
+      "public set ${1:value}(v : ${2:string}) {",
+      "\tthis.$3 = v;",
+      "}",
+      ""
+    ],
+    "description": "Property setter"
+  },
+  "Throw Exception": {
+    "prefix": "throw",
+    "body": [
+      "throw \"$1\";",
+      "$0"
+    ],
+    "description": "Throw Exception"
+  },
+  "For Loop": {
+    "prefix": "for",
+    "body": [
+      "for (let ${1:index} = 0; ${1:index} < ${2:array}.length; ${1:index}++) {",
+      "\tconst ${3:element} = ${2:array}[${1:index}];",
+      "\t$0",
+      "}"
+    ],
+    "description": "For Loop"
+  },
+  "For-Each Loop using =>": {
+    "prefix": "foreach =>",
+    "body": [
+      "${1:array}.forEach(${2:element} => {",
+      "\t$0",
+      "});"
+    ],
+    "description": "For-Each Loop using =>"
+  },
+  "For-In Loop": {
+    "prefix": "forin",
+    "body": [
+      "for (const ${1:key} in ${2:object}) {",
+      "\tif (${2:object}.hasOwnProperty(${1:key})) {",
+      "\t\tconst ${3:element} = ${2:object}[${1:key}];",
+      "\t\t$0",
+      "\t}",
+      "}"
+    ],
+    "description": "For-In Loop"
+  },
+  "For-Of Loop": {
+    "prefix": "forof",
+    "body": [
+      "for (const ${1:iterator} of ${2:object}) {",
+      "\t$0",
+      "}"
+    ],
+    "description": "For-Of Loop"
+  },
+  "For-Await-Of Loop": {
+    "prefix": "forawaitof",
+    "body": [
+      "for await (const ${1:iterator} of ${2:object}) {",
+      "\t$0",
+      "}"
+    ],
+    "description": "For-Await-Of Loop"
+  },
+  "Function Statement": {
+    "prefix": "function",
+    "body": [
+      "function ${1:name}(${2:params}:${3:type}) {",
+      "\t$0",
+      "}"
+    ],
+    "description": "Function Statement"
+  },
+  "If Statement": {
+    "prefix": "if",
+    "body": [
+      "if (${1:condition}) {",
+      "\t$0",
+      "}"
+    ],
+    "description": "If Statement"
+  },
+  "If-Else Statement": {
+    "prefix": "ifelse",
+    "body": [
+      "if (${1:condition}) {",
+      "\t$0",
+      "} else {",
+      "\t",
+      "}"
+    ],
+    "description": "If-Else Statement"
+  },
+  "New Statement": {
+    "prefix": "new",
+    "body": [
+      "const ${1:name} = new ${2:type}(${3:arguments});$0"
+    ],
+    "description": "New Statement"
+  },
+  "Switch Statement": {
+    "prefix": "switch",
+    "body": [
+      "switch (${1:key}) {",
+      "\tcase ${2:value}:",
+      "\t\t$0",
+      "\t\tbreak;",
+      "",
+      "\tdefault:",
+      "\t\tbreak;",
+      "}"
+    ],
+    "description": "Switch Statement"
+  },
+  "While Statement": {
+    "prefix": "while",
+    "body": [
+      "while (${1:condition}) {",
+      "\t$0",
+      "}"
+    ],
+    "description": "While Statement"
+  },
+  "Do-While Statement": {
+    "prefix": "dowhile",
+    "body": [
+      "do {",
+      "\t$0",
+      "} while (${1:condition});"
+    ],
+    "description": "Do-While Statement"
+  },
+  "Try-Catch Statement": {
+    "prefix": "trycatch",
+    "body": [
+      "try {",
+      "\t$0",
+      "} catch (${1:error}) {",
+      "\t",
+      "}"
+    ],
+    "description": "Try-Catch Statement"
+  },
+  "Set Timeout Function": {
+    "prefix": "settimeout",
+    "body": [
+      "setTimeout(() => {",
+      "\t$0",
+      "}, ${1:timeout});"
+    ],
+    "description": "Set Timeout Function"
+  },
+  "Region Start": {
+    "prefix": "#region",
+    "body": [
+      "//#region $0"
+    ],
+    "description": "Folding Region Start"
+  },
+  "Region End": {
+    "prefix": "#endregion",
+    "body": [
+      "//#endregion"
+    ],
+    "description": "Folding Region End"
+  },
+  "consoleLog": {
+    "prefix": "clg",
+    "body": [
+      "console.log(${1:first})"
+    ],
+    "description": "Displays a message in the console"
+  }
+}

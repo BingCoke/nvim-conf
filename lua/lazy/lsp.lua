@@ -177,7 +177,6 @@ return {
 		config = function()
 			require("language.go")
 		end,
-		--event = "BufEnter *.go",
 		ft = "go",
 	},
 	-- language ts

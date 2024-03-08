@@ -38,7 +38,7 @@ return {
 		config = function()
 			require("plugin-config.lualine")
 		end,
-		event = "VeryLazy",
+		--event = "VeryLazy",
 	},
 	--{
 	--	"romgrk/barbar.nvim",
@@ -105,7 +105,12 @@ return {
 		},
 	},
 	{
-		"h-hg/fcitx.nvim",
+		"keaising/im-select.nvim",
+		config = function()
+			require("im_select").setup({
+				default_im_select = "com.apple.keylayout.ABC",
+			})
+		end,
 		event = "BufReadPre",
 	},
 	{
@@ -179,12 +184,31 @@ return {
 	},
 	{
 		"rest-nvim/rest.nvim",
-		--dir = "/home/bk/tmp/rest.nvim",
 		dependencies = { { "nvim-lua/plenary.nvim" } },
 		config = function()
 			require("plugin-config.http")
 		end,
-		ft = {"http","go"},
 
 	},
+	{
+		"xiyaowong/transparent.nvim",
+		config = function()
+			require("transparent").setup()
+			require("transparent").clear_prefix("BufferLine")
+			require("transparent").clear_prefix("NeoTree")
+			require("transparent").clear_prefix("lualine")
+			require("transparent").clear_prefix("Lsp")
+			require("transparent").clear_prefix("Noice")
+			--require("transparent").clear_prefix("Cmp")
+			require("transparent").clear_prefix("Saga")
+			require("transparent").clear_prefix("Float")
+			require("transparent").clear_prefix("Normal")
+			--require("transparent").clear_prefix("Notify")
+			require("transparent").clear("HoverBorder")
+			require("transparent").clear("Pmenu")
+			--require("transparent").clear("F")
+			--require("transparent").clear_prefix("Telescope")
+		end,
+		event = "VimEnter"
+	}
 }

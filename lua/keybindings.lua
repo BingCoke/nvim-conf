@@ -62,8 +62,8 @@ map("v", "<", "<gv", opt)
 map("v", ">", ">gv", opt)
 
 -- 上下移动选中文本
-map("v", "<a-j>", "<cmd>move '>+1<CR>gv-gv", opt)
-map("v", "<a-k>", "<cmd>move '<-2<CR>gv-gv", opt)
+map("v", "<M-j>", "<cmd>move '>+1<CR>gv-gv", opt)
+map("v", "<M-k>", "<cmd>move '<-2<CR>gv-gv", opt)
 
 -- 上下滚动浏览
 map("n", "<C-j>", "4j", opt)
