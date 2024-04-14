@@ -381,13 +381,68 @@ lspconfig.bufls.setup({
 
 lspconfig.volar.setup({
 	capabilities = capabilities,
-	on_attach = function(client, bufnr)
-		print(client.name)
-		on_attach(client, bufnr)
-	end,
-	--filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json' }
+	on_attach = on_attach,
+	init_options = {
+		vue = {
+			hybridMode = false,
+		},
+	},
 
 })
+local volar = require("mason-registry").get_package "vue-language-server"
+local vue_ts_plugin_path = volar:get_install_path()
+		.. "/node_modules/@vue/language-server/node_modules/@vue/typescript-plugin"
+local vue_plugin = {
+	name = "@vue/typescript-plugin",
+	location = vue_ts_plugin_path,
+	languages = { "vue" },
+}
+--lspconfig.tsserver.setup({
+--	--capabilities = capabilities,
+--	on_attach = on_attach,
+--	filetypes = {
+--		"javascript",
+--		"javascriptreact",
+--		"javascript.jsx",
+--		"typescript",
+--		"typescriptreact",
+--		"typescript.tsx",
+--		"vue",
+--	},
+--	capabilities = {
+--		workspace = {
+--			didChangeWatchedFiles = { dynamicRegistration = true },
+--		},
+--	},
+--	init_options = {
+--		plugins = {
+--			vue_plugin,
+--		},
+--	},
+--})
+--local mason_registry = require('mason-registry')
+--local vue_language_server_path = mason_registry.get_package('vue-language-server'):get_install_path() ..
+--		'/node_modules/@vue/language-server'
+--local vue_ts_plugin_path = volar:get_install_path()
+--		.. "/node_modules/@vue/language-server/node_modules/@vue/typescript-plugin"
+--
+--lspconfig.volar.setup({
+--	capabilities = capabilities,
+--	on_attach = function(client, bufnr)
+--		on_attach(client, bufnr)
+--	end,
+--	init_options = {
+--		plugins = {
+--			{
+--				name = '@vue/typescript-plugin',
+--				location = vue_language_server_path,
+--				languages = { 'vue' },
+--			},
+--		},
+--	},
+--	filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
+--
+--})
 
 M.on_attach = on_attach
 M.capabilities = capabilities

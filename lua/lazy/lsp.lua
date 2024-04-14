@@ -92,6 +92,7 @@ return {
 			"typescriptreact",
 			"mdx",
 		},
+		enabled = false
 	},
 	{
 		"onsails/lspkind.nvim",
