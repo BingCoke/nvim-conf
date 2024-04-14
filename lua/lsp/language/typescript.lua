@@ -4,6 +4,7 @@ local util = require("lspconfig.util")
 
 function M.setup(lsp, default_capabilities, on_attach)
 	local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
 	capabilities.textDocument.completion.completionItem.snippetSupport = true
 	capabilities.completionProvider = {
 		resolveProvider = true,
@@ -18,11 +19,16 @@ function M.setup(lsp, default_capabilities, on_attach)
 			"@",
 		},
 	}
+
 	require("typescript-tools").setup({
 		inlay_hints = { enabled = true },
 		on_attach = function(cli, buf)
 			local conform = require("conform")
 			local opts = { noremap = true, silent = true, buffer = buf }
+			if (lsp.voloarAttached == true) then
+
+			end
+
 
 			vim.keymap.set({ "n", "v" }, "<leader>l", function()
 				conform.format({

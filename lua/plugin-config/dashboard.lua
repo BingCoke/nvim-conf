@@ -5,7 +5,7 @@ require("dashboard").setup({
 			{
 				icon = "  ",
 				desc = "Projects                            ",
-				key =  "p" ,
+				key = "p",
 				action = function()
 					require("telescope").extensions.myprojects.myprojects({})
 				end,
@@ -15,6 +15,7 @@ require("dashboard").setup({
 				key = "<c-p>",
 				desc = "current                            ",
 				action = function()
+					vim.cmd([[NvimTreeClose]])
 					require("telescope").extensions.my_file_find.find_files({})
 				end,
 			},

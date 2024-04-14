@@ -1,4 +1,5 @@
 local language = {
+	"proto",
 	"ruby",
 	"awk",
 	"c",
@@ -31,6 +32,9 @@ local language = {
 	"astro",
 	"arduino",
 	"http",
+	"swift",
+	"thrift",
+	"vue"
 }
 local ts = {
 	"html",
@@ -39,6 +43,7 @@ local ts = {
 	"javascript",
 	"javascriptreact",
 	"mdx",
+	"vue"
 }
 
 return {
@@ -131,11 +136,12 @@ return {
 	{
 		"numToStr/prettierrc.nvim",
 		ft = ts,
+		enabled = false
 	},
 	{
 		"zbirenbaum/copilot.lua",
 		event = "VeryLazy",
-		enabled = false,
+		--enabled = false,
 		config = function()
 			require("copilot").setup({
 				suggestion = {
@@ -166,4 +172,45 @@ return {
 		end,
 		event = "BufRead",
 	},
+	{
+		"kaarmu/typst.vim",
+		ft = 'typst',
+		config = function()
+		end
+	},
+	{
+		"niuiic/typst-preview.nvim",
+		dependencies = {
+			"niuiic/core.nvim"
+		},
+		ft = 'typst',
+	},
+	{
+		"mfussenegger/nvim-lint",
+		config = function()
+			require('lint').linters_by_ft = {
+				proto = { 'buf_lint', }
+			}
+			vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost" }, {
+				callback = function()
+					require("lint").try_lint()
+				end,
+			})
+		end
+	}, {
+	'edolphin-ydf/goimpl.nvim',
+	requires = {
+		{ 'nvim-lua/plenary.nvim' },
+		{ 'nvim-lua/popup.nvim' },
+		{ 'nvim-telescope/telescope.nvim' },
+		{ 'nvim-treesitter/nvim-treesitter' },
+	},
+	config = function()
+		require 'telescope'.load_extension 'goimpl'
+		vim.api.nvim_set_keymap('n', '<leader>mi', [[<cmd>lua require'telescope'.extensions.goimpl.goimpl{}<CR>]],
+			{ noremap = true, silent = true })
+	end,
+
+}
+
 }

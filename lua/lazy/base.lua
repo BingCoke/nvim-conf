@@ -21,6 +21,13 @@ return {
 		config = function(self, opts)
 			require("plugin-config.neotree")
 		end,
+		enabled = false,
+	},
+	{
+		"nvim-tree/nvim-tree.lua",
+		config = function(self, opts)
+			require("plugin-config.nvim-tree")
+		end,
 	},
 	{
 		"ahmedkhalf/project.nvim",
@@ -33,12 +40,12 @@ return {
 		"nvim-lualine/lualine.nvim",
 		dependencies = {
 			"nvim-tree/nvim-web-devicons",
-			"folke/tokyonight.nvim",
+			--"folke/tokyonight.nvim",
 		},
 		config = function()
 			require("plugin-config.lualine")
 		end,
-		--event = "VeryLazy",
+		event = "VeryLazy",
 	},
 	--{
 	--	"romgrk/barbar.nvim",
@@ -183,12 +190,21 @@ return {
 		},
 	},
 	{
+		"vhyrro/luarocks.nvim",
+		event = "VeryLazy",
+		opts = {
+			rocks = { "lua-curl", "nvim-nio", "mimetypes", "xml2lua" }, -- Specify LuaRocks packages to install
+		},
+	},
+	{
 		"rest-nvim/rest.nvim",
-		dependencies = { { "nvim-lua/plenary.nvim" } },
+		dependencies = {
+			"vhyrro/luarocks.nvim",
+		},
 		config = function()
 			require("plugin-config.http")
 		end,
-
+		event = "VeryLazy",
 	},
 	{
 		"xiyaowong/transparent.nvim",
@@ -202,13 +218,13 @@ return {
 			--require("transparent").clear_prefix("Cmp")
 			require("transparent").clear_prefix("Saga")
 			require("transparent").clear_prefix("Float")
-			require("transparent").clear_prefix("Normal")
+			--require("transparent").clear_prefix("Normal")
 			--require("transparent").clear_prefix("Notify")
 			require("transparent").clear("HoverBorder")
 			require("transparent").clear("Pmenu")
 			--require("transparent").clear("F")
 			--require("transparent").clear_prefix("Telescope")
 		end,
-		event = "VimEnter"
+		event = "VeryLazy"
 	}
 }

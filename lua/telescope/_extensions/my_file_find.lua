@@ -134,23 +134,23 @@ local find_files = function(opts)
 	opts.entry_maker = opts.entry_maker or make_entry.gen_from_file(opts)
 
 	pickers
-		.new(opts, {
-			prompt_title = "Find Files",
-			__locations_input = true,
-			finder = finders.new_oneshot_job(find_command, opts),
-			previewer = conf.grep_previewer(opts),
-			sorter = conf.file_sorter(opts),
-			attach_mappings = function(prompt_bufnr, map)
-				map("n", "<cr>", actions.select_tab_drop)
-				map("n", "<c-o>", actions.select_drop)
+			.new(opts, {
+				prompt_title = "Find Files",
+				__locations_input = true,
+				finder = finders.new_oneshot_job(find_command, opts),
+				previewer = conf.grep_previewer(opts),
+				sorter = conf.file_sorter(opts),
+				attach_mappings = function(prompt_bufnr, map)
+					map("n", "<cr>", actions.select_tab_drop)
+					map("n", "<c-o>", actions.select_drop)
 
-				map("i", "<cr>", actions.select_drop)
-				map("i", "<c-o>", actions.select_tab_drop)
+					map("i", "<cr>", actions.select_drop)
+					map("i", "<c-o>", actions.select_tab_drop)
 
-				return true
-			end,
-		})
-		:find()
+					return true
+				end,
+			})
+			:find()
 end
 
 return telescope.register_extension({

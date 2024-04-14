@@ -17,6 +17,9 @@ bufferline.setup({
       bufferline.go_to(arg)
     end, -- can be a string | function | false, see "Mouse actions"
     --right_mouse_command = "tabclose! %d", -- can be a string | function | false, see "Mouse actions"
+    middle_mouse_command = function(arg)
+      vim.cmd("tabclose " .. arg)
+    end,
     right_mouse_command = function(arg)
       vim.cmd("tabclose " .. arg)
     end, -- can be a string | function | false, see "Mouse actions"

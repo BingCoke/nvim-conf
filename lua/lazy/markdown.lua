@@ -74,6 +74,7 @@ return {
 			-- it doesn't require you to do any configuration
 			require("nvim-picgo").setup()
 		end,
+		enabled = false,
 		ft = "markdown",
 	},
 	{

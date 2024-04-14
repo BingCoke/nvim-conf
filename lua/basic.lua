@@ -1,4 +1,8 @@
 vim.g.root_spec = { "lsp", { ".git", "lua" }, "cwd" }
+-- disable netrw at the very start of your init.lua
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+
 vim.o.shell = "/bin/bash"
 vim.opt.shell = "fish"
 -- utf8

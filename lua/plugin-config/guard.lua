@@ -16,6 +16,7 @@ ft("rust"):fmt("rustfmt")
 -- multiple files register
 ft("typescript,javascript,typescriptreact,html,scss,ts"):fmt("prettier")
 ft("css"):fmt("prettier")
+ft("protobuf"):lint("buf")
 
 -- call setup LAST
 require("guard").setup({

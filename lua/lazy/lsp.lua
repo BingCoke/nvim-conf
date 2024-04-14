@@ -30,6 +30,7 @@ local language = {
 	"astro",
 	"arduino",
 	"http",
+	"swift", "thrift", "proto", "vue"
 }
 return {
 	------- LSP -----
@@ -47,23 +48,6 @@ return {
 		ft = language,
 		event = { "VeryLazy" },
 	},
-	--{
-	--	"lvimuser/lsp-inlayhints.nvim",
-	--	config = function(self)
-	--		require("lsp.inlayghints")
-	--		vim.api.nvim_create_autocmd("LspAttach", {
-	--			group = vim.api.nvim_create_augroup("LspAttach_inlayhints", {}),
-	--			callback = function(args)
-	--				if not (args.data and args.data.client_id) then
-	--					return
-	--				end
-	--				local client = vim.lsp.get_client_by_id(args.data.client_id)
-	--				require("lsp-inlayhints").on_attach(client, args.buf)
-	--			end,
-	--		})
-	--	end,
-	--	ft = language,
-	--},
 	{
 		"kaarmu/typst.vim",
 		ft = "typst",
@@ -215,9 +199,9 @@ return {
 		enable = false,
 		config = function()
 			require("guess-indent").setup({
-				auto_cmd = true, -- Set to false to disable automatic execution
+				auto_cmd = true,           -- Set to false to disable automatic execution
 				override_editorconfig = false, -- Set to true to override settings set by .editorconfig
-				filetype_exclude = { -- A list of filetypes for which the auto command gets disabled
+				filetype_exclude = {       -- A list of filetypes for which the auto command gets disabled
 					"netrw",
 					"tutor",
 				},

@@ -30,7 +30,7 @@ lualine.setup({
       },
     },
     lualine_x = {
-      "env",
+      "rest",
       {
         "diagnostics",
         sources = { "nvim_diagnostic" },

@@ -53,7 +53,9 @@ end
 local on_attach = function(client, bufnr)
 	-- keybind options
 	local opts = { noremap = true, silent = true, buffer = bufnr }
-	--vim.lsp.inlay_hint.enable(bufnr, true)
+	if client.name ~= 'bufls' then
+		vim.lsp.inlay_hint.enable(bufnr, true)
+	end
 
 	keymap.set("i", "<c-p>", vim.lsp.buf.signature_help, opts)
 	-- 设置光标
@@ -83,7 +85,6 @@ local on_attach = function(client, bufnr)
 	-- Diagnostic jump with filters such as only jumping to an error
 
 	keymap.set("n", "[e", function()
-		print("nih")
 		require("lspsaga.diagnostic"):goto_prev({ severity = vim.diagnostic.severity.ERROR })
 	end, opts)
 	keymap.set("n", "]e", function()
@@ -152,15 +153,12 @@ for index, value in ipairs(language) do
 end
 
 -- configure cpp clangd
-lspconfig["clangd"].setup({
-	capabilities = default_capabilities,
-	on_attach = on_attach,
-	settings = {
-		clangd = {
-			arguments = {},
-		},
-	},
-})
+--lspconfig["clangd"].setup({
+--	capabilities = default_capabilities,
+--	on_attach = on_attach,
+--	settings = {
+--	},
+--})
 
 lspconfig["awk_ls"].setup({
 	capabilities = default_capabilities,
@@ -365,10 +363,38 @@ lspconfig.astro.setup({
 	on_attach = on_attach,
 })
 
+
+lspconfig.sourcekit.setup({
+	capabilities = capabilities,
+	on_attach = on_attach,
+})
+lspconfig.thriftls.setup({
+
+	capabilities = capabilities,
+	on_attach = on_attach,
+})
+
+lspconfig.bufls.setup({
+	capabilities = capabilities,
+	on_attach = on_attach,
+})
+
+lspconfig.volar.setup({
+	capabilities = capabilities,
+	on_attach = function(client, bufnr)
+		print(client.name)
+		on_attach(client, bufnr)
+	end,
+	--filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue', 'json' }
+
+})
+
 M.on_attach = on_attach
 M.capabilities = capabilities
 M.lspconfig = lspconfig
 M.default_capabilities = default_capabilities
+M.tsserverAttached = false
+M.volarAttached = false
 
 vim.cmd("command! -nargs=0 OpenInGoogle !google-chrome-stable  --new-window % &;")
 vim.cmd("command! -nargs=0 OpenThunar !thunar % &;")

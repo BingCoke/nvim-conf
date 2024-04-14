@@ -90,30 +90,51 @@ local pluginKeys = {}
 -- Telescope
 -- 查找文件
 map("n", "<C-p>", function()
-	vim.cmd([[Neotree close]])
 	local tab_buffers = vim.fn.tabpagebuflist(vim.fn.tabpagenr())
-	--local count = 0
+	local tree = false
+	local dash = false
 	for _, bufnr in ipairs(tab_buffers) do
 		local filetype = vim.api.nvim_buf_get_option(bufnr, "filetype")
-		local name = vim.fn.bufname(bufnr)
-		if filetype == "dashboard" then
-			require("telescope").extensions.my_file_find.find_files({})
-			return
+		if filetype == 'NvimTree' then
+			tree = true
 		end
-		--if (filetype == nil or filetype == "") and (name == nil or name == "") then
-		--	count = count + 1
-		--end
+
+		if filetype == 'dashboard' then
+			dash = true
+		end
 	end
-	--if count >= 2 then
-	--	require("telescope").extensions.my_file_find.find_files({})
-	--	return
-	--end
+	if #tab_buffers > 1 then
+		tree = false
+	end
+
+	if tree then
+		vim.cmd([[enew]])
+	end
+
+	if dash then
+		require("telescope").extensions.my_file_find.find_files({})
+		return
+	end
+
 	vim.cmd([[Telescope find_files]])
 end, opt)
 
 -- 全局搜索
 map("n", "<C-f>", function()
-	vim.cmd([[Neotree close]])
+	local tab_buffers = vim.fn.tabpagebuflist(vim.fn.tabpagenr())
+	local tree = false
+	for _, bufnr in ipairs(tab_buffers) do
+		local filetype = vim.api.nvim_buf_get_option(bufnr, "filetype")
+		if filetype == 'NvimTree' then
+			tree = true
+		end
+	end
+	if #tab_buffers > 1 then
+		tree = false
+	end
+	if tree then
+		vim.cmd([[enew]])
+	end
 	vim.cmd([[Telescope live_grep]])
 end, opt)
 

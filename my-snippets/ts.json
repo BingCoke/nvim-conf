@@ -12,6 +12,12 @@
     ],
     "description": "Constructor"
   },
+  "log": {
+    "prefix": "clg",
+    "body": [
+      "console.log($1);"
+    ]
+  },
   "Class Definition": {
     "prefix": "class",
     "body": [

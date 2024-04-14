@@ -1,11 +1,14 @@
 local dap = require("dap")
-local dapui = require("dapui")
 
+local status_ok, dapui = pcall(require, "dapui")
+
+if not status_ok then
+	vim.notify("dapui not found")
+	return
+end
 local dap_runner = require("dap.dap-runner")
 
 local util = require("dap.dap-utils")
-
-local input = require("my.input")
 
 require("persistent-breakpoints").setup({
 	load_breakpoints_event = { "BufReadPre" },

@@ -11,7 +11,6 @@ M.build_dap_runner_opt = function(o)
 	opt.file = vim.api.nvim_buf_get_name(0)
 	opt.work_dir = vim.api.nvim_call_function("getcwd", {})
 	opt.work_dir_name = opt.work_dir:match(".*/([^/]+)$")
-  print(work_dir_name)
 
 	if o.cur_fun ~= nil and o.cur_fun ~= false then
 		opt.cur_fun = M.get_current_function_name()
@@ -55,7 +54,7 @@ M.str2argtable = function(str)
 				start = M.find_next_start(str, i + 1)
 				i = start
 			end
-		-- find next start
+			-- find next start
 		elseif c == " " then
 			arg_list[#arg_list + 1] = str:sub(start, i - 1)
 			start = M.find_next_start(str, i + 1)

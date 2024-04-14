@@ -84,7 +84,8 @@ local function find_project_files(prompt_bufnr)
 	}
 	if cd_successful then
 		--require("telescope").extensions.my_file_find.find_files(opt)
-		vim.cmd([[Neotree float toggle reveal]])
+		--vim.cmd([[Neotree float toggle reveal]])
+		vim.cmd([[NvimTreeToggle]])
 		--builtin.find_files(opt)
 	end
 end
