@@ -34,7 +34,9 @@ local language = {
 	"http",
 	"swift",
 	"thrift",
-	"vue"
+	"vue",
+	"graphql",
+	"graphqls",
 }
 local ts = {
 	"html",
@@ -43,7 +45,7 @@ local ts = {
 	"javascript",
 	"javascriptreact",
 	"mdx",
-	"vue"
+	"vue",
 }
 
 return {
@@ -136,7 +138,7 @@ return {
 	{
 		"numToStr/prettierrc.nvim",
 		ft = ts,
-		enabled = false
+		enabled = false,
 	},
 	{
 		"zbirenbaum/copilot.lua",
@@ -174,43 +176,45 @@ return {
 	},
 	{
 		"kaarmu/typst.vim",
-		ft = 'typst',
-		config = function()
-		end
+		ft = "typst",
+		config = function() end,
 	},
 	{
 		"niuiic/typst-preview.nvim",
 		dependencies = {
-			"niuiic/core.nvim"
+			"niuiic/core.nvim",
 		},
-		ft = 'typst',
+		ft = "typst",
 	},
 	{
 		"mfussenegger/nvim-lint",
 		config = function()
-			require('lint').linters_by_ft = {
-				proto = { 'buf_lint', }
+			require("lint").linters_by_ft = {
+				proto = { "buf_lint" },
 			}
 			vim.api.nvim_create_autocmd({ "BufWritePost", "BufReadPost" }, {
 				callback = function()
 					require("lint").try_lint()
 				end,
 			})
-		end
-	}, {
-	'edolphin-ydf/goimpl.nvim',
-	requires = {
-		{ 'nvim-lua/plenary.nvim' },
-		{ 'nvim-lua/popup.nvim' },
-		{ 'nvim-telescope/telescope.nvim' },
-		{ 'nvim-treesitter/nvim-treesitter' },
+		end,
 	},
-	config = function()
-		require 'telescope'.load_extension 'goimpl'
-		vim.api.nvim_set_keymap('n', '<leader>mi', [[<cmd>lua require'telescope'.extensions.goimpl.goimpl{}<CR>]],
-			{ noremap = true, silent = true })
-	end,
-
-}
-
+	{
+		"edolphin-ydf/goimpl.nvim",
+		requires = {
+			{ "nvim-lua/plenary.nvim" },
+			{ "nvim-lua/popup.nvim" },
+			{ "nvim-telescope/telescope.nvim" },
+			{ "nvim-treesitter/nvim-treesitter" },
+		},
+		config = function()
+			require("telescope").load_extension("goimpl")
+			vim.api.nvim_set_keymap(
+				"n",
+				"<leader>mi",
+				[[<cmd>lua require'telescope'.extensions.goimpl.goimpl{}<CR>]],
+				{ noremap = true, silent = true }
+			)
+		end,
+	},
 }

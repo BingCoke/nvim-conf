@@ -30,7 +30,13 @@ local language = {
 	"astro",
 	"arduino",
 	"http",
-	"swift", "thrift", "proto", "vue"
+	"swift",
+	"thrift",
+	"proto",
+	"vue",
+	"svelte",
+	"graphql",
+	"graphqls",
 }
 return {
 	------- LSP -----
@@ -91,8 +97,9 @@ return {
 			"typescript",
 			"typescriptreact",
 			"mdx",
+			"vue",
 		},
-		enabled = false
+		--enabled = false
 	},
 	{
 		"onsails/lspkind.nvim",
@@ -156,7 +163,7 @@ return {
 			"neovim/nvim-lspconfig",
 			{
 				"golang/vscode-go",
-				build = "cd extension && npm install && npm run compile"
+				build = "cd extension && npm install && npm run compile",
 			},
 		},
 		config = function()
@@ -200,9 +207,9 @@ return {
 		enable = false,
 		config = function()
 			require("guess-indent").setup({
-				auto_cmd = true,           -- Set to false to disable automatic execution
+				auto_cmd = true, -- Set to false to disable automatic execution
 				override_editorconfig = false, -- Set to true to override settings set by .editorconfig
-				filetype_exclude = {       -- A list of filetypes for which the auto command gets disabled
+				filetype_exclude = { -- A list of filetypes for which the auto command gets disabled
 					"netrw",
 					"tutor",
 				},

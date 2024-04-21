@@ -53,7 +53,7 @@ end
 local on_attach = function(client, bufnr)
 	-- keybind options
 	local opts = { noremap = true, silent = true, buffer = bufnr }
-	if client.name ~= 'bufls' then
+	if client.name ~= "bufls" then
 		vim.lsp.inlay_hint.enable(bufnr, true)
 	end
 
@@ -74,14 +74,14 @@ local on_attach = function(client, bufnr)
 
 	keymap.set("n", "gi", "<CMD>Lspsaga finder imp<CR>", opts)
 
-	keymap.set("n", "<leader>s", "<cmd>Lspsaga code_action<CR>", opts)            -- see available code actions
-	keymap.set("n", "<leader>rn", "<cmd>Lspsaga rename<CR>", opts)                -- smart rename
+	keymap.set("n", "<leader>s", "<cmd>Lspsaga code_action<CR>", opts) -- see available code actions
+	keymap.set("n", "<leader>rn", "<cmd>Lspsaga rename<CR>", opts) -- smart rename
 
 	keymap.set("n", "<leader>D", "<cmd>Lspsaga show_line_diagnostics <CR>", opts) -- show  diagnostics for line
 	keymap.set("n", "<leader>d", "<cmd>Lspsaga show_cursor_diagnostics<CR>", opts) -- show diagnostics for cursor
 
-	keymap.set("n", "[g", "<cmd>Lspsaga diagnostic_jump_prev<CR>", opts)          -- jump to previous diagnostic in buffer
-	keymap.set("n", "]g", "<cmd>Lspsaga diagnostic_jump_next<CR>", opts)          -- jump to next diagnostic in buffer
+	keymap.set("n", "[g", "<cmd>Lspsaga diagnostic_jump_prev<CR>", opts) -- jump to previous diagnostic in buffer
+	keymap.set("n", "]g", "<cmd>Lspsaga diagnostic_jump_next<CR>", opts) -- jump to next diagnostic in buffer
 	-- Diagnostic jump with filters such as only jumping to an error
 
 	keymap.set("n", "[e", function()
@@ -93,7 +93,7 @@ local on_attach = function(client, bufnr)
 
 	keymap.set("n", "K", vim.lsp.buf.hover, opts)
 
-	keymap.set("n", "<A-a>", "<cmd>Lspsaga hover_doc<CR>", opts)  -- show documentation for what is under cursor
+	keymap.set("n", "<A-a>", "<cmd>Lspsaga hover_doc<CR>", opts) -- show documentation for what is under cursor
 
 	keymap.set("n", "<leader>o", "<cmd>LSoutlineToggle<CR>", opts) -- see outline on right hand side
 
@@ -207,11 +207,11 @@ lspconfig.tailwindcss.setup({
 			experimental = {
 				-- https://github.com/paolotiu/tailwind-intellisense-regex-list#tailwind-merge
 				classRegex = {
-					{ "tv\\(([^)]*)\\)",                       "[\"'`]([^\"'`]*).*?[\"'`]" },
+					{ "tv\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]" },
 					{ "(?:twMerge|twJoin)\\(([^\\);]*)[\\);]", "[`'\"`]([^'\"`,;]*)[`'\"`]" },
-					{ "classNames\\(([^)]*)\\)",               "[\"'`]([^\"'`]*)[\"'`]" },
-					{ "windVars\\(([^)]*)\\)",                 "[\"'`]([^\"'`]*)[\"'`]" },
-					{ "cva\\(([^)]*)\\)",                      "[\"'`]([^\"'`]*).*?[\"'`]" },
+					{ "classNames\\(([^)]*)\\)", "[\"'`]([^\"'`]*)[\"'`]" },
+					{ "windVars\\(([^)]*)\\)", "[\"'`]([^\"'`]*)[\"'`]" },
+					{ "cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]" },
 				},
 				-- purgeLayersByDefault = true,
 			},
@@ -284,19 +284,19 @@ lspconfig["cssls"].setup({
 			validate = true,
 			lint = {
 				unknownAtRules = "ignore",
-			}
+			},
 		},
 		scss = {
 			validate = true,
 			lint = {
 				unknownAtRules = "ignore",
-			}
+			},
 		},
 		less = {
 			validate = true,
 			lint = {
 				unknownAtRules = "ignore",
-			}
+			},
 		},
 	},
 })
@@ -317,10 +317,10 @@ lspconfig["taplo"].setup({
 	on_attach = on_attach,
 })
 
-lspconfig["ruby_ls"].setup({
-	capabilities = capabilities,
-	on_attach = on_attach,
-})
+--lspconfig["ruby_ls"].setup({
+--	capabilities = capabilities,
+--	on_attach = on_attach,
+--})
 
 lspconfig.typst_lsp.setup({
 	capabilities = capabilities,
@@ -363,13 +363,11 @@ lspconfig.astro.setup({
 	on_attach = on_attach,
 })
 
-
 lspconfig.sourcekit.setup({
 	capabilities = capabilities,
 	on_attach = on_attach,
 })
 lspconfig.thriftls.setup({
-
 	capabilities = capabilities,
 	on_attach = on_attach,
 })
@@ -379,26 +377,22 @@ lspconfig.bufls.setup({
 	on_attach = on_attach,
 })
 
+lspconfig.graphql.setup({
+	capabilities = capabilities,
+	on_attach = on_attach,
+})
+
 lspconfig.volar.setup({
 	capabilities = capabilities,
 	on_attach = on_attach,
-	init_options = {
-		vue = {
-			hybridMode = false,
-		},
-	},
-
+	filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue", "json" },
+	init_options = {},
 })
-local volar = require("mason-registry").get_package "vue-language-server"
-local vue_ts_plugin_path = volar:get_install_path()
-		.. "/node_modules/@vue/language-server/node_modules/@vue/typescript-plugin"
-local vue_plugin = {
-	name = "@vue/typescript-plugin",
-	location = vue_ts_plugin_path,
-	languages = { "vue" },
-}
+
+--local mason_registry = require("mason-registry")
+--local vue_language_server_path = mason_registry.get_package("vue-language-server"):get_install_path()
+--	.. "/node_modules/@vue/language-server"
 --lspconfig.tsserver.setup({
---	--capabilities = capabilities,
 --	on_attach = on_attach,
 --	filetypes = {
 --		"javascript",
@@ -416,13 +410,15 @@ local vue_plugin = {
 --	},
 --	init_options = {
 --		plugins = {
---			vue_plugin,
+--			{
+--				name = "@vue/typescript-plugin",
+--				location = vue_language_server_path,
+--				languages = { "vue" },
+--			},
 --		},
 --	},
 --})
---local mason_registry = require('mason-registry')
---local vue_language_server_path = mason_registry.get_package('vue-language-server'):get_install_path() ..
---		'/node_modules/@vue/language-server'
+
 --local vue_ts_plugin_path = volar:get_install_path()
 --		.. "/node_modules/@vue/language-server/node_modules/@vue/typescript-plugin"
 --

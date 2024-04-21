@@ -234,6 +234,41 @@ cmp.setup.filetype("css", {
 
 local js = { "javascript", "typescript", "typescriptreact", "javascriptreact" }
 
+cmp.setup.filetype("go", {
+
+	sorting = {
+		comparators = {
+			compare.score, -- based on :  score = score + ((#sources - (source_index - 1)) * sorting.priority_weight)
+			function(entry1, entry2)
+				local kind1 = entry1:get_kind() --- @type lsp.CompletionItemKind | number
+				local kind2 = entry2:get_kind() --- @type lsp.CompletionItemKind | number
+
+				if kind1 == types.lsp.CompletionItemKind.Field and kind2 == types.lsp.CompletionItemKind.Field then
+					return nil
+				end
+				if kind1 ~= types.lsp.CompletionItemKind.Field and kind2 ~= types.lsp.CompletionItemKind.Field then
+					return nil
+				end
+				if kind1 == types.lsp.CompletionItemKind.Field then
+					return true
+				end
+				if kind2 == types.lsp.CompletionItemKind.Field then
+					return false
+				end
+				return nil
+			end,
+			compare.offset,
+			compare.exact,
+			compare.recently_used,
+			compare.locality,
+			compare.kind,
+			compare.sort_text,
+			compare.length,
+			compare.order,
+			compare.scopes, -- what?
+		},
+	},
+})
 for key, value in pairs(js) do
 	cmp.setup.filetype(value, {
 		sorting = {
