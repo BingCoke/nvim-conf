@@ -40,8 +40,8 @@ require("dashboard").setup({
 			{
 				icon = "  ",
 				key = "z",
-				desc = "Edit .zshrc                        ",
-				action = "edit ~/.zshrc",
+				desc = "Edit .fish                        ",
+				action = "edit ~/.config/fish/config.fish",
 			},
 		},
 		footer = {

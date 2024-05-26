@@ -87,7 +87,7 @@ cmp.setup({
 		["<A-Space>"] = cmp.mapping.complete(), -- show completion suggestions
 
 		["<C-e>"] = cmp.mapping.abort(), -- close completion window
-		["<Tab>"] = cmp.mapping.confirm({ select = true, behavior = cmp.ConfirmBehavior.Insert }),
+		["<Tab>"] = cmp.mapping.confirm({ select = true }),
 
 		["<c-l>"] = cmp.mapping(function(fallback)
 			if luasnip.jumpable(1) then
@@ -133,14 +133,6 @@ cmp.setup({
 	}),
 	formatting = {
 		format = function(entry, item)
-			if item.kind == "Color" then
-				item = require("cmp-tailwind-colors").format(entry, item)
-				if item.kind ~= "Color" then
-					item.menu = "Color"
-					return item
-				end
-			end
-
 			item.menu = item.kind
 			item.kind = kind_icons[item.kind] .. " "
 			return item
@@ -168,9 +160,66 @@ cmp.setup({
 	},
 })
 
+local cmdmap = {
+	["<C-z>"] = {
+		c = function()
+			if cmp.visible() then
+				cmp.select_next_item()
+			else
+				cmp.complete()
+			end
+		end,
+	},
+	["<A-Space>"] = {
+		c = cmp.mapping.complete(),
+	}, -- show completion suggestions
+	["<Tab>"] = {
+		c = function()
+			if cmp.visible() then
+				cmp.confirm({ select = true, behavior = cmp.ConfirmBehavior.Insert })
+			else
+				cmp.complete()
+			end
+		end,
+	},
+	["<S-Tab>"] = {
+		c = function()
+			if cmp.visible() then
+				cmp.select_prev_item()
+			else
+				cmp.complete()
+			end
+		end,
+	},
+	["<C-j>"] = {
+		c = function(fallback)
+			if cmp.visible() then
+				cmp.select_next_item()
+			else
+				fallback()
+			end
+		end,
+	},
+	["<C-k>"] = {
+		c = function(fallback)
+			if cmp.visible() then
+				cmp.select_prev_item()
+			else
+				fallback()
+			end
+		end,
+	},
+	["<C-e>"] = {
+		c = cmp.mapping.abort(),
+	},
+	["<C-y>"] = {
+		c = cmp.mapping.confirm({ select = false }),
+	},
+}
+
 -- / 查找模式使用 buffer 源
 cmp.setup.cmdline("/", {
-	mapping = cmp.mapping.preset.cmdline(),
+	mapping = cmdmap,
 	sources = {
 		{ name = "buffer" },
 	},
@@ -178,7 +227,7 @@ cmp.setup.cmdline("/", {
 
 -- : 命令行模式中使用 path 和 cmdline 源.
 cmp.setup.cmdline(":", {
-	mapping = cmp.mapping.preset.cmdline(),
+	mapping = cmdmap,
 	sources = cmp.config.sources({
 		{ name = "path" },
 		{ name = "cmdline" },
@@ -271,36 +320,71 @@ cmp.setup.filetype("go", {
 })
 for key, value in pairs(js) do
 	cmp.setup.filetype(value, {
+		formatting = {
+			format = function(entry, item)
+				if item.kind == "Color" then
+					item = require("cmp-tailwind-colors").format(entry, item)
+					if item.kind ~= "Color" then
+						item.menu = "Color"
+						return item
+					end
+				end
+
+				item.menu = item.kind
+				item.kind = kind_icons[item.kind] .. " "
+				return item
+			end,
+		},
 		sorting = {
 			comparators = {
-				function(entry1, entry2)
-					local kind1 = entry1:get_kind() --- @type lsp.CompletionItemKind | number
-					local kind2 = entry2:get_kind() --- @type lsp.CompletionItemKind | number
-					if
-						kind1 == types.lsp.CompletionItemKind.Text
-						and kind2 == types.lsp.CompletionItemKind.Property
-					then
-						return false
-					end
-					if
-						kind2 == types.lsp.CompletionItemKind.Text
-						and kind1 == types.lsp.CompletionItemKind.Property
-					then
-						return true
-					end
-
-					return nil
-				end,
-				compare.offset,
+				--function(entry1, entry2)
+				--	local kind1 = entry1:get_kind() --- @type lsp.CompletionItemKind | number
+				--	local kind2 = entry2:get_kind() --- @type lsp.CompletionItemKind | number
+				--	if
+				--		kind1 == types.lsp.CompletionItemKind.Text
+				--			and kind2 == types.lsp.CompletionItemKind.Property
+				--		or kind2 == types.lsp.CompletionItemKind.Field
+				--	then
+				--		return false
+				--	end
+				--	if
+				--		kind2 == types.lsp.CompletionItemKind.Text
+				--			and kind1 == types.lsp.CompletionItemKind.Property
+				--		or kind2 == types.lsp.CompletionItemKind.Field
+				--	then
+				--		return true
+				--	end
+				--
+				--	return nil
+				--end,
+				--function(entry1, entry2)
+				--	local kind1 = entry1:get_kind() --- @type lsp.CompletionItemKind | number
+				--	local kind2 = entry2:get_kind() --- @type lsp.CompletionItemKind | number
+				--
+				--	if kind1 == types.lsp.CompletionItemKind.Field and kind2 == types.lsp.CompletionItemKind.Field then
+				--		return nil
+				--	end
+				--	if kind1 ~= types.lsp.CompletionItemKind.Field and kind2 ~= types.lsp.CompletionItemKind.Field then
+				--		return nil
+				--	end
+				--	if kind1 == types.lsp.CompletionItemKind.Field then
+				--		return true
+				--	end
+				--	if kind2 == types.lsp.CompletionItemKind.Field then
+				--		return false
+				--	end
+				--	return nil
+				--end,
 				compare.exact,
+				compare.offset,
 				compare.score, -- based on :  score = score + ((#sources - (source_index - 1)) * sorting.priority_weight)
 				compare.recently_used,
 				compare.locality,
 				compare.kind,
 				compare.length,
 				compare.order,
-				-- compare.scopes, -- what?
-				-- compare.sort_text,
+				compare.scopes, -- what?
+				compare.sort_text,
 			},
 		},
 	})

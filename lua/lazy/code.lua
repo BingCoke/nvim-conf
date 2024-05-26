@@ -37,6 +37,7 @@ local language = {
 	"vue",
 	"graphql",
 	"graphqls",
+	"typespec",
 }
 local ts = {
 	"html",
@@ -106,11 +107,6 @@ return {
 		ft = language,
 	},
 	-- 线
-	{
-		"yaocccc/nvim-hlchunk",
-		config = function() end,
-		ft = language,
-	},
 	{
 		"lukas-reineke/indent-blankline.nvim",
 		main = "ibl",

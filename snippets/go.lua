@@ -17,20 +17,13 @@ local l = extras.l
 local postfix = require("luasnip.extras.postfix").postfix
 
 return {
-  postfix(".br", {
-    f(function(_, parent)
-      return 'fmt.Printf("'
-          .. parent.snippet.env.POSTFIX_MATCH
-          .. ': %v\\n", '
-          .. parent.snippet.env.POSTFIX_MATCH
-          .. ")"
-    end, {}),
-  }),
-  postfix(".brl", {
-    l("[" .. l.POSTFIX_MATCH .. "]"),
-  }),
+	postfix(".vp", {
+		f(function(_, parent)
+			return 'fmt.Printf("'
+				.. parent.snippet.env.POSTFIX_MATCH
+				.. ': %+v\\n", '
+				.. parent.snippet.env.POSTFIX_MATCH
+				.. ")"
+		end, {}),
+	}),
 }
-
-
-
-

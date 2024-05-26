@@ -5,14 +5,15 @@ if not status then
 end
 
 -- nvim-tree 支持
-
 project.setup({
-	detection_methods = { "pattern", "lsp" },
+	detection_methods = { "pattern" },
 	patterns = {
-		"!>apps",
-		"!>packages",
-		"tourbo.json",
+		--"!>app",
 		".git",
+		"!>node_modules",
+		--"!>packages",
+		--"!>apps",
+		"tourbo.json",
 		"_darcs",
 		".hg",
 		".bzr",
@@ -26,9 +27,5 @@ project.setup({
 	exclude_dirs = { "~/.cargo/*" },
 })
 
-local status, telescope = pcall(require, "telescope")
-if not status then
-	vim.notify("没有找到 telescope")
-	return
-end
+local telescope = require("telescope")
 pcall(telescope.load_extension, "projects")

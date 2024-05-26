@@ -12,14 +12,47 @@ local language = {
 --vim.lsp.set_log_level("debug")
 local util = require("lspconfig.util")
 
+local methods = vim.lsp.protocol.Methods
+
+local inlay_hint_handler = vim.lsp.handlers[methods.textDocument_inlayHint]
+vim.lsp.handlers[methods.textDocument_inlayHint] = function(err, result, ctx, config)
+	local client = vim.lsp.get_client_by_id(ctx.client_id)
+	if client and client.name == "vtsls" then
+		if result == nil then
+			return
+		end
+		---@diagnostic disable-next-line: undefined-field
+
+		result = vim.iter(result):map(function(hint)
+			local label = hint.label
+			local new = {}
+			if label ~= nil and #label < 10 then
+			else
+				for i = 0, 9 do
+					new[i] = label[i]
+				end
+				new[10] = {
+					value = " ..",
+				}
+				hint.label = new
+			end
+			return hint
+		end):totable()
+	end
+	inlay_hint_handler(err, result, ctx, config)
+end
+
 -- import lspconfig plugin safely
 local lspconfig_status, lspconfig = pcall(require, "lspconfig")
 if not lspconfig_status then
 	return
 end
+
 vim.diagnostic.config({
 	update_in_insert = false,
 })
+
+vim.lsp.inlay_hint.enable(true)
 
 -- config lsp signature
 vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
@@ -53,9 +86,6 @@ end
 local on_attach = function(client, bufnr)
 	-- keybind options
 	local opts = { noremap = true, silent = true, buffer = bufnr }
-	if client.name ~= "bufls" then
-		vim.lsp.inlay_hint.enable(bufnr, true)
-	end
 
 	keymap.set("i", "<c-p>", vim.lsp.buf.signature_help, opts)
 	-- 设置光标
@@ -67,10 +97,12 @@ local on_attach = function(client, bufnr)
 	--keymap.set("n", "gd", "<Cmd>lua vim.lsp.buf.definition()<CR>", opts) -- got to declaration
 	keymap.set("n", "gD", "<CMD>Glance definitions<CR>", opts)
 	keymap.set("n", "gd", "<cmd>Lspsaga goto_definition<CR>", opts)
+	keymap.set("n", "ga", "<cmd>tab split | Lspsaga goto_definition<CR>", opts)
+	--keymap.set("n", "gd", "<cmd>Lspsaga goto_definition<CR>", opts)
 
 	-- Go to type definition
-	keymap.set("n", "gt", "<CMD>Glance type_definitions<CR>", opts)
-	keymap.set("n", "gy", "<CMD>:Lspsaga goto_type_definition<CR>", opts)
+	--keymap.set("n", "gt", "<CMD>Glance type_definitions<CR>", opts)
+	keymap.set("n", "gy", "<CMD>Lspsaga goto_type_definition<CR>", opts)
 
 	keymap.set("n", "gi", "<CMD>Lspsaga finder imp<CR>", opts)
 
@@ -116,12 +148,6 @@ local on_attach = function(client, bufnr)
 	keymap.set({ "i" }, "<c-.>", function()
 		addSymbolAtLineEnd(".")
 	end, opts)
-
-	-- typescript specific keymaps (e.g. rename file and update imports)
-	if client.name == "typescript-tools" then
-		keymap.set("n", "<leader>rf", ":TypescriptRenameFile<CR>", opts) -- rename file and update imports
-		keymap.set("n", "<leader>ru", ":TypescriptRemoveUnused<CR>", opts) -- remove unused variables (not in youtube nvim video)
-	end
 end
 
 -- used to enable autocompletion (assign to every lsp server config)
@@ -169,30 +195,24 @@ lspconfig["awk_ls"].setup({
 lspconfig["html"].setup({
 	capabilities = default_capabilities,
 	on_attach = function(client, bufnr)
-		if client ~= nil then
-			client.resolved_capabilities.document_formatting = false
-			client.resolved_capabilities.document_range_formatting = false
-		end
 		on_attach(client, bufnr)
 	end,
 	init_options = {
 		provideFormatter = false,
-	},
-	settings = {
-		html = {
-			format = {
-				enable = false,
-			},
+		configurationSection = { "html", "css", "javascript" },
+		embeddedLanguages = {
+			css = true,
+			javascript = true,
 		},
 	},
 })
 
-lspconfig.biome.setup({
-	capabilities = default_capabilities,
-	on_attach = on_attach,
-	root_dir = util.root_pattern("biome.json"),
-	single_file_support = false,
-})
+--lspconfig.biome.setup({
+--	capabilities = default_capabilities,
+--	on_attach = on_attach,
+--	root_dir = util.root_pattern("biome.json"),
+--	single_file_support = false,
+--})
 
 lspconfig.eslint.setup({
 	capabilities = default_capabilities,
@@ -242,6 +262,8 @@ lspconfig.stylelint_lsp.setup({
 })
 
 lspconfig.emmet_language_server.setup({
+	on_attach = on_attach,
+	capabilities = default_capabilities,
 	filetypes = {
 		"css",
 		"eruby",
@@ -254,12 +276,13 @@ lspconfig.emmet_language_server.setup({
 		"svelte",
 		"pug",
 		"typescriptreact",
-		"vue",
+		--"vue",
 	},
 	-- Read more about this options in the [vscode docs](https://code.visualstudio.com/docs/editor/emmet#_emmet-configuration).
 	-- **Note:** only the options listed in the table are supported.
 	init_options = {
 		--- @type string[]
+		includeLanguages = {},
 		excludeLanguages = {},
 		--- @type table<string, any> [Emmet Docs](https://docs.emmet.io/customization/preferences/)
 		preferences = {},
@@ -382,63 +405,70 @@ lspconfig.graphql.setup({
 	on_attach = on_attach,
 })
 
+local attach_volar = false
+local attach_ts = false
+lspconfig.omnisharp.setup({
+	on_attach = on_attach,
+	capabilities = capabilities,
+})
+
 lspconfig.volar.setup({
 	capabilities = capabilities,
 	on_attach = on_attach,
-	filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue", "json" },
-	init_options = {},
+	filetypes = { "vue", "json" },
+	--filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
+	init_options = {
+		vue = {
+			hybridMode = false,
+		},
+	},
 })
 
---local mason_registry = require("mason-registry")
---local vue_language_server_path = mason_registry.get_package("vue-language-server"):get_install_path()
---	.. "/node_modules/@vue/language-server"
---lspconfig.tsserver.setup({
---	on_attach = on_attach,
---	filetypes = {
---		"javascript",
---		"javascriptreact",
---		"javascript.jsx",
---		"typescript",
---		"typescriptreact",
---		"typescript.tsx",
---		"vue",
---	},
---	capabilities = {
---		workspace = {
---			didChangeWatchedFiles = { dynamicRegistration = true },
---		},
---	},
---	init_options = {
---		plugins = {
---			{
---				name = "@vue/typescript-plugin",
---				location = vue_language_server_path,
---				languages = { "vue" },
---			},
---		},
---	},
---})
+local mason_registry = require("mason-registry")
+local vue_language_server_path = mason_registry.get_package("vue-language-server"):get_install_path()
+	.. "/node_modules/@vue/language-server"
 
---local vue_ts_plugin_path = volar:get_install_path()
---		.. "/node_modules/@vue/language-server/node_modules/@vue/typescript-plugin"
---
---lspconfig.volar.setup({
---	capabilities = capabilities,
---	on_attach = function(client, bufnr)
---		on_attach(client, bufnr)
---	end,
---	init_options = {
---		plugins = {
---			{
---				name = '@vue/typescript-plugin',
---				location = vue_language_server_path,
---				languages = { 'vue' },
---			},
---		},
---	},
---	filetypes = { 'typescript', 'javascript', 'javascriptreact', 'typescriptreact', 'vue' },
---
---})
+lspconfig.vtsls.setup({
+	capabilities = capabilities,
+	on_attach = on_attach,
+	--root_dir = util.root_pattern(".git", "turbo.json", "package.json"),
+	filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact" },
+	settings = {
+		vtsls = {
+			tsserver = {
+				globalPlugins = {
+					{
+						name = "@vue/typescript-plugin",
+						enableForWorkspaceTypeScriptVersions = true,
+						location = vue_language_server_path,
+						languages = { "vue" },
+					},
+					{
+						name = "typescript-lit-html-plugin",
+						tags = {
+							"html",
+							"template",
+						},
+						languages = { "html" },
+					},
+				},
+				preferences = {
+					includeInlayFunctionLikeReturnTypeHints = false,
+				},
+			},
+		},
+		typescript = {
+			inlayHints = {
+				parameterNames = { enabled = "all" },
+				propertyDeclarationTypes = { enabled = true },
+				functionLikeReturnTypes = { enabled = true },
+				enumMemberValues = { enabled = true },
+				parameterTypes = { enabled = true },
+				variableTypes = { enabled = true },
+			},
+		},
+	},
+})
 
 M.on_attach = on_attach
 M.capabilities = capabilities

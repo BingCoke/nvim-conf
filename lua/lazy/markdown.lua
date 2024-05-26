@@ -15,15 +15,6 @@ return {
 		"jbyuki/venn.nvim",
 		ft = "markdown",
 	},
-	{
-		"yaocccc/nvim-hl-mdcodeblock.lua",
-		config = function(self, opts)
-			require("hl-mdcodeblock").setup({
-				-- option
-			})
-		end,
-		ft = { "markdown" },
-	},
 	--{
 	--	"HakonHarnes/img-clip.nvim",
 	--	opts = {

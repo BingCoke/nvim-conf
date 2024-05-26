@@ -2,8 +2,13 @@ return {
 
 	{
 		"folke/tokyonight.nvim",
+		--"scottmckendry/cyberdream.nvim",
+
+		lazy = false,
+		priority = 1000,
 		dependencies = {
 			--"EdenEast/nightfox.nvim",
+			--{ "diegoulloao/neofusion.nvim", priority = 1000, config = true },
 		},
 		config = function()
 			require("colorscheme")
@@ -18,7 +23,7 @@ return {
 			"nvim-tree/nvim-web-devicons",
 			"MunifTanjim/nui.nvim",
 		},
-		config = function(self, opts)
+		config = function()
 			require("plugin-config.neotree")
 		end,
 		enabled = false,
@@ -114,11 +119,16 @@ return {
 	{
 		"keaising/im-select.nvim",
 		config = function()
+			local im = ""
+			if OS == "Darwin" then
+				im = "com.apple.keylayout.ABC"
+			end
 			require("im_select").setup({
-				default_im_select = "com.apple.keylayout.ABC",
+				default_im_select = im,
 			})
 		end,
 		event = "BufReadPre",
+		--enabled = false,
 	},
 	{
 		"uga-rosa/ccc.nvim",
@@ -126,6 +136,7 @@ return {
 			require("ccc").setup({})
 		end,
 		event = "VeryLazy",
+		--enabled = false
 	},
 	{
 		{
@@ -209,39 +220,27 @@ return {
 	{
 		"xiyaowong/transparent.nvim",
 		config = function()
-			require("transparent").setup()
+			require("transparent").setup({
+				exclude_groups = {
+					"CursorLine",
+					"CursorLineNr",
+					"NoiceCursor",
+					"Underlined",
+				},
+			})
 			require("transparent").clear_prefix("BufferLine")
 			require("transparent").clear_prefix("NeoTree")
 			require("transparent").clear_prefix("lualine")
 			require("transparent").clear_prefix("Lsp")
 			require("transparent").clear_prefix("Noice")
-			--require("transparent").clear_prefix("Cmp")
 			require("transparent").clear_prefix("Saga")
 			require("transparent").clear_prefix("Float")
-			--require("transparent").clear_prefix("Normal")
-			--require("transparent").clear_prefix("Notify")
 			require("transparent").clear("HoverBorder")
 			require("transparent").clear("Pmenu")
-			--require("transparent").clear("F")
-			--require("transparent").clear_prefix("Telescope")
 		end,
-		event = "VeryLazy",
-	},
-	{
-		"kristijanhusak/vim-dadbod-ui",
-		dependencies = {
-			{ "tpope/vim-dadbod", lazy = true },
-			{ "kristijanhusak/vim-dadbod-completion", ft = { "sql", "mysql", "plsql" }, lazy = true },
-		},
-		cmd = {
-			"DBUI",
-			"DBUIToggle",
-			"DBUIAddConnection",
-			"DBUIFindBuffer",
-		},
-		init = function()
-			-- Your DBUI configuration
-			vim.g.db_ui_use_nerd_fonts = 1
-		end,
+		--event = "VeryLazy",
+		lazy = false,
+		priority = 1000,
+		--enabled = false
 	},
 }

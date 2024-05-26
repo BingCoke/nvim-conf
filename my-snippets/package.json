@@ -48,6 +48,10 @@
       {
         "language": "typescriptreact",
         "path": "./ts-react.json"
+      },
+      {
+        "language": "vue",
+        "path": "./vue.json"
       }
     ]
   }

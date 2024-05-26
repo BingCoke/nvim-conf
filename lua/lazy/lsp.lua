@@ -36,6 +36,7 @@ local language = {
 	"vue",
 	"svelte",
 	"graphql",
+	"typespec",
 	"graphqls",
 }
 return {
@@ -99,7 +100,7 @@ return {
 			"mdx",
 			"vue",
 		},
-		--enabled = false
+		enabled = false,
 	},
 	{
 		"onsails/lspkind.nvim",
@@ -182,16 +183,17 @@ return {
 		config = function(self, opts)
 			require("plugin-config.color")
 		end,
-		ft = {
-			"css",
-			"scss",
-			"html",
-			"javascript",
-			"typescript",
-			"typescriptreact",
-			"javascriptreact",
-			"mdx",
-		},
+		event = "VeryLazy",
+		--ft = {
+		--	"css",
+		--	"scss",
+		--	"html",
+		--	"javascript",
+		--	"typescript",
+		--	"typescriptreact",
+		--	"javascriptreact",
+		--	"mdx",
+		--},
 	},
 	{
 		"dart-lang/dart-vim-plugin",
@@ -247,5 +249,13 @@ return {
 			end)
 		end,
 		ft = language,
+	},
+	{
+		"yioneko/nvim-vtsls",
+		config = function()
+			require("vtsls").config({
+
+			})
+		end,
 	},
 }

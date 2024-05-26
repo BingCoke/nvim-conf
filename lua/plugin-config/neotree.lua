@@ -8,6 +8,7 @@ vim.fn.sign_define("DiagnosticSignHint", { text = "", texthl = "DiagnosticSig
 
 require("neo-tree").setup({
 	close_if_last_window = true, -- Close Neo-tree if it is the last window left in the tab
+	--sync_root_with_cwd = true,
 	popup_border_style = "rounded",
 	enable_git_status = false,
 	enable_diagnostics = true,

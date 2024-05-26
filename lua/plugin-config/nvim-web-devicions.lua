@@ -38,9 +38,11 @@ require("nvim-web-devicons").setup({
 			icon = "",
 		},
 		vue = {
-			color = "#428890",
-			cterm_color = "65",
-			icon = "",
+			--color = "#428890",
+			--cterm_color = "65",
+			color = "#59981A",
+			name = "vue",
+			icon = "",
 		},
 		astro = {
 			icon = "",

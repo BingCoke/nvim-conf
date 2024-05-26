@@ -15,10 +15,7 @@ vim.o.sidescrolloff = 3
 --vim.wo.number = true
 --vim.wo.relativenumber = true
 
-if vim.fn.has("nvim-0.10") == 1 then
-	vim.opt.smoothscroll = true
-end
-
+vim.opt.smoothscroll = true
 -- 高亮所在行
 vim.wo.cursorline = true
 -- 显示左侧图标指示列
@@ -54,7 +51,6 @@ vim.bo.softtabstop = 2
 vim.o.ignorecase = true
 vim.o.smartcase = true
 -- 搜索不要高亮
--- niao
 vim.o.hlsearch = false
 -- 边输入边搜索
 vim.o.incsearch = true
@@ -101,8 +97,7 @@ vim.o.pumheight = 8
 -- 永远显示 tabline
 vim.o.showtabline = 2
 -- 使用增强状态栏插件后不再需要 vim 的模式提示
-vim.o.showmode = true
-
+vim.o.showmode = false
 -- css关闭自动注释
 vim.cmd("autocmd BufEnter *.css set formatoptions-=cro")
 vim.cmd("autocmd BufEnter *.css setlocal formatoptions-=cro")
