@@ -38,6 +38,7 @@ local language = {
 	"graphql",
 	"typespec",
 	"graphqls",
+	"typespec",
 }
 return {
 	------- LSP -----
@@ -149,6 +150,17 @@ return {
 		ft = language,
 	}, -- enhanced lsp uis
 	{
+		"jinzhongjia/LspUI.nvim",
+		branch = "main",
+		config = function()
+			require("LspUI").setup({
+				-- config options go here
+				lightbulb = { enable = false },
+				inlay_hint = { enable = false },
+			})
+		end,
+	},
+	{
 		"DNLHC/glance.nvim",
 		config = function(self, opts)
 			require("plugin-config.glance")
@@ -177,6 +189,9 @@ return {
 		"windwp/nvim-ts-autotag",
 		dependencies = "nvim-treesitter/nvim-treesitter",
 		ft = language,
+		config = function()
+			require("nvim-ts-autotag").setup({})
+		end,
 	},
 	{
 		"NvChad/nvim-colorizer.lua",
@@ -253,9 +268,7 @@ return {
 	{
 		"yioneko/nvim-vtsls",
 		config = function()
-			require("vtsls").config({
-
-			})
+			require("vtsls").config({})
 		end,
 	},
 }

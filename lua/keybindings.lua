@@ -21,8 +21,8 @@ map({ "n", "v", "i" }, "<c-a>", "<esc>ggVG", opt)
 -- 关闭当前
 map("n", "<leader>sc", "<C-w>c", opt)
 
-map("n", "<A-d>", "<C-w>c", opt)
-map("i", "<A-d>", "<C-w>c", opt)
+map("n", "<M-d>", "<C-w>c", opt)
+map("i", "<M-d>", "<C-w>c", opt)
 -- 关闭其他
 map("n", "<leader>so", "<C-w>o", opt)
 -- Alt + hjkl  窗口之间跳转
@@ -56,6 +56,7 @@ map("t", "<A-k>", [[ <C-\><C-N><C-w>k ]], opt)
 map("t", "<A-l>", [[ <C-\><C-N><C-w>l ]], opt)
 
 map("v", "<c-c>", '"+y', opt)
+map("v", "<D-c>", '"+y', opt)
 
 -- visual模式下缩进代码
 map("v", "<", "<gv", opt)

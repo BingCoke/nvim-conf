@@ -60,22 +60,14 @@ return {
 	--	ft = 'markdown'
 	--},
 	{
-		"askfiy/nvim-picgo",
-		config = function()
-			-- it doesn't require you to do any configuration
-			require("nvim-picgo").setup()
-		end,
-		enabled = false,
-		ft = "markdown",
-	},
-	{
-		"Zeioth/markmap.nvim",
-		build = "yarn global add markmap-cli",
-		ft = "markdown",
-		config = function()
-			require("markmap").setup({
-				hide_toolbar = true,
-			})
-		end,
+		"MeanderingProgrammer/render-markdown.nvim",
+		opts = {
+			render_modes = { "n", "c", "v", "i" },
+			file_types = { "markdown", "Avante" },
+		},
+		ft = { "markdown", "Avante" },
+		dependencies = { "nvim-treesitter/nvim-treesitter", "echasnovski/mini.nvim" }, -- if you use the mini.nvim suite
+		-- dependencies = { 'nvim-treesitter/nvim-treesitter', 'echasnovski/mini.icons' }, -- if you use standalone mini plugins
+		-- dependencies = { 'nvim-treesitter/nvim-treesitter', 'nvim-tree/nvim-web-devicons' }, -- if you prefer nvim-web-devicons
 	},
 }

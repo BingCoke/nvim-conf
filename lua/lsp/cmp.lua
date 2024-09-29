@@ -71,6 +71,9 @@ local t = function(str)
 end
 
 cmp.setup({
+	enabled = function()
+		return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt" or require("cmp_dap").is_dap_buffer()
+	end,
 	snippet = {
 		expand = function(args)
 			require("luasnip").lsp_expand(args.body)
@@ -216,6 +219,11 @@ local cmdmap = {
 		c = cmp.mapping.confirm({ select = false }),
 	},
 }
+cmp.setup.filetype({ "dap-repl", "dapui_watches", "dapui_hover" }, {
+	sources = {
+		{ name = "dap" },
+	},
+})
 
 -- / 查找模式使用 buffer 源
 cmp.setup.cmdline("/", {

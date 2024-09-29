@@ -1,5 +1,4 @@
 local tree_api = require("nvim-tree.api")
-local tree_view = require("nvim-tree.view")
 
 function find_directory_and_focus()
 	local actions = require("telescope.actions")
@@ -78,7 +77,7 @@ local function tree(bufnr)
 	vim.keymap.set("n", "[c", api.node.navigate.git.prev, opts("Prev Git"))
 	vim.keymap.set("n", "]c", api.node.navigate.git.next, opts("Next Git"))
 	vim.keymap.set("n", "d", api.fs.remove, opts("Delete"))
-	vim.keymap.set("n", "D", api.fs.trash, opts("Trash"))
+	--vim.keymap.set("n", "D", api.fs.trash, opts("Trash"))
 	vim.keymap.set("n", "E", api.tree.expand_all, opts("Expand All"))
 	vim.keymap.set("n", "e", api.fs.rename_basename, opts("Rename: Basename"))
 	vim.keymap.set("n", "]e", api.node.navigate.diagnostics.next, opts("Next Diagnostic"))
@@ -95,14 +94,14 @@ local function tree(bufnr)
 	vim.keymap.set("n", "L", api.node.open.toggle_group_empty, opts("Toggle Group Empty"))
 	vim.keymap.set("n", "M", api.tree.toggle_no_bookmark_filter, opts("Toggle Filter: No Bookmark"))
 	vim.keymap.set("n", "m", api.marks.toggle, opts("Toggle Bookmark"))
-	vim.keymap.set("n", "o", api.node.open.edit, opts("Open"))
+	--vim.keymap.set("n", "o", api.node.open.edit, opts("Open"))
 	vim.keymap.set("n", "O", api.node.open.no_window_picker, opts("Open: No Window Picker"))
 	vim.keymap.set("n", "p", api.fs.paste, opts("Paste"))
 	vim.keymap.set("n", "P", api.node.navigate.parent, opts("Parent Directory"))
 	vim.keymap.set("n", "q", api.tree.close, opts("Close"))
 	vim.keymap.set("n", "r", api.fs.rename, opts("Rename"))
-	vim.keymap.set("n", "R", api.tree.reload, opts("Refresh"))
-	--vim.keymap.set('n', 's', api.node.run.system, opts('Run System'))
+	--vim.keymap.set("n", "R", api.tree.reload, opts("Refresh"))
+	vim.keymap.set('n', 'o', api.node.run.system, opts('Run System'))
 	--vim.keymap.set('n', 'S', api.tree.search_node, opts('Search'))
 	vim.keymap.set("n", "u", api.fs.rename_full, opts("Rename: Full Path"))
 	vim.keymap.set("n", "U", api.tree.toggle_custom_filter, opts("Toggle Filter: Hidden"))
@@ -117,15 +116,13 @@ local function tree(bufnr)
 	vim.keymap.set("n", "?", api.tree.toggle_help, opts("Help"))
 end
 require("nvim-tree").setup({
-	respect_buf_cwd = true,
-	--update_focused_file = {
-	--	enable = true,
-	--	update_root = true,
-	--},
-	sort = {
-		sorter = "case_sensitive",
-	},
 	disable_netrw = true,
+	sync_root_with_cwd = true,
+	respect_buf_cwd = true,
+	update_focused_file = {
+		enable = true,
+		update_root = true,
+	},
 	--hijack_unnamed_buffer_when_opening = true,
 	view = {
 		float = {
@@ -183,25 +180,17 @@ require("nvim-tree").setup({
 })
 
 local opt = { noremap = true, silent = true }
---vim.api.nvim_create_augroup("NvimTreeResize", {
---  clear = true,
---})
---
---vim.api.nvim_create_autocmd({ "VimResized" }, {
---  group = "NvimTreeResize",
---  callback = function()
---    if tree_view.is_visible() then
---      vim.cmd([[NvimTreeClose]])
---      vim.cmd([[NvimTreeOpen]])
---    end
---  end
---})
 
 vim.keymap.set("n", "\\", function()
-	tree_api.tree.toggle({})
+	tree_api.tree.toggle({
+		find_file = false,
+		update_root = true,
+	})
 end, opt)
+
 vim.keymap.set("n", "|", function()
 	tree_api.tree.toggle({
 		find_file = true,
+		update_root = true,
 	})
 end, opt)

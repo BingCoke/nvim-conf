@@ -1,6 +1,5 @@
 local M = {}
 
-local restUtil = require("rest-nvim/utils")
 M.config = {}
 M.run = function()
 	local bufnr = vim.api.nvim_get_current_buf()
@@ -31,14 +30,7 @@ local function setUp(filetype, func)
 			keymap.set("n", "<leader>e", function()
 				require("telescope").extensions.rest.select_env()
 			end, opt)
-			keymap.set("n", "<leader>b", function()
-				local res = restUtil.get_env_variables()
-				local host = res["host"]
-				local port = res["port"]
 
-				print(host)
-				print(port)
-			end, opt)
 		end,
 	})
 end

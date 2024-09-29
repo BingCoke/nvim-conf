@@ -1,5 +1,7 @@
 local dap = require("dap")
 
+local map = vim.keymap.set
+local opt = { noremap = true, silent = true }
 local status_ok, dapui = pcall(require, "dapui")
 
 if not status_ok then
@@ -17,31 +19,31 @@ require("persistent-breakpoints").setup({
 local persistent_breakpoints_api = require("persistent-breakpoints.api")
 
 -- Set breakpoints, get variable values, step into/out of functions, etc.
-vim.keymap.set("n", "<leader>k", function()
+map("n", "<leader>k", function()
 	local expr = util.eval_expr
 	if expr ~= nil and expr == "" then
 		expr = nil
 	end
 	require("dapui").eval(expr, { context = "hover", enter = true })
-end)
+end, opt)
 
 -- 设置参数
-vim.keymap.set("n", "<leader>-", util.set_args())
+vim.keymap.set("n", "<leader>-", util.set_args(), opt)
 -- 设置eval的条件
 vim.keymap.set("n", "<leader>=", function()
 	util.set_eval_expr()
-end)
+end, opt)
 
 vim.keymap.set("n", "<F1>", function()
 	dapui.toggle({})
-end)
+end, opt)
 
-vim.keymap.set("n", "<F2>", persistent_breakpoints_api.clear_all_breakpoints)
+vim.keymap.set("n", "<F2>", persistent_breakpoints_api.clear_all_breakpoints, opt)
 
 vim.keymap.set("n", "<F3>", function()
 	dapui.close({})
 	dap.terminate()
-end)
+end, opt)
 
 vim.keymap.set("n", "<F4>", dap.run_to_cursor)
 vim.keymap.set("n", "<F5>", dap.continue)

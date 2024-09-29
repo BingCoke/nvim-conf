@@ -4,6 +4,7 @@ OS = vim.loop.os_uname().sysname
 require("basic")
 require("keybindings")
 require("plugins")
+require("neovide")
 
 vim.g.hlchunk_files = "*.ts,*.js,*.json,*.go,*.c,*.cpp,*.rs,*.h,*.hpp,*.lua,*.py,*.dart"
 

@@ -9,10 +9,11 @@ M.build_dap_runner_opt = function(o)
 	end
 	local opt = {}
 	opt.file = vim.api.nvim_buf_get_name(0)
+	opt.dir = opt.file:gsub("([^/]+)$", "")
 	opt.work_dir = vim.api.nvim_call_function("getcwd", {})
 	opt.work_dir_name = opt.work_dir:match(".*/([^/]+)$")
 
-	if o.cur_fun ~= nil and o.cur_fun ~= false then
+	if o.cur_fun == nil or o.cur_fun == false then
 		opt.cur_fun = M.get_current_function_name()
 	end
 	opt.path = string.format("./%s", vim.fn.fnamemodify(vim.fn.expand("%:.:h"), ":r"))

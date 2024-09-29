@@ -34,10 +34,10 @@ treesitter.setup({
 	-- 启用代码高亮模块
 	highlight = {
 		enable = true,
-		additional_vim_regex_highlighting = false,
-		disable = function(_, bufnr)
-			return vim.api.nvim_buf_line_count(bufnr) > 3000
-		end,
+		--additional_vim_regex_highlighting = false,
+		--disable = function(_, bufnr)
+		--	return vim.api.nvim_buf_line_count(bufnr) > 3000
+		--end,
 	},
 	rainbow = {
 		enable = false,
@@ -70,12 +70,6 @@ treesitter.setup({
 			"css",
 			--"typescript",
 		},
-	},
-	autotag = {
-		enable = true,
-		enable_rename = true,
-		enable_close = true,
-		enable_close_on_slash = false,
 	},
 })
 

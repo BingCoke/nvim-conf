@@ -42,6 +42,10 @@
         "path": "./go.json"
       },
       {
+        "language": "javascript",
+        "path": "./js.json"
+      },
+      {
         "language": "typescript",
         "path": "./ts.json"
       },

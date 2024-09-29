@@ -35,7 +35,7 @@ debugger_path = "/home/bk/tools/vscode-js-debug",
 
 make google-chrome start with debug (make sure 9222 port)
 
-```
+```shell
 google-chrome-stable --remote-debugging-port=9222
 
 ```

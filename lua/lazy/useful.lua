@@ -23,14 +23,14 @@ return {
 		end,
 	},
 	-- floaterm
-	{
-		"voldikss/vim-floaterm",
-		config = function()
-			require("plugin-config.fterm").setup()
-			require("plugin-config.fterm").config()
-		end,
-		event = "VeryLazy",
-	},
+	--{
+	--	"voldikss/vim-floaterm",
+	--	config = function()
+	--		require("plugin-config.fterm").setup()
+	--		require("plugin-config.fterm").config()
+	--	end,
+	--	event = "VeryLazy",
+	--},
 	{
 		"aserowy/tmux.nvim",
 		config = function()

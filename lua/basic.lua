@@ -22,7 +22,6 @@ vim.wo.cursorline = true
 vim.wo.signcolumn = "yes"
 vim.opt_local.spell = false
 vim.opt_local.wrap = false
-vim.opt_local.statuscolumn = " "
 vim.opt_local.conceallevel = 3
 
 -- 右侧参考线，超过表示代码太长了，考虑换行

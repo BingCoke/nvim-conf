@@ -1,5 +1,6 @@
 local colorscheme = "tokyonight"
 --local colorscheme = "neofusion"
+require("monokai").setup({ palette = require("monokai").ristretto })
 require("tokyonight").setup({
 	-- your configuration comes here
 	-- or leave it empty to use the default settings
@@ -40,11 +41,15 @@ vim.cmd("highlight! BufferLineSeparator guifg=#82aaff guibg=NONE")
 
 vim.cmd("highlight! MatchParen guifg=None guibg=#7980ab gui=bold cterm=bold")
 vim.cmd("highlight! Cursor guifg=#222436 guibg=#8291bf")
-vim.cmd("highlight! TermCursor guifg=#222436 guibg=#8291bf")
+--vim.cmd("highlight! TermCursor guifg=#222436 guibg=#8291bf")
+
 
 --vim.cmd("highlight! CursorIM guifg=#222436 guibg=#8291bf ")
 --vim.cmd("highlight! lCursor guifg=#222436 guibg=#8291bf ")
-vim.cmd("highlight! CursorLine guibg=#3b4261 blend=80")
+vim.cmd("highlight! CursorLine guibg=#3b4261")
+vim.cmd("highlight! DiagnosticUnnecessary guifg=#747da6")
+vim.cmd("highlight! Comment cterm=bold,italic gui=bold,italic guifg=#747da6")
+vim.cmd("highlight! LspInlayHint guifg=#6d7594")
 
 --vim.cmd("hi LspInlayHint guifg=#7aa2f7 guibg=#3b4261")
 --vim.cmd("highlight FidgetTitle ctermfg=110 guifg=#6cb6eb")

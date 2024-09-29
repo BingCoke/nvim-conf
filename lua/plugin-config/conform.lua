@@ -25,16 +25,17 @@ conform.setup({
 		},
 	},
 	formatters_by_ft = {
-		javascript = { { "biome", "prettierd" } },
+		javascript = { "biome", "prettierd", lsp_format = "fallcack" },
 		javascriptreact = { "biome", "prettierd" },
-		typescript = { { "biome", "prettierd" } },
-		typescriptreact = { "biome", "prettierd" },
+		typescript = { "biome", "prettierd" },
+		typescriptreact = { "biome", "prettierd", lsp_format = "fallcack" },
 		vue = { "prettierd" },
 		xml = { { "xmlformatter" } },
 		css = { "prettierd" },
 		html = { "prettierd" },
 		json = { { "biome", "prettierd" } },
 		lua = { "stylua" },
+		python = { "black" },
 		yaml = { "yamlfmt" },
 		shell = { "shfmt" },
 		php = { "php_cs_fixer" },
@@ -48,7 +49,7 @@ conform.setup({
 
 vim.keymap.set({ "n", "v" }, "<leader>f", function()
 	conform.format({
-		lsp_fallback = true,
+		lsp_format = "fallback",
 		timeout_ms = 1000,
 		async = true,
 	})

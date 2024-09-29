@@ -6,7 +6,7 @@ end
 
 -- nvim-tree 支持
 project.setup({
-	detection_methods = { "pattern" },
+	detection_methods = { "pattern", "lsp" },
 	patterns = {
 		--"!>app",
 		".git",

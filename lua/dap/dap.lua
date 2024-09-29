@@ -30,6 +30,13 @@ local dap_breakpoint = {
 	},
 }
 
-vim.fn.sign_define("DapBreakpoint", dap_breakpoint.error)
-vim.fn.sign_define("DapStopped", dap_breakpoint.stopped)
-vim.fn.sign_define("DapBreakpointRejected", dap_breakpoint.rejected)
+vim.api.nvim_set_hl(0, "Breakpoint", { fg = "#e35a60" })
+vim.api.nvim_set_hl(0, "green", { fg = "#9ece6a" })
+vim.api.nvim_set_hl(0, "yellow", { fg = "#FFFF00" })
+vim.api.nvim_set_hl(0, "orange", { fg = "#f09000" })
+
+vim.fn.sign_define("DapBreakpoint", { text = "", texthl = "Breakpoint" })
+vim.fn.sign_define("DapBreakpointCondition", { text = "", texthl = "Breakpoint" })
+vim.fn.sign_define("DapBreakpointRejected", { text = "", texthl = "orange", linehl = "Breakpoint" })
+vim.fn.sign_define("DapStopped", { text = "", texthl = "green", numhl = "DapBreakpoint" })
+vim.fn.sign_define("DapLogPoint", { text = "", texthl = "yellow", numhl = "DapBreakpoint" })

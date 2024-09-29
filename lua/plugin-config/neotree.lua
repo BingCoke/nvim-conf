@@ -261,4 +261,4 @@ local opt = { noremap = true, silent = true }
 vim.keymap.set("n", "sg", ":Neotree<space>git_status<CR>", opt)
 vim.keymap.set("n", "|", ":Neotree float toggle reveal<CR>", opt)
 vim.keymap.set("n", "\\", ":Neotree source=filesystem position=float toggle<CR>", opt)
-vim.keymap.set("n", "<A-m>", ":Neotree source=filesystem position=left toggle<CR>", opt)
+vim.keymap.set("n", "<c-m>", ":Neotree source=filesystem position=left toggle<CR>", opt)
