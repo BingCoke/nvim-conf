@@ -12,7 +12,7 @@ require("colorizer").setup({
 		-- Available modes for `mode`: foreground, background,  virtualtext
 		-- Available methods are false / true / "normal" / "lsp" / "both"
 		-- True is same as normal
-		tailwind = "lsp", -- Enable tailwind colors
+		--tailwind = "lsp", -- Enable tailwind colors
 		-- parsers can contain values used in |user_default_options|
 		sass = { enable = true, parsers = { "css" } }, -- Enable sass colors
 	},

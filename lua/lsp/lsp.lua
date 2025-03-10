@@ -6,10 +6,9 @@ local language = {
 	"rust",
 	"markdown",
 	"yaml",
-	-- "flutter",
-	-- "typescript",
+	--"ts",
 }
---vim.lsp.set_log_level("debug")
+
 local util = require("lspconfig.util")
 
 local methods = vim.lsp.protocol.Methods
@@ -17,7 +16,7 @@ local methods = vim.lsp.protocol.Methods
 local inlay_hint_handler = vim.lsp.handlers[methods.textDocument_inlayHint]
 vim.lsp.handlers[methods.textDocument_inlayHint] = function(err, result, ctx, config)
 	local client = vim.lsp.get_client_by_id(ctx.client_id)
-	if client and client.name == "vtsls" then
+	if client and (client.name == "vtsls") then
 		if result == nil then
 			return
 		end
@@ -41,6 +40,7 @@ vim.lsp.handlers[methods.textDocument_inlayHint] = function(err, result, ctx, co
 			end)
 			:totable()
 	end
+
 	inlay_hint_handler(err, result, ctx, config)
 end
 
@@ -85,9 +85,10 @@ local function addSymbolAtLineEnd(symbol)
 end
 
 -- enable keybinds only for when lsp server available
-local on_attach = function(client, bufnr)
+
+local on_attach = function(_, bufnr)
 	vim.wo.signcolumn = "yes"
-	-- keybind options
+	-- keybind optionslsplsp
 	local opts = { noremap = true, silent = true, buffer = bufnr }
 
 	keymap.set("i", "<c-p>", vim.lsp.buf.signature_help, opts)
@@ -111,27 +112,16 @@ local on_attach = function(client, bufnr)
 
 	--keymap.set("n", "<leader>s", "<cmd>Lspsaga code_action<CR>", opts) -- see available code actions
 	keymap.set("n", "<leader>s", "<cmd>LspUI code_action<CR>", opts) -- see available code actions
+
 	keymap.set("n", "<leader>rn", "<cmd>Lspsaga rename<CR>", opts) -- smart rename
 
-	keymap.set("n", "<leader>D", "<cmd>Lspsaga show_line_diagnostics <CR>", opts) -- show  diagnostics for line
-	keymap.set("n", "<leader>d", "<cmd>Lspsaga show_cursor_diagnostics<CR>", opts) -- show diagnostics for cursor
-
-	keymap.set("n", "[g", "<cmd>Lspsaga diagnostic_jump_prev<CR>", opts) -- jump to previous diagnostic in buffer
-	keymap.set("n", "]g", "<cmd>Lspsaga diagnostic_jump_next<CR>", opts) -- jump to next diagnostic in buffer
-	-- Diagnostic jump with filters such as only jumping to an error
-
-	keymap.set("n", "[e", function()
-		require("lspsaga.diagnostic"):goto_prev({ severity = vim.diagnostic.severity.ERROR })
-	end, opts)
-	keymap.set("n", "]e", function()
-		require("lspsaga.diagnostic"):goto_next({ severity = vim.diagnostic.severity.ERROR })
-	end, opts)
+	keymap.set("n", "<leader>d", "<cmd>Trouble diagnostics toggle win.type = split win.position=bottom filter.buf=0<CR>", opts) -- show  diagnostics for line
 
 	keymap.set("n", "K", vim.lsp.buf.hover, opts)
 
-	keymap.set("n", "<A-a>", "<cmd>Lspsaga hover_doc<CR>", opts) -- show documentation for what is under cursor
+	--keymap.set("n", "<A-a>", "<cmd>Lspsaga hover_doc<CR>", opts) -- show documentation for what is under cursor
 
-	keymap.set("n", "<leader>o", "<cmd>LSoutlineToggle<CR>", opts) -- see outline on right hand side
+	--keymap.set("n", "<leader>o", "<cmd>LSoutlineToggle<CR>", opts) -- see outline on right hand side
 
 	vim.keymap.set({ "i" }, "<c-d>", function()
 		if not require("noice.lsp").scroll(4) then
@@ -154,9 +144,10 @@ local on_attach = function(client, bufnr)
 	end, opts)
 end
 
--- used to enable autocompletion (assign to every lsp server config)
-local capabilities = require("cmp_nvim_lsp").default_capabilities()
+
 --local capabilities = vim.lsp.protocol.make_client_capabilities()
+	local capabilities = require("util.cmpUtil").getCapabilites()
+
 capabilities.textDocument.foldingRange = {
 	dynamicRegistration = false,
 	lineFoldingOnly = true,
@@ -165,7 +156,10 @@ capabilities.textDocument.foldingRange = {
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
 -- The nvim-cmp almost supports LSP's capabilities so You should advertise it to LSP servers..
-local default_capabilities = require("cmp_nvim_lsp").default_capabilities()
+--local default_capabilities = require("cmp_nvim_lsp").default_capabilities()
+--local default_capabilities = vim.lsp.protocol.make_client_capabilities()
+local default_capabilities = require("util.cmpUtil").getCapabilites()
+
 
 --local default_capabilities  = vim.lsp.protocol.default_capabilities()
 
@@ -178,17 +172,9 @@ for type, icon in pairs(signs) do
 	vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
 end
 
-for index, value in ipairs(language) do
+for _, value in ipairs(language) do
 	require("lsp.language." .. value).setup(lspconfig, default_capabilities, on_attach)
 end
-
--- configure cpp clangd
---lspconfig["clangd"].setup({
---	capabilities = default_capabilities,
---	on_attach = on_attach,
---	settings = {
---	},
---})
 
 lspconfig["awk_ls"].setup({
 	capabilities = default_capabilities,
@@ -212,19 +198,12 @@ lspconfig["html"].setup({
 	},
 })
 
---lspconfig.biome.setup({
---	capabilities = default_capabilities,
---	on_attach = on_attach,
---	root_dir = util.root_pattern("biome.json"),
---	single_file_support = false,
---})
-
-lspconfig.eslint.setup({
-	capabilities = default_capabilities,
-	on_attach = on_attach,
-})
-
 lspconfig.tailwindcss.setup({
+	root_dir = function(fname)
+		return vim.fs.dirname(vim.fs.find("package.json", { path = fname, upward = true })[1])
+			or vim.fs.dirname(vim.fs.find("node_modules", { path = fname, upward = true })[1])
+			or vim.fs.dirname(vim.fs.find(".git", { path = fname, upward = true })[1])
+	end,
 	capabilities = capabilities,
 	on_attach = on_attach,
 	settings = {
@@ -238,10 +217,9 @@ lspconfig.tailwindcss.setup({
 					{ "windVars\\(([^)]*)\\)", "[\"'`]([^\"'`]*)[\"'`]" },
 					{ "cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]" },
 				},
-				-- purgeLayersByDefault = true,
 			},
-			-- classAttributes = { "class", "classList", "className", ".*Style", ".*Class", ".*ClassName" },
-			classAttributes = { "class", "classList", "className", ".*Class", ".*ClassName" },
+			 classAttributes = { "class", "classList", "className", ".*Style", ".*Class", ".*ClassName" },
+			--classAttributes = { "class", "classList", "className", ".*Class", ".*ClassName", ".*styles", ".*style" },
 		},
 	},
 })
@@ -265,44 +243,6 @@ lspconfig.stylelint_lsp.setup({
 		},
 	},
 })
-
---lspconfig.emmet_language_server.setup({
---	on_attach = on_attach,
---	capabilities = default_capabilities,
---	filetypes = {
---		"css",
---		"eruby",
---		"html",
---		"javascript",
---		"javascriptreact",
---		"less",
---		"sass",
---		"scss",
---		"svelte",
---		"pug",
---		"typescriptreact",
---		--"vue",
---	},
---	-- Read more about this options in the [vscode docs](https://code.visualstudio.com/docs/editor/emmet#_emmet-configuration).
---	-- **Note:** only the options listed in the table are supported.
---	init_options = {
---		--- @type string[]
---		includeLanguages = {},
---		excludeLanguages = {},
---		--- @type table<string, any> [Emmet Docs](https://docs.emmet.io/customization/preferences/)
---		preferences = {},
---		--- @type boolean Defaults to `true`
---		showAbbreviationSuggestions = true,
---		--- @type "always" | "never" Defaults to `"always"`
---		showExpandedAbbreviation = "always",
---		--- @type boolean Defaults to `false`
---		showSuggestionsAsSnippets = false,
---		--- @type table<string, any> [Emmet Docs](https://docs.emmet.io/customization/syntax-profiles/)
---		syntaxProfiles = {},
---		--- @type table<string, string> [Emmet Docs](https://docs.emmet.io/customization/snippets/#variables)
---		variables = {},
---	},
---})
 
 lspconfig["cssls"].setup({
 	capabilities = default_capabilities,
@@ -333,8 +273,7 @@ lspconfig["lemminx"].setup({
 	capabilities = capabilities,
 	on_attach = on_attach,
 })
--- sh-lsp
--- bash-lsp
+
 lspconfig["bashls"].setup({
 	capabilities = capabilities,
 	on_attach = on_attach,
@@ -350,11 +289,6 @@ lspconfig["taplo"].setup({
 --	on_attach = on_attach,
 --})
 
-lspconfig.typst_lsp.setup({
-	capabilities = capabilities,
-	on_attach = on_attach,
-})
-
 lspconfig.kotlin_language_server.setup({
 	capabilities = capabilities,
 	on_attach = on_attach,
@@ -365,15 +299,14 @@ lspconfig["prismals"].setup({
 	on_attach = on_attach,
 })
 
-lspconfig.phpactor.setup({
+lspconfig.intelephense.setup({
 	capabilities = capabilities,
 	on_attach = on_attach,
+	init_options = {
+		licenceKey = "/Users/bingcoke/.config/intelephense/licence",
+	},
+	settings = {},
 })
-
---[[lspconfig.intelephense.setup({
-	capabilities = capabilities,
-	on_attach = on_attach,
-})]]
 
 lspconfig.arduino_language_server.setup({
 	capabilities = capabilities,
@@ -385,27 +318,23 @@ lspconfig.lemminx.setup({
 	on_attach = on_attach,
 })
 
-local astrocap = require("cmp_nvim_lsp").default_capabilities()
 lspconfig.astro.setup({
-	capabilities = astrocap,
-	on_attach = on_attach,
-})
-
-lspconfig.sourcekit.setup({
 	capabilities = capabilities,
 	on_attach = on_attach,
 })
+
+--local sourcekit_capabilities = vim.lsp.protocol.make_client_capabilities()
+--lspconfig["sourcekit"].setup({
+--	capabilities = sourcekit_capabilities,
+--	on_attach = on_attach,
+--})
+
 lspconfig.thriftls.setup({
 	capabilities = capabilities,
 	on_attach = on_attach,
 })
 
---require("lspconfig").pbls.setup({
---
---	capabilities = capabilities,
---	on_attach = on_attach,
---})
-lspconfig.bufls.setup({
+lspconfig.buf_ls.setup({
 	capabilities = capabilities,
 	on_attach = on_attach,
 })
@@ -420,72 +349,30 @@ lspconfig.omnisharp.setup({
 	capabilities = capabilities,
 })
 
+--lspconfig.clangd.setup({
+--	capabilities = capabilities,
+--	on_attach = on_attach,
+--})
+
+lspconfig.ccls.setup({
+	capabilities = capabilities,
+	on_attach = on_attach,
+	flags = {
+		debounce_text_changes = 150,
+	},
+	init_options = {
+		cache = {
+			directory = "/tmp/ccls-cache",
+		},
+		clang = {
+			extraArgs = { "-std=c++11" },
+		},
+	},
+})
+
 lspconfig["tsp_server"].setup({
 	capabilities = capabilities,
 	on_attach = on_attach,
-})
-
-lspconfig.volar.setup({
-	capabilities = capabilities,
-	on_attach = on_attach,
-	filetypes = { "vue", "json" },
-	--filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
-	init_options = {
-		vue = {
-			hybridMode = false,
-		},
-	},
-})
-
-local mason_registry = require("mason-registry")
-local vue_language_server_path = mason_registry.get_package("vue-language-server"):get_install_path()
-	.. "/node_modules/@vue/language-server"
-
-lspconfig.vtsls.setup({
-	capabilities = capabilities,
-	on_attach = on_attach,
-	root_dir = util.root_pattern(".git", "turbo.json", "pnpm-workspace.yaml"),
-	filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact" },
-	settings = {
-		vtsls = {
-			tsserver = {
-				globalPlugins = {
-					{
-						name = "@vue/typescript-plugin",
-						enableForWorkspaceTypeScriptVersions = true,
-						location = vue_language_server_path,
-						languages = { "vue" },
-					},
-					{
-						name = "typescript-lit-html-plugin",
-						tags = {
-							"html",
-							"template",
-						},
-						languages = { "html" },
-					},
-					{
-						name = "typescript-plugin-css-modules",
-						location = "/Users/bingcoke/.bun/install/global/node_modules/typescript-plugin-css-modules",
-						enableForWorkspaceTypeScriptVersions = true,
-					},
-				},
-				preferences = {
-					includeInlayFunctionLikeReturnTypeHints = false,
-				},
-			},
-		},
-		typescript = {
-			inlayHints = {
-				parameterNames = { enabled = "all" },
-				propertyDeclarationTypes = { enabled = true },
-				functionLikeReturnTypes = { enabled = true },
-				enumMemberValues = { enabled = true },
-				parameterTypes = { enabled = true },
-				variableTypes = { enabled = true },
-			},
-		},
-	},
 })
 
 M.on_attach = on_attach

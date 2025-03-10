@@ -63,42 +63,8 @@ map("n", "<A-o>", "<Cmd>tabmove +1<CR>", opts)
 map("n", "<A-]>", "<cmd>tabnext #<CR>", opts)
 map("n", "<A-[>", "<cmd>tabnext -<CR>", opts)
 
-map("n", "<C-A-1>", function()
-	goTo(1)
-end, opts)
-
-map("n", "<C-A-2>", function()
-	goTo(2)
-end, opts)
-
-map("n", "<C-A-3>", function()
-	goTo(3)
-end, opts)
-
-map("n", "<C-A-4>", function()
-	goTo(4)
-end, opts)
-
-map("n", "<C-A-5>", function()
-	goTo(5)
-end, opts)
-
-map("n", "<C-A-6>", function()
-	goTo(6)
-end, opts)
-
-map("n", "<C-A-7>", function()
-	goTo(7)
-end, opts)
-
-map("n", "<C-A-8>", function()
-	goTo(8)
-end, opts)
-
-map("n", "<C-A-9>", function()
-	goTo(9)
-end, opts)
-
-map("n", "<C-A-0>", function()
-	goTo(10)
-end, opts)
+for i = 1, 9, 1 do
+	map("n", "<leader>" .. i, function()
+		goTo(i)
+	end, opts)
+end

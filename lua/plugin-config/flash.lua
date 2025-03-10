@@ -3,6 +3,9 @@ local map = vim.keymap.set
 -- 复用 opt 参数
 local opt = { noremap = true, silent = true }
 local flash = require("flash")
+local function fm()
+	
+end
 flash.setup({
 	search = {
 		filetype_exclude = { "notiy", "noice", "cmp_menu", "neo-tree", "popup-menu", "Pmenu", "pmenu" },
@@ -37,7 +40,7 @@ flash.setup({
 	},
 	modes = {
 		search = {
-			enabled = true,
+			enabled = false,
 		},
 		char = {
 			enabled = false,

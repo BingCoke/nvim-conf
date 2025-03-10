@@ -1,27 +1,5 @@
 local tree_api = require("nvim-tree.api")
 
-function find_directory_and_focus()
-	local actions = require("telescope.actions")
-	local action_state = require("telescope.actions.state")
-
-	local function open_nvim_tree(prompt_bufnr, _)
-		actions.select_default:replace(function()
-			local api = require("nvim-tree.api")
-
-			actions.close(prompt_bufnr)
-			local selection = action_state.get_selected_entry()
-			api.tree.open()
-			api.tree.find_file(selection.cwd .. "/" .. selection.value)
-		end)
-		return true
-	end
-
-	require("telescope.builtin").find_files({
-		find_command = { "fd", "--type", "directory", "--hidden", "--exclude", ".git/*" },
-		attach_mappings = open_nvim_tree,
-	})
-end
-
 local function tree(bufnr)
 	local api = require("nvim-tree.api")
 
@@ -101,7 +79,7 @@ local function tree(bufnr)
 	vim.keymap.set("n", "q", api.tree.close, opts("Close"))
 	vim.keymap.set("n", "r", api.fs.rename, opts("Rename"))
 	--vim.keymap.set("n", "R", api.tree.reload, opts("Refresh"))
-	vim.keymap.set('n', 'o', api.node.run.system, opts('Run System'))
+	vim.keymap.set("n", "o", api.node.run.system, opts("Run System"))
 	--vim.keymap.set('n', 'S', api.tree.search_node, opts('Search'))
 	vim.keymap.set("n", "u", api.fs.rename_full, opts("Rename: Full Path"))
 	vim.keymap.set("n", "U", api.tree.toggle_custom_filter, opts("Toggle Filter: Hidden"))

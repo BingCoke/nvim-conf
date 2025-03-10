@@ -293,5 +293,15 @@
       "//#endregion"
     ],
     "description": "Folding Region End"
+  },
+  "process": {
+    "prefix": "prs",
+    "body": [
+      "(async () => {",
+      "  $1",
+      "})().then(() => {",
+      "  process.exit(0);",
+      "});"
+    ]
   }
 }

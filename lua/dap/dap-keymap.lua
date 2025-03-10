@@ -64,5 +64,3 @@ end)
 vim.keymap.set("n", "<F11>", persistent_breakpoints_api.toggle_breakpoint)
 -- 设置条件断点
 vim.keymap.set("n", "<F12>", persistent_breakpoints_api.set_conditional_breakpoint)
-
--- 重新进行

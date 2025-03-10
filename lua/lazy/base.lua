@@ -7,7 +7,6 @@ return {
 		lazy = false,
 		priority = 1000,
 		dependencies = {
-			"tanvirtin/monokai.nvim",
 			--"EdenEast/nightfox.nvim",
 			--{ "diegoulloao/neofusion.nvim", priority = 1000, config = true },
 		},
@@ -16,22 +15,22 @@ return {
 		end,
 	},
 
-	{
-		"nvim-neo-tree/neo-tree.nvim",
-		event = "VeryLazy",
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"nvim-tree/nvim-web-devicons",
-			"MunifTanjim/nui.nvim",
-		},
-		config = function()
-			require("plugin-config.neotree")
-		end,
-		enabled = false,
-	},
+	--{
+	--	"nvim-neo-tree/neo-tree.nvim",
+	--	event = "VeryLazy",
+	--	dependencies = {
+	--		"nvim-lua/plenary.nvim",
+	--		"nvim-tree/nvim-web-devicons",
+	--		"MunifTanjim/nui.nvim",
+	--	},
+	--	config = function()
+	--		require("plugin-config.neotree")
+	--	end,
+	--	enabled = false,
+	--},
 	{
 		"nvim-tree/nvim-tree.lua",
-		config = function(self, opts)
+		config = function()
 			require("plugin-config.nvim-tree")
 		end,
 	},
@@ -46,7 +45,6 @@ return {
 		"nvim-lualine/lualine.nvim",
 		dependencies = {
 			"nvim-tree/nvim-web-devicons",
-			--"folke/tokyonight.nvim",
 		},
 		config = function()
 			require("plugin-config.lualine")
@@ -54,18 +52,6 @@ return {
 		end,
 		event = "VeryLazy",
 	},
-	--{
-	--	"romgrk/barbar.nvim",
-	--	dependencies = {
-	--		-- 页面关闭
-	--		"moll/vim-bbye",
-	--	},
-	--	config = function(self, opts)
-	--		vim.g.barbar_auto_setup = false
-	--		require("plugin-config.barbar")
-	--	end,
-	--	enabled = false,
-	--},
 	{
 		"akinsho/bufferline.nvim",
 		version = "*",
@@ -74,7 +60,7 @@ return {
 		event = "VeryLazy",
 
 		dependencies = {
-			"nvim-tree/nvim-web-devicons",
+			--"nvim-tree/nvim-web-devicons",
 		},
 		config = function()
 			require("plugin-config.bufferline")
@@ -104,6 +90,7 @@ return {
 	-- dashboard-nvim
 	{
 		"nvim-tree/nvim-web-devicons",
+		event = "VeryLazy",
 		config = function(self, opts)
 			require("plugin-config.nvim-web-devicions")
 		end,
@@ -129,7 +116,7 @@ return {
 				default_im_select = im,
 			})
 		end,
-		event = "BufReadPre",
+		--event = "BufReadPre",
 		--enabled = false,
 	},
 	{
@@ -143,7 +130,8 @@ return {
 	{
 		{
 			"gbprod/yanky.nvim",
-			--enabled = false,
+			enabled = false,
+			event = "VeryLazy",
 			dependencies = {
 				"kkharji/sqlite.lua",
 			},
@@ -212,6 +200,7 @@ return {
 	{
 		"akinsho/toggleterm.nvim",
 		version = "*",
+		event = "VeryLazy",
 		config = function()
 			require("plugin-config.toggleterm")
 		end,
@@ -249,73 +238,6 @@ return {
 			require("transparent").clear("Pmenu")
 			require("transparent").clear("NotifyBackground")
 		end,
-		--event = "VeryLazy",
-		--lazy = false,
-		--priority = 1000,
-		--enabled = false
 	},
-	{
-		"mikavilpas/yazi.nvim",
-		event = "VeryLazy",
-		enabled = false,
-		keys = {
-			-- 👇 in this section, choose your own keymappings!
-			{
-				"<M-f>",
-				"<cmd>Yazi toggle<cr>",
-				desc = "Open the file manager",
-			},
-			{
-				-- Open in the current working directory
-				"<leader>cw",
-				function()
-					require("yazi").yazi(nil, vim.fn.getcwd())
-				end,
-				desc = "Open the file manager in nvim's working directory",
-			},
-		},
-		---@type YaziConfig
-		opts = {
-			-- if you want to open yazi instead of netrw, see below for more info
-			open_for_directories = false,
-			use_ya_for_events_reading = true,
-			use_yazi_client_id_flag = "nvim",
-			highlight_hovered_buffers_in_same_directory = false,
-			highlight_groups = {
-				-- See https://github.com/mikavilpas/yazi.nvim/pull/180
-				hovered_buffer = nil,
-				-- See https://github.com/mikavilpas/yazi.nvim/pull/351
-				hovered_buffer_in_same_directory = nil,
-			},
-			keymaps = {
-				show_help = "<f1>",
-				open_file_in_vertical_split = "<c-v>",
-				open_file_in_horizontal_split = "<c-x>",
-				open_file_in_tab = "<cr>",
-				grep_in_directory = "<c-s>",
-				replace_in_directory = "<c-g>",
-				cycle_open_buffers = "<tab>",
-				copy_relative_path_to_selected_files = "<c-y>",
-				send_to_quickfix_list = "<c-q>",
-				change_working_directory = "<c-\\>",
-			},
-			hooks = {
-				-- if you want to execute a custom action when yazi has been opened,
-				-- you can define it here.
-				yazi_opened = function(preselected_path, yazi_buffer_id, config)
-					local opt = { buffer = yazi_buffer_id }
-					vim.keymap.set({ "i", "t" }, "<M-f>", "<cmd>Yazi toggle<cr>", opt)
-					-- you can optionally modify the config for this specific yazi
-					-- invocation if you want to customize the behaviour
-				end,
-
-				-- when yazi was successfully closed
-				yazi_closed_successfully = function(chosen_file, config, state) end,
-
-				-- when yazi opened multiple files. The default is to send them to the
-				-- quickfix list, but if you want to change that, you can define it here
-				yazi_opened_multiple_files = function(chosen_files, config, state) end,
-			},
-		},
-	},
+	 
 }

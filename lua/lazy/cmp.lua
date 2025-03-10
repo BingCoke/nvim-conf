@@ -1,3 +1,4 @@
+local enabledCmp = true
 return {
 	{
 		"L3MON4D3/LuaSnip",
@@ -5,20 +6,16 @@ return {
 		version = "2.*", -- Replace <CurrentMajor> by the latest released major (first number of latest release)
 		-- install jsregexp (optional!).
 		build = "make install_jsregexp",
+		enabled = enabledCmp,
 		dependencies = {
 			"saadparwaiz1/cmp_luasnip",
 			"honza/vim-snippets",
 			"jcha0713/cmp-tw2css",
-			{
-				"js-everts/cmp-tailwind-colors",
-				opts = {},
-				config = function()
-					require("cmp-tailwind-colors").setup({})
-				end,
-			},
+
 		},
 		event = "BufReadPre",
-		config = function(self, opts)
+		config = function()
+			require("util.cmpUtil").blinkCmp = false
 			require("luasnip").config.setup({
 				history = true,
 				--region_check_events = 'CursorMoved'
@@ -26,9 +23,55 @@ return {
 		end,
 		--enabled = false,
 	},
+	{
+		"lopi-py/blink.cmp",
+		lazy = false, -- lazy loading handled internally
+		enabled = not enabledCmp,
+		-- optional: provides snippets for the snippet source
+		dependencies = {
+			--"hrsh7th/nvim-cmp",
+		},
+		version = "v0.*",
+
+		opts = {
+			keymap = {
+				show = "<A-space>",
+				hide = "<C-e>",
+				accept = "<cr>",
+				select_prev = { "<Up>", "<C-k>" },
+				select_next = { "<Down>", "<C-j>" },
+				show_documentation = {},
+				hide_documentation = {},
+				scroll_documentation_up = "<C-u>",
+				scroll_documentation_down = "<C-d>",
+				snippet_forward = "<c-l>",
+				snippet_backward = "<c-h>",
+			},
+			highlight = {
+				--use_nvim_cmp_as_default = true,
+			},
+			nerd_font_variant = "normal",
+		},
+	},
+	{
+		"luckasRanarison/tailwind-tools.nvim",
+		name = "tailwind-tools",
+		build = ":UpdateRemotePlugins",
+		dependencies = {
+			"nvim-treesitter/nvim-treesitter",
+			"nvim-telescope/telescope.nvim", -- optional
+			"neovim/nvim-lspconfig", -- optional
+		},
+		opts = {
+			server = {
+				override = false,
+			},
+		}, -- your configuration
+	},
 	-- cmp
 	{
 		"hrsh7th/nvim-cmp",
+		enabled = enabledCmp,
 		dependencies = {
 			"hrsh7th/cmp-nvim-lsp", -- for autocompletion
 			"hrsh7th/cmp-nvim-lua",
@@ -36,8 +79,6 @@ return {
 			"hrsh7th/cmp-buffer",
 			"hrsh7th/cmp-path",
 			"L3MON4D3/LuaSnip",
-			"rcarriga/cmp-dap",
-			--"SirVer/ultisnips",
 		},
 		event = "VeryLazy",
 		config = function()
@@ -47,38 +88,13 @@ return {
 	{
 		"saecki/crates.nvim",
 		tag = "v0.3.0",
+		enabled = enabledCmp,
 		requires = { "nvim-lua/plenary.nvim" },
 		config = function()
-			-- require("crates").setup({
-			--[[ null_ls = {
-          enabled = true,
-          name = "crates.nvim",
-        },
-      }) ]]
 			local cmp = require("cmp")
 			cmp.setup.buffer({ sources = { { name = "crates" } } })
 		end,
 		--  event = "BufEnter Cargo.toml",
 		ft = { "toml" },
 	},
-
-	-- autopairs
-	{
-		"windwp/nvim-autopairs",
-		dependencies = {
-			"hrsh7th/nvim-cmp",
-		},
-		config = function()
-			require("plugin-config.autopairs")
-		end,
-		event = "VeryLazy",
-	},
-	--[[{
-		"David-Kunz/cmp-npm",
-		dependencies = { "nvim-lua/plenary.nvim" },
-		ft = "json",
-		config = function()
-			require("cmp-npm").setup({})
-		end,
-	},]]
 }

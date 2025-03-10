@@ -63,21 +63,27 @@ require("luasnip.loaders.from_vscode").lazy_load({ paths = { "./my-snippets", ".
 require("luasnip.loaders.from_vscode").lazy_load()
 
 require("luasnip.loaders.from_lua").lazy_load({ paths = "./snippets" })
-
---require("cmp_nvim_ultisnips").setup {}
-
-local t = function(str)
-	return vim.api.nvim_replace_termcodes(str, true, true, true)
-end
+-- gray
+vim.api.nvim_set_hl(0, "CmpItemAbbrDeprecated", { bg = "NONE", strikethrough = true, fg = "#808080" })
+-- blue
+vim.api.nvim_set_hl(0, "CmpItemAbbrMatch", { bg = "NONE", fg = "#569CD6" })
+vim.api.nvim_set_hl(0, "CmpItemAbbrMatchFuzzy", { link = "CmpIntemAbbrMatch" })
+-- light blue
+vim.api.nvim_set_hl(0, "CmpItemKindVariable", { bg = "NONE", fg = "#9CDCFE" })
+vim.api.nvim_set_hl(0, "CmpItemKindInterface", { link = "CmpItemKindVariable" })
+vim.api.nvim_set_hl(0, "CmpItemKindText", { link = "CmpItemKindVariable" })
+-- pink
+vim.api.nvim_set_hl(0, "CmpItemKindFunction", { bg = "NONE", fg = "#C586C0" })
+vim.api.nvim_set_hl(0, "CmpItemKindMethod", { link = "CmpItemKindFunction" })
+-- front
+vim.api.nvim_set_hl(0, "CmpItemKindKeyword", { bg = "NONE", fg = "#D4D4D4" })
+vim.api.nvim_set_hl(0, "CmpItemKindProperty", { link = "CmpItemKindKeyword" })
+vim.api.nvim_set_hl(0, "CmpItemKindUnit", { link = "CmpItemKindKeyword" })
 
 cmp.setup({
-	enabled = function()
-		return vim.api.nvim_buf_get_option(0, "buftype") ~= "prompt" or require("cmp_dap").is_dap_buffer()
-	end,
 	snippet = {
 		expand = function(args)
 			require("luasnip").lsp_expand(args.body)
-			--vim.fn["UltiSnips#Anon"](args.body)
 		end,
 	},
 	mapping = {
@@ -98,12 +104,6 @@ cmp.setup({
 			else
 				fallback()
 			end
-
-			--[[if vim.fn["UltiSnips#CanJumpForwards"]() == 1 then
-				vim.api.nvim_feedkeys(t("<Plug>(ultisnips_jump_forward)"), "m", true)
-			else
-				fallback()
-			end]]
 		end, { "i", "s" }),
 
 		["<c-h>"] = cmp.mapping(function(fallback)
@@ -112,11 +112,6 @@ cmp.setup({
 			else
 				fallback()
 			end
-			--[[if vim.fn["UltiSnips#CanJumpBackwards"]() == 1 then
-				return vim.api.nvim_feedkeys(t("<Plug>(ultisnips_jump_backward)"), "m", true)
-			else
-				fallback()
-			end]]
 		end, { "i", "s" }),
 	},
 	preselect = cmp.PreselectMode.None,
@@ -135,10 +130,36 @@ cmp.setup({
 		{ name = "buffer" },
 	}),
 	formatting = {
+		fields = { "menu", "abbr", "kind" },
 		format = function(entry, item)
-			item.menu = item.kind
-			item.kind = kind_icons[item.kind] .. " "
-			return item
+			local entryItem = entry:get_completion_item()
+			local color = entryItem.documentation
+
+			--item.menu_hl_group = hl
+			-- check if color is hexcolor
+			if color and type(color) == "string" and color:match("^#%x%x%x%x%x%x$") then
+				local hl = "hex-" .. color:sub(2)
+
+				if #vim.api.nvim_get_hl(0, { name = hl }) == 0 then
+					vim.api.nvim_set_hl(0, hl, { fg = color })
+				end
+
+				item.menu = " "
+				item.menu_hl_group = hl
+			end
+
+			local kind = require("lspkind").cmp_format({
+				--mode = "symbol_text",
+				maxwidth = 50,
+				before = require("tailwind-tools.cmp").lspkind_format,
+			})(entry, item)
+			--local strings = vim.split(kind.kind, "%s", { trimempty = true })
+			--kind.kind = " " .. (strings[1] or "") .. " "
+			--kind.menu = "    (" .. (strings[2] or "") .. ")"
+
+			kind.kind = kind.kind .. " "
+
+			return kind
 		end,
 	},
 	window = {
@@ -328,61 +349,9 @@ cmp.setup.filetype("go", {
 })
 for key, value in pairs(js) do
 	cmp.setup.filetype(value, {
-		formatting = {
-			format = function(entry, item)
-				if item.kind == "Color" then
-					item = require("cmp-tailwind-colors").format(entry, item)
-					if item.kind ~= "Color" then
-						item.menu = "Color"
-						return item
-					end
-				end
-
-				item.menu = item.kind
-				item.kind = kind_icons[item.kind] .. " "
-				return item
-			end,
-		},
 		sorting = {
 			comparators = {
-				--function(entry1, entry2)
-				--	local kind1 = entry1:get_kind() --- @type lsp.CompletionItemKind | number
-				--	local kind2 = entry2:get_kind() --- @type lsp.CompletionItemKind | number
-				--	if
-				--		kind1 == types.lsp.CompletionItemKind.Text
-				--			and kind2 == types.lsp.CompletionItemKind.Property
-				--		or kind2 == types.lsp.CompletionItemKind.Field
-				--	then
-				--		return false
-				--	end
-				--	if
-				--		kind2 == types.lsp.CompletionItemKind.Text
-				--			and kind1 == types.lsp.CompletionItemKind.Property
-				--		or kind2 == types.lsp.CompletionItemKind.Field
-				--	then
-				--		return true
-				--	end
-				--
-				--	return nil
-				--end,
-				--function(entry1, entry2)
-				--	local kind1 = entry1:get_kind() --- @type lsp.CompletionItemKind | number
-				--	local kind2 = entry2:get_kind() --- @type lsp.CompletionItemKind | number
-				--
-				--	if kind1 == types.lsp.CompletionItemKind.Field and kind2 == types.lsp.CompletionItemKind.Field then
-				--		return nil
-				--	end
-				--	if kind1 ~= types.lsp.CompletionItemKind.Field and kind2 ~= types.lsp.CompletionItemKind.Field then
-				--		return nil
-				--	end
-				--	if kind1 == types.lsp.CompletionItemKind.Field then
-				--		return true
-				--	end
-				--	if kind2 == types.lsp.CompletionItemKind.Field then
-				--		return false
-				--	end
-				--	return nil
-				--end,
+
 				compare.exact,
 				compare.offset,
 				compare.score, -- based on :  score = score + ((#sources - (source_index - 1)) * sorting.priority_weight)

@@ -26,11 +26,14 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
 	{ import = "lazy.lsp" },
 	{ import = "lazy.dap" },
-	{ import = "lazy.cmp" },
+	--{ import = "lazy.cmp" },
+	{ import = "lazy.blink" },
+
 	{ import = "lazy.markdown" },
 	{ import = "lazy.base" },
 	{ import = "lazy.code" },
 	{ import = "lazy.useful" },
+	--{ import = "lazy.mini" },
 }, {
 	ui = {
 		--border = "solider",
@@ -39,14 +42,6 @@ require("lazy").setup({
 	performance = {
 		rtp = {
 			disabled_plugins = {
-				"gzip",
-				--"matchit",
-				--"matchparen",
-				--"netrwPlugin",
-				"tarPlugin",
-				--"tohtml",
-				--"tutor",
-				"zipPlugin",
 			},
 		},
 	},

@@ -2,8 +2,72 @@
 local M = {}
 local util = require("lspconfig.util")
 
-function M.setup(lsp, default_capabilities, on_attach)
-	local capabilities = require("cmp_nvim_lsp").default_capabilities()
+function setupVtsls(lspconfig, capabilities, on_attach)
+	lspconfig.volar.setup({
+		capabilities = capabilities,
+		on_attach = on_attach,
+		filetypes = { "vue", "json" },
+		--filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
+		init_options = {
+			vue = {
+				hybridMode = false,
+			},
+		},
+	})
+
+	local mason_registry = require("mason-registry")
+	local vue_language_server_path = mason_registry.get_package("vue-language-server"):get_install_path()
+		.. "/node_modules/@vue/language-server"
+
+	lspconfig.vtsls.setup({
+		capabilities = capabilities,
+		on_attach = on_attach,
+		root_dir = util.root_pattern(".git", "turbo.json", "pnpm-workspace.yaml"),
+		filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact" },
+		settings = {
+			vtsls = {
+				tsserver = {
+					globalPlugins = {
+						{
+							name = "@vue/typescript-plugin",
+							enableForWorkspaceTypeScriptVersions = true,
+							location = vue_language_server_path,
+							languages = { "vue" },
+						},
+						{
+							name = "typescript-lit-html-plugin",
+							tags = {
+								"html",
+								"template",
+							},
+							languages = { "html" },
+						},
+						{
+							name = "typescript-plugin-css-modules",
+							location = "/Users/bingcoke/.bun/install/global/node_modules/typescript-plugin-css-modules",
+							enableForWorkspaceTypeScriptVersions = true,
+						},
+					},
+					preferences = {
+						includeInlayFunctionLikeReturnTypeHints = false,
+					},
+				},
+			},
+			typescript = {
+				inlayHints = {
+					parameterNames = { enabled = "all" },
+					propertyDeclarationTypes = { enabled = true },
+					functionLikeReturnTypes = { enabled = true },
+					enumMemberValues = { enabled = true },
+					parameterTypes = { enabled = true },
+					variableTypes = { enabled = true },
+				},
+			},
+		},
+	})
+end
+function setTypeTools(lspconfig, capabilities, on_attach)
+	local capabilities = require("util.cmpUtil").getCapabilites()
 
 	capabilities.textDocument.completion.completionItem.snippetSupport = true
 	capabilities.completionProvider = {
@@ -71,5 +135,7 @@ function M.setup(lsp, default_capabilities, on_attach)
 		},
 	})
 end
-
+function M.setup(lsp, default_capabilities, on_attach)
+	setTypeTools(lsp, default_capabilities, on_attach)
+end
 return M

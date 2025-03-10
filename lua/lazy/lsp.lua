@@ -1,45 +1,6 @@
-local language = {
-	"ruby",
-	"awk",
-	"c",
-	"cpp",
-	"dart",
-	"rust",
-	"go",
-	"python",
-	"html",
-	"css",
-	"markdown",
-	"yaml",
-	"yml",
-	"json",
-	"jsonc",
-	"lua",
-	"xml",
-	"sh",
-	"toml",
-	"typst",
-	"sql",
-	"typescript",
-	"typescriptreact",
-	"javascript",
-	"javascriptreact",
-	"kotlin",
-	"prisma",
-	"php",
-	"astro",
-	"arduino",
-	"http",
-	"swift",
-	"thrift",
-	"proto",
-	"vue",
-	"svelte",
-	"graphql",
-	"typespec",
-	"graphqls",
-	"typespec",
-}
+local g = require("gConfig")
+local language = g.language
+local js = g.ts
 return {
 	------- LSP -----
 	{
@@ -61,16 +22,14 @@ return {
 		ft = "typst",
 		event = "VeryLazy",
 	},
-
 	{
-		"folke/neodev.nvim",
-		config = function(self, opts)
-			require("neodev").setup({
-				-- add any options here, or leave empty to use the default settings
-			})
-		end,
-		ft = {
-			"lua",
+		"folke/lazydev.nvim",
+		ft = "lua", -- only load on lua files
+		opts = {
+			library = {
+				-- See the configuration section for more details
+				-- Load luvit types when the `vim.uv` word is found
+			},
 		},
 	},
 	{
@@ -87,9 +46,8 @@ return {
 	},
 	{
 		"pmizio/typescript-tools.nvim",
-		--dir = "/home/bk/tmp/typescript-tools.nvim",
 		dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
-		config = function(self, opts)
+		config = function()
 			local mlsp = require("lsp.lsp")
 			require("lsp.language.typescript").setup(mlsp.lspconfig, mlsp.default_capabilities, mlsp.on_attach)
 		end,
@@ -101,14 +59,15 @@ return {
 			"mdx",
 			"vue",
 		},
-		enabled = false,
+		--enabled = false,
 	},
 	{
 		"onsails/lspkind.nvim",
-		config = function(self, opts)
+		event = "VeryLazy",
+		config = function()
 			require("lsp.lspkind")
 		end,
-		event = "VeryLazy",
+		--event = "VeryLazy",
 	},
 	-- JSON 增强
 	{
@@ -151,6 +110,7 @@ return {
 	}, -- enhanced lsp uis
 	{
 		"jinzhongjia/LspUI.nvim",
+		ft = language,
 		branch = "main",
 		config = function()
 			require("LspUI").setup({
@@ -162,27 +122,27 @@ return {
 	},
 	{
 		"DNLHC/glance.nvim",
-		config = function(self, opts)
+		config = function()
 			require("plugin-config.glance")
 		end,
 		ft = language,
 	},
 
-	-- language go
 	{
-		"ray-x/go.nvim",
+		"olexsmir/gopher.nvim",
+		ft = "go",
 		dependencies = {
-			"ray-x/guihua.lua",
+			"nvim-lua/plenary.nvim",
 			"neovim/nvim-lspconfig",
-			{
-				"golang/vscode-go",
-				build = "cd extension && npm install && npm run compile",
-			},
+			"mfussenegger/nvim-dap", -- (optional) only if you use `gopher.dap`
 		},
 		config = function()
 			require("language.go")
 		end,
-		ft = "go",
+		-- (optional) will update plugin's deps on every update
+		build = function()
+			vim.cmd.GoInstallDeps()
+		end,
 	},
 	-- language ts
 	{
@@ -195,20 +155,10 @@ return {
 	},
 	{
 		"NvChad/nvim-colorizer.lua",
-		config = function(self, opts)
+		config = function()
 			require("plugin-config.color")
 		end,
 		event = "VeryLazy",
-		--ft = {
-		--	"css",
-		--	"scss",
-		--	"html",
-		--	"javascript",
-		--	"typescript",
-		--	"typescriptreact",
-		--	"javascriptreact",
-		--	"mdx",
-		--},
 	},
 	{
 		"dart-lang/dart-vim-plugin",
@@ -241,9 +191,17 @@ return {
 		ft = language,
 	},
 	{
-		"folke/trouble.nvim",
-		dependencies = { "nvim-tree/nvim-web-devicons" },
+		"yioneko/nvim-vtsls",
+		ft = js,
 		config = function()
+			require("vtsls").config({})
+		end,
+	},
+	{
+		"folke/trouble.nvim",
+		ft = language,
+		config = function()
+			require("lsp.trouble")
 			vim.keymap.set("n", "<leader>xx", function()
 				require("trouble").toggle()
 			end)
@@ -263,12 +221,6 @@ return {
 				require("trouble").toggle("lsp_references")
 			end)
 		end,
-		ft = language,
 	},
-	{
-		"yioneko/nvim-vtsls",
-		config = function()
-			require("vtsls").config({})
-		end,
-	},
+
 }

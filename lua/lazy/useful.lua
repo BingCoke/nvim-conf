@@ -22,17 +22,9 @@ return {
 			require("plugin-config.flash")
 		end,
 	},
-	-- floaterm
-	--{
-	--	"voldikss/vim-floaterm",
-	--	config = function()
-	--		require("plugin-config.fterm").setup()
-	--		require("plugin-config.fterm").config()
-	--	end,
-	--	event = "VeryLazy",
-	--},
 	{
 		"aserowy/tmux.nvim",
+		event = "VeryLazy",
 		config = function()
 			local tmux = require("tmux")
 			tmux.setup({

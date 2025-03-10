@@ -15,6 +15,18 @@ local fmt = extras.fmt
 local m = extras.m
 local l = extras.l
 local postfix = require("luasnip.extras.postfix").postfix
+local matches = require("luasnip.extras.postfix").matches
+
+local function iferr(parm)
+	local boff = vim.fn.wordcount().cursor_bytes
+	local data = vim.fn.systemlist(("iferr" .. " -pos " .. boff), vim.fn.bufnr("%"))
+	if vim.v.shell_error ~= 0 then
+		error("iferr failed: " .. data)
+	end
+	data[1] = string.gsub(data[1], "err", parm)
+	data[2] = string.gsub(data[2], "err", parm)
+	return data
+end
 
 return {
 	postfix(".vp", {
@@ -25,5 +37,11 @@ return {
 				.. parent.snippet.env.POSTFIX_MATCH
 				.. ")"
 		end, {}),
+	}),
+	postfix({ trig = ".iferr", matches = matches.line }, {
+		f(function(_, parent)
+			local parm = parent.snippet.env.POSTFIX_MATCH
+			return iferr(parm)
+		end),
 	}),
 }

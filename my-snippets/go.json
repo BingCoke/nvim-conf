@@ -20,17 +20,17 @@
     "description": "Snippet for a constant block"
   },
   "type function declaration": {
-    "prefix": "tyf",
+    "prefix": "tf",
     "body": "type ${1:name} func($3) $4",
     "description": "Snippet for a type function declaration"
   },
   "type interface declaration": {
-    "prefix": "tyi",
+    "prefix": "ti",
     "body": "type ${1:name} interface {\n\t$0\n}",
     "description": "Snippet for a type interface"
   },
   "type struct declaration": {
-    "prefix": "tys",
+    "prefix": "ts",
     "body": "type ${1:name} struct {\n\t$0\n}",
     "description": "Snippet for a struct declaration"
   },
@@ -287,8 +287,37 @@
     "body": "`xml:\"$1\"`",
     "description": "Snippet for struct xml tag"
   },
+  "Go Options Pattern": {
+    "prefix": "goopt",
+    "description": "Generate Options Pattern boilerplate for Go",
+    "body": [
+      "type ${1:Server}Option struct {",
+      "\t$0",
+      "}",
+      "",
+      "type ${1:Server}OptionFunc func(opt *${1:Server}Option)",
+      "",
+      "func with${1:Server}Option(opts ...${1:Server}OptionFunc) *${1:Server}Option {",
+      "\topt := &${1:Server}Option{}",
+      "\tfor _, o := range opts {",
+      "\t\to(opt)",
+      "\t}",
+      "\treturn opt",
+      "}"
+    ]
+  },
   "if key in a map": {
     "prefix": "om",
     "body": "if ${1:value}, ok := ${2:map}[${3:key}]; ok {\n\t$4\n}"
+  },
+  "ent mixin": {
+    "prefix": "entmixin",
+    "body": [
+      "func ($1) Mixin() []ent.Mixin {",
+      "\treturn []ent.Mixin{",
+      "\t\t",
+      "\t}",
+      "}"
+    ]
   }
 }

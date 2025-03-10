@@ -44,17 +44,13 @@ function M.setup(lspconfig, capabilities, on_attach)
 		root_dir = util.root_pattern(unpack(root_files)),
 		settings = {
 			basedpyright = {
-				typeCheckingMode = "basic",
-				--ignore = { "*" },
-			},
-			python = {
 				analysis = {
-					--autoImportCompletions = true,
-					--ignore = { "*" },
 					typeCheckingMode = "basic",
-					--diagnosticMode = "workspace",
-					--stubPath = "/usr/lib/python3.11",
+					diagnosticSeverityOverrides = {
+						reportUnusedImport = false,
+					},
 				},
+				--ignore = { "*" },
 			},
 		},
 	})

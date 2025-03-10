@@ -5,6 +5,7 @@ vim.g.maplocalleader = " "
 local map = vim.keymap.set
 -- 复用 opt 参数
 local opt = { noremap = true, silent = true }
+
 map("n", "Q", "q", opt)
 map("n", "q", "", opt)
 map("i", "<c-`>", "`", opt)
@@ -25,8 +26,6 @@ map("n", "<M-d>", "<C-w>c", opt)
 map("i", "<M-d>", "<C-w>c", opt)
 -- 关闭其他
 map("n", "<leader>so", "<C-w>o", opt)
--- Alt + hjkl  窗口之间跳转
---map("n", "gx", "<Plug>NetrwBrowseX", opt)
 
 vim.s = 12
 -- 左右比例控制
@@ -50,10 +49,10 @@ map("n", "<C-Up>", "<cmd>resize +2<CR>", opt)
 map("n", "<leader>h", "<cmd>sp | terminal<CR>", opt)
 map("n", "<leader>v", "<cmd>vsp | terminal<CR>", opt)
 map("t", "<esc>", "<C-\\><C-n>", opt)
-map("t", "<A-h>", [[ <C-\><C-N><C-w>h ]], opt)
-map("t", "<A-j>", [[ <C-\><C-N><C-w>j ]], opt)
-map("t", "<A-k>", [[ <C-\><C-N><C-w>k ]], opt)
-map("t", "<A-l>", [[ <C-\><C-N><C-w>l ]], opt)
+map("t", "<M-h>", [[ <C-\><C-N><C-w>h ]], opt)
+map("t", "<M-j>", [[ <C-\><C-N><C-w>j ]], opt)
+map("t", "<M-k>", [[ <C-\><C-N><C-w>k ]], opt)
+map("t", "<M-l>", [[ <C-\><C-N><C-w>l ]], opt)
 
 map("v", "<c-c>", '"+y', opt)
 map("v", "<D-c>", '"+y', opt)
@@ -67,16 +66,16 @@ map("v", "<M-j>", "<cmd>move '>+1<CR>gv-gv", opt)
 map("v", "<M-k>", "<cmd>move '<-2<CR>gv-gv", opt)
 
 -- 上下滚动浏览
-map("n", "<C-j>", "4j", opt)
-map("n", "<C-k>", "4k", opt)
-map("v", "<C-j>", "4j", opt)
-map("v", "<C-k>", "4k", opt)
+map("n", "<C-j>", "5j", opt)
+map("n", "<C-k>", "5k", opt)
+map("v", "<C-j>", "5j", opt)
+map("v", "<C-k>", "5k", opt)
 
 -- ctrl u / ctrl + d  只移动9行，默认移动半屏
-map("n", "<C-u>", "9k", opt)
-map("n", "<C-d>", "9j", opt)
-map("v", "<C-u>", "9k", opt)
-map("v", "<C-d>", "9j", opt)
+map("n", "<C-u>", "10k", opt)
+map("n", "<C-d>", "10j", opt)
+map("v", "<C-u>", "10k", opt)
+map("v", "<C-d>", "10j", opt)
 -- 设置退出并,保存
 
 map("n", "<leader>q", "<cmd>qa<CR>", opt)
@@ -96,11 +95,11 @@ map("n", "<C-p>", function()
 	local dash = false
 	for _, bufnr in ipairs(tab_buffers) do
 		local filetype = vim.api.nvim_buf_get_option(bufnr, "filetype")
-		if filetype == 'NvimTree' then
+		if filetype == "NvimTree" then
 			tree = true
 		end
 
-		if filetype == 'dashboard' then
+		if filetype == "dashboard" then
 			dash = true
 		end
 	end
@@ -126,7 +125,7 @@ map("n", "<C-f>", function()
 	local tree = false
 	for _, bufnr in ipairs(tab_buffers) do
 		local filetype = vim.api.nvim_buf_get_option(bufnr, "filetype")
-		if filetype == 'NvimTree' then
+		if filetype == "NvimTree" then
 			tree = true
 		end
 	end
@@ -147,12 +146,28 @@ map("n", "<leader>p", "<cmd>Telescope lsp_dynamic_workspace_symbols<CR>", opt)
 
 map("n", "<c-w>", "<c-w>w", opt)
 
-
-
 -- nvim-tree
 -- alt+m 键 打开关闭tree
 --map("n", "<A-m>", ":NvimTreeToggle<CR>", opt)
 
 vim.keymap.set("n", "<leader>t", "<cmd>SymbolsOutline<CR>", { noremap = true, silent = false })
+
+-- 跳转到下一个错误
+vim.keymap.set("n", "]e", function()
+	vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR, float = false })
+end, { desc = "Next Error" })
+
+-- 跳转到上一个错误
+vim.keymap.set("n", "[e", function()
+	vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR, float = false })
+end, { desc = "Previous Error" })
+
+-- 使用 Lua 配置
+vim.keymap.set("n", "[g", function()
+	vim.diagnostic.goto_prev({ float = false })
+end, { desc = "Go to previous diagnostic" })
+vim.keymap.set("n", "]g", function()
+	vim.diagnostic.goto_next({ float = false })
+end, { desc = "Go to next diagnostic" })
 
 return pluginKeys

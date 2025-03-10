@@ -135,6 +135,21 @@ require("noice").setup({
 		},
 		{
 			filter = {
+				event = "notify",
+				kind = "error",
+				find = "sourcekitd request timed out",
+			},
+			opts = { skip = true },
+		},
+		{
+			filter = {
+				event = "msg_show",
+				find = "Detaching buffer",
+			},
+			opts = { skip = true },
+		},
+		{
+			filter = {
 				event = "lsp",
 				kind = "progress",
 				any = {
@@ -151,4 +166,4 @@ require("noice").setup({
 })
 local keymap = vim.keymap
 local opt = { silent = true, noremap = true }
-keymap.set("n", "<leader>n", ":Noice dismiss<CR>")
+keymap.set("n", "<leader>n", "<cmd>Noice dismiss<CR>")

@@ -1,6 +1,7 @@
 vim.g.root_spec = { "lsp", { ".git", "lua" }, "cwd" }
 -- disable netrw at the very start of your init.lua
 vim.g.loaded_netrw = 1
+
 vim.g.loaded_netrwPlugin = 1
 
 vim.o.shell = "/bin/bash"
@@ -17,7 +18,6 @@ vim.o.sidescrolloff = 3
 
 vim.opt.smoothscroll = true
 -- 高亮所在行
-vim.wo.cursorline = true
 -- 显示左侧图标指示列
 vim.wo.signcolumn = "yes"
 vim.opt_local.spell = false
@@ -110,3 +110,20 @@ vim.filetype.add({
 		json = "jsonc",
 	},
 })
+
+--vim.opt["guicursor"] = ""
+
+vim.wo.cursorline = true
+
+--vim.cmd([[
+--autocmd InsertEnter * set cursorline
+--]])
+--
+--vim.cmd([[
+--autocmd InsertLeave * set nocursorline
+--]])
+
+vim.cmd([[
+	set tagfunc=v:lua.vim.lsp.tagfunc
+	set jumpoptions+=stack
+	]])

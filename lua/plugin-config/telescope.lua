@@ -10,6 +10,7 @@ telescope.setup({
 		initial_mode = "insert",
 		file_ignore_patterns = {
 			"node_modules",
+			"vendor",
 		},
 		-- 窗口内快捷键
 		mappings = {

@@ -1,6 +1,5 @@
 local colorscheme = "tokyonight"
 --local colorscheme = "neofusion"
-require("monokai").setup({ palette = require("monokai").ristretto })
 require("tokyonight").setup({
 	-- your configuration comes here
 	-- or leave it empty to use the default settings
@@ -28,6 +27,7 @@ require("tokyonight").setup({
 
 local status_ok, _ = pcall(vim.cmd, "colorscheme " .. colorscheme)
 
+
 if not status_ok then
 	vim.notify("colorscheme " .. colorscheme .. " 没有找到！")
 	return
@@ -50,6 +50,8 @@ vim.cmd("highlight! CursorLine guibg=#3b4261")
 vim.cmd("highlight! DiagnosticUnnecessary guifg=#747da6")
 vim.cmd("highlight! Comment cterm=bold,italic gui=bold,italic guifg=#747da6")
 vim.cmd("highlight! LspInlayHint guifg=#6d7594")
+
+
 
 --vim.cmd("hi LspInlayHint guifg=#7aa2f7 guibg=#3b4261")
 --vim.cmd("highlight FidgetTitle ctermfg=110 guifg=#6cb6eb")

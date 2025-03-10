@@ -32,13 +32,13 @@ conform.setup({
 		vue = { "prettierd" },
 		xml = { { "xmlformatter" } },
 		css = { "prettierd" },
-		html = { "prettierd" },
+		html = { "prettierd", lsp_format = "fallcack" },
 		json = { { "biome", "prettierd" } },
 		lua = { "stylua" },
 		python = { "black" },
 		yaml = { "yamlfmt" },
 		shell = { "shfmt" },
-		php = { "php_cs_fixer" },
+
 		-- Use the "*" filetype to run formatters on all filetypes.
 		["*"] = { "codespell" },
 		-- Use the "_" filetype to run formatters on filetypes that don't
