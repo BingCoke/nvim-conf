@@ -4,8 +4,11 @@ local bufferline = require("bufferline")
 bufferline.setup({
 	options = {
 		-- 关闭 Tab 的命令
-		mode = "tabs",
-		close_command = "tabclose! %d",
+		--mode = "tabs",
+		--close_command = "tabclose! %d",
+		close_command = "bdelete! %d", -- can be a string | function, | false see "Mouse actions"
+		right_mouse_command = "bdelete! %d", -- can be a string | function | false, see "Mouse actions"
+		left_mouse_command = "buffer %d", -- can be a string | function, | false see "Mouse actions"
 		always_show_bufferline = false,
 		enforce_regular_tabs = true,
 		indicator = {
@@ -13,16 +16,9 @@ bufferline.setup({
 			style = "none",
 		},
 		--left_mouse_command = "tabnext %d", -- can be a string | function | false, see "Mouse actions"
-		left_mouse_command = function(arg)
-			bufferline.go_to(arg)
-		end, -- can be a string | function | false, see "Mouse actions"
-		--right_mouse_command = "tabclose! %d", -- can be a string | function | false, see "Mouse actions"
 		middle_mouse_command = function(arg)
 			vim.cmd("tabclose " .. arg)
 		end,
-		right_mouse_command = function(arg)
-			vim.cmd("tabclose " .. arg)
-		end, -- can be a string | function | false, see "Mouse actions"
 		left_trunc_marker = "",
 		right_trunc_marker = "",
 		buffer_close_icon = "󰅖",
@@ -48,7 +44,7 @@ local function goTo(num)
 	bufferline.go_to(num)
 end
 
-map("n", "<a-w>", "<Cmd>tabclose<CR>", opts)
+map("n", "<a-w>", "<Cmd>bdelete<CR>", opts)
 map("n", "<leader>sw", "<Cmd>BufferLinePick<CR>", opts)
 
 map("n", "<c-h>", "<Cmd>BufferLineCyclePrev<CR>", opts)
@@ -57,11 +53,8 @@ map("n", "<c-l>", "<Cmd>BufferLineCycleNext<CR>", opts)
 map("n", "<leader>bl", "<Cmd>BufferCloseRight<CR>", opts)
 map("n", "<leader>bh", "<Cmd>BufferCloseLeft<CR>", opts)
 
-map("n", "<A-i>", "<Cmd>tabmove -1<CR>", opts)
-map("n", "<A-o>", "<Cmd>tabmove +1<CR>", opts)
-
-map("n", "<A-]>", "<cmd>tabnext #<CR>", opts)
-map("n", "<A-[>", "<cmd>tabnext -<CR>", opts)
+map("n", "<A-i>", "<Cmd>BufferLineMovePrev<CR>", opts)
+map("n", "<A-o>", "<Cmd>BufferLineMoveNext<CR>", opts)
 
 for i = 1, 9, 1 do
 	map("n", "<leader>" .. i, function()

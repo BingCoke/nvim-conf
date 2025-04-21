@@ -34,10 +34,10 @@ map("n", "<esc>", "<cmd>noh<cr><esc>", opt)
 map("i", "<esc>", "<cmd>noh<cr><esc>", opt)
 
 -- save file
-map("i", "<C-s>", "<cmd>w<cr><esc>", opt)
-map("x", "<C-s>", "<cmd>w<cr><esc>", opt)
-map("n", "<C-s>", "<cmd>w<cr><esc>", opt)
-map("s", "<C-s>", "<cmd>w<cr><esc>", opt)
+--map("i", "<C-s>", "<cmd>w<cr><esc>", opt)
+--map("x", "<C-s>", "<cmd>w<cr><esc>", opt)
+--map("n", "<C-s>", "<cmd>w<cr><esc>", opt)
+--map("s", "<C-s>", "<cmd>w<cr><esc>", opt)
 
 map("n", "<leader>w", "<cmd>w<cr><esc>", opt)
 
@@ -141,8 +141,6 @@ end, opt)
 map("n", "sw", "<cmd>Telescope buffers<CR>", opt)
 map("n", "<leader>p", "<cmd>Telescope lsp_dynamic_workspace_symbols<CR>", opt)
 -- dap
-
--- treesitter
 
 map("n", "<c-w>", "<c-w>w", opt)
 

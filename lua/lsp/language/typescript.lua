@@ -100,8 +100,9 @@ function setTypeTools(lspconfig, capabilities, on_attach)
 
 			vim.keymap.set({ "n", "v" }, "<leader>l", function()
 				conform.format({
-					formatters = { { "esLint", "biomeLint" } },
+					formatters = { "eslint_d", "biomeLint" },
 					lsp_fallback = false,
+					stop_after_first = true,
 					quiet = true,
 					timeout_ms = 500,
 					async = true,

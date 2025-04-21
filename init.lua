@@ -14,10 +14,6 @@ local group = vim.api.nvim_create_augroup("BufLast", { clear = true })
 
 
 
-
-
-
-
 --:autocmd InsertLeave * set nocursorline
 vim.api.nvim_create_autocmd("BufDelete", {
 	group = group,

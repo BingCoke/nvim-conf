@@ -106,16 +106,21 @@ local on_attach = function(_, bufnr)
 
 	-- Go to type definition
 	--keymap.set("n", "gt", "<CMD>Glance type_definitions<CR>", opts)
-	keymap.set("n", "gy", "<CMD>Lspsaga goto_type_definition<CR>", opts)
+	keymap.set("n", "gy", "<CMD>lua vim.lsp.buf.type_definition()<CR>", opts)
 
 	keymap.set("n", "gi", "<CMD>Lspsaga finder imp<CR>", opts)
 
 	--keymap.set("n", "<leader>s", "<cmd>Lspsaga code_action<CR>", opts) -- see available code actions
 	keymap.set("n", "<leader>s", "<cmd>LspUI code_action<CR>", opts) -- see available code actions
 
-	keymap.set("n", "<leader>rn", "<cmd>Lspsaga rename<CR>", opts) -- smart rename
+	keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts) -- smart rename
 
-	keymap.set("n", "<leader>d", "<cmd>Trouble diagnostics toggle win.type = split win.position=bottom filter.buf=0<CR>", opts) -- show  diagnostics for line
+	keymap.set(
+		"n",
+		"<leader>d",
+		"<cmd>Trouble diagnostics toggle win.type = split win.position=bottom filter.buf=0<CR>",
+		opts
+	) -- show  diagnostics for line
 
 	keymap.set("n", "K", vim.lsp.buf.hover, opts)
 
@@ -144,9 +149,8 @@ local on_attach = function(_, bufnr)
 	end, opts)
 end
 
-
 --local capabilities = vim.lsp.protocol.make_client_capabilities()
-	local capabilities = require("util.cmpUtil").getCapabilites()
+local capabilities = require("util.cmpUtil").getCapabilites()
 
 capabilities.textDocument.foldingRange = {
 	dynamicRegistration = false,
@@ -159,7 +163,6 @@ capabilities.textDocument.completion.completionItem.snippetSupport = true
 --local default_capabilities = require("cmp_nvim_lsp").default_capabilities()
 --local default_capabilities = vim.lsp.protocol.make_client_capabilities()
 local default_capabilities = require("util.cmpUtil").getCapabilites()
-
 
 --local default_capabilities  = vim.lsp.protocol.default_capabilities()
 
@@ -198,16 +201,20 @@ lspconfig["html"].setup({
 	},
 })
 
-lspconfig.tailwindcss.setup({
-	root_dir = function(fname)
-		return vim.fs.dirname(vim.fs.find("package.json", { path = fname, upward = true })[1])
-			or vim.fs.dirname(vim.fs.find("node_modules", { path = fname, upward = true })[1])
-			or vim.fs.dirname(vim.fs.find(".git", { path = fname, upward = true })[1])
-	end,
-	capabilities = capabilities,
-	on_attach = on_attach,
-	settings = {
-		tailwindCSS = {
+require("tailwind-tools").setup({
+	server = {
+		override = true,
+		settings = {
+			filetypes = {
+				"templ",
+				"vue",
+				"html",
+				"astro",
+				"javascript",
+				"typescript",
+				"react",
+				"htmlangular",
+			},
 			experimental = {
 				-- https://github.com/paolotiu/tailwind-intellisense-regex-list#tailwind-merge
 				classRegex = {
@@ -218,11 +225,45 @@ lspconfig.tailwindcss.setup({
 					{ "cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]" },
 				},
 			},
-			 classAttributes = { "class", "classList", "className", ".*Style", ".*Class", ".*ClassName" },
-			--classAttributes = { "class", "classList", "className", ".*Class", ".*ClassName", ".*styles", ".*style" },
+			classAttributes = { "class", "classList", "className", ".*Style", ".*Class", ".*ClassName" },
 		},
 	},
 })
+--lspconfig.tailwindcss.setup({
+--	--root_dir = function(fname)
+--	--	return vim.fs.dirname(vim.fs.find("package.json", { path = fname, upward = true })[1])
+--	--		or vim.fs.dirname(vim.fs.find("node_modules", { path = fname, upward = true })[1])
+--	--		or vim.fs.dirname(vim.fs.find(".git", { path = fname, upward = true })[1])
+--	--end,
+--	capabilities = capabilities,
+--	on_attach = on_attach,
+--	settings = {
+--		tailwindCSS = {
+--			filetypes = {
+--				"templ",
+--				"vue",
+--				"html",
+--				"astro",
+--				"javascript",
+--				"typescript",
+--				"react",
+--				"htmlangular",
+--			},
+--			experimental = {
+--				-- https://github.com/paolotiu/tailwind-intellisense-regex-list#tailwind-merge
+--				classRegex = {
+--					{ "tv\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]" },
+--					{ "(?:twMerge|twJoin)\\(([^\\);]*)[\\);]", "[`'\"`]([^'\"`,;]*)[`'\"`]" },
+--					{ "classNames\\(([^)]*)\\)", "[\"'`]([^\"'`]*)[\"'`]" },
+--					{ "windVars\\(([^)]*)\\)", "[\"'`]([^\"'`]*)[\"'`]" },
+--					{ "cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]" },
+--				},
+--			},
+--			classAttributes = { "class", "classList", "className", ".*Style", ".*Class", ".*ClassName" },
+--			--classAttributes = { "class", "classList", "className", ".*Class", ".*ClassName", ".*styles", ".*style" },
+--		},
+--	},
+--})
 
 lspconfig.stylelint_lsp.setup({
 	filetypes = {
@@ -323,12 +364,6 @@ lspconfig.astro.setup({
 	on_attach = on_attach,
 })
 
---local sourcekit_capabilities = vim.lsp.protocol.make_client_capabilities()
---lspconfig["sourcekit"].setup({
---	capabilities = sourcekit_capabilities,
---	on_attach = on_attach,
---})
-
 lspconfig.thriftls.setup({
 	capabilities = capabilities,
 	on_attach = on_attach,
@@ -373,6 +408,70 @@ lspconfig.ccls.setup({
 lspconfig["tsp_server"].setup({
 	capabilities = capabilities,
 	on_attach = on_attach,
+})
+
+lspconfig["css_variables"].setup({
+	capabilities = capabilities,
+	on_attach = on_attach,
+})
+
+lspconfig["eslint"].setup({
+	capabilities = capabilities,
+	on_attach = on_attach,
+	root_dir = function(filename, bufnr)
+		if string.find(filename, "node_modules/") then
+			return nil
+		end
+
+		return require("lspconfig/util").root_pattern(
+			"eslint.config.js",
+			"eslint.config.mjs",
+			"eslint.config.cjs",
+			"eslint.config.ts",
+			"eslint.config.mts",
+			"eslint.config.cts"
+		)()
+	end,
+})
+
+require("lsp.language.rime").setup()
+
+lspconfig.rime_ls.setup({
+	init_options = {
+		enabled = false,
+		--shared_data_dir = "/usr/share/rime-data",
+		--user_data_dir = "~/.local/share/rime-ls",
+		log_dir = "/tmp",
+		max_candidates = 9,
+		paging_characters = { ",", "." },
+		trigger_characters = {},
+		schema_trigger_character = "&",
+		max_tokens = 0,
+		always_incomplete = false,
+		preselect_first = false,
+		show_filter_text_in_label = false,
+		long_filter_text = true,
+	},
+	settings = {
+		ignorePattern = { "node_modules/**" },
+	},
+	on_attach = function(client, bufnr)
+		on_attach(client, bufnr)
+		local toggle_rime = function()
+			client.request("workspace/executeCommand", { command = "rime-ls.toggle-rime" }, function(_, result, ctx, _)
+				if ctx.client_id == client.id then
+					vim.g.rime_enabled = result
+				end
+			end)
+		end
+		-- keymaps for executing command
+		vim.keymap.set("n", "<leader>rr", toggle_rime, { desc = "Toggle [R]ime" })
+		vim.keymap.set("i", "<C-s>", toggle_rime, { desc = "Toggle Rime" })
+		vim.keymap.set("n", "<leader>rs", function()
+			vim.lsp.buf.execute_command({ command = "rime-ls.sync-user-data" })
+		end, { desc = "[R]ime [S]ync" })
+	end,
+	capabilities = capabilities,
 })
 
 M.on_attach = on_attach

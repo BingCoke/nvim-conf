@@ -15,24 +15,25 @@ return {
 		end,
 	},
 
-	--{
-	--	"nvim-neo-tree/neo-tree.nvim",
-	--	event = "VeryLazy",
-	--	dependencies = {
-	--		"nvim-lua/plenary.nvim",
-	--		"nvim-tree/nvim-web-devicons",
-	--		"MunifTanjim/nui.nvim",
-	--	},
-	--	config = function()
-	--		require("plugin-config.neotree")
-	--	end,
-	--	enabled = false,
-	--},
+	{
+		"nvim-neo-tree/neo-tree.nvim",
+		event = "VeryLazy",
+		dependencies = {
+			"nvim-lua/plenary.nvim",
+			"nvim-tree/nvim-web-devicons",
+			"MunifTanjim/nui.nvim",
+		},
+		config = function()
+			require("plugin-config.neotree")
+		end,
+		enabled = false,
+	},
 	{
 		"nvim-tree/nvim-tree.lua",
 		config = function()
 			require("plugin-config.nvim-tree")
 		end,
+		--enabled = false,
 	},
 	{
 		"ahmedkhalf/project.nvim",
@@ -85,6 +86,10 @@ return {
 		config = function()
 			require("plugin-config.telescope")
 		end,
+	},
+	{
+		"nvim-telescope/telescope-file-browser.nvim",
+		dependencies = { "nvim-telescope/telescope.nvim", "nvim-lua/plenary.nvim" },
 	},
 	-- 启动页面
 	-- dashboard-nvim
@@ -239,5 +244,4 @@ return {
 			require("transparent").clear("NotifyBackground")
 		end,
 	},
-	 
 }

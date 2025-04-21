@@ -25,18 +25,34 @@ return {
 				--signature = { enabled = true },
 
 				sources = {
-					default = { "lsp", "path", "snippets", "buffer" },
+					default = { "lsp", "path", "snippets" },
+					providers = {
+						lsp = {
+							transform_items = function(_, items)
+								-- the default transformer will do this
+								for _, item in ipairs(items) do
+									if item.kind == require("blink.cmp.types").CompletionItemKind.Snippet then
+										item.score_offset = item.score_offset - 3
+									end
+								end
+
+								-- you can define your own filter for rime item
+								return items
+							end,
+						},
+					},
 				},
 				completion = {
 					documentation = {
-						auto_show = true,
+						auto_show = false,
 						auto_show_delay_ms = 50,
 						window = {
 							border = "rounded",
 						},
 					},
 					keyword = { range = "full" },
-					accept = { auto_brackets = { enabled = true } },
+
+					accept = { auto_brackets = { enabled = false } },
 					menu = {
 						border = "rounded",
 						draw = {
@@ -68,9 +84,10 @@ return {
 					completion = { menu = { auto_show = true } },
 					keymap = {
 						preset = "none",
+						--
 						["<M-space>"] = { "show", "show_documentation", "hide_documentation" },
 						["<C-e>"] = { "hide" },
-						["<tab>"] = { "select_and_accept" },
+						["<tab>"] = { "select_and_accept", "fallback_to_mappings" },
 
 						["<c-k>"] = { "select_prev", "fallback" },
 						["<c-j>"] = { "select_next", "fallback" },
@@ -103,8 +120,7 @@ return {
 					preset = "none",
 					["<M-space>"] = { "show", "show_documentation", "hide_documentation" },
 					["<C-e>"] = { "hide" },
-					["<tab>"] = { "select_and_accept", "fallback_to_mappings" },
-
+					["<tab>"] = { "select_and_accept", "fallback" },
 					["<c-k>"] = { "select_prev", "fallback" },
 					["<c-j>"] = { "select_next", "fallback" },
 					["<C-p>"] = { "select_prev", "fallback_to_mappings" },

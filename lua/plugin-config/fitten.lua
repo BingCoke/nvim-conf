@@ -36,7 +36,7 @@ fittencode.setup({
 	disable_specific_inline_completion = {
 		-- Disable auto-completion for some specific file suffixes by entering them below
 		-- For example, `suffixes = {'lua', 'cpp'}`
-		suffixes = { "lua" },
+		--suffixes = { "lua" },
 	},
 	inline_completion = {
 		-- Enable inline code completion.
@@ -53,22 +53,7 @@ fittencode.setup({
 		auto_triggering_completion = true,
 		-- Accept Mode
 		-- Available options:
-		-- * `commit` (VSCode style accept, also default)
-		--   - `Tab` to Accept all suggestions
-		--   - `Ctrl+Right` to Accept word
-		--   - `Ctrl+Down` to Accept line
-		--   - Interrupt
-		--      - Enter a different character than suggested
-		--      - Exit insert mode
-		--      - Move the cursor
-		-- * `stage` (Stage style accept)
-		--   - `Tab` to Accept all staged characters
-		--   - `Ctrl+Right` to Stage word
-		--   - `Ctrl+Left` to Revoke word
-		--   - `Ctrl+Down` to Stage line
-		--   - `Ctrl+Up` to Revoke line
-		--   - Interrupt(Same as `commit`, but with the following changes:)
-		--      - Characters that have already been staged will be lost.
+
 		accept_mode = "commit",
 	},
 	delay_completion = {
@@ -108,17 +93,16 @@ fittencode.setup({
 		},
 	},
 	-- Enable/Disable the default keymaps in inline completion.
-	use_default_keymaps = true,
+	use_default_keymaps = false,
 	-- Default keymaps
 	keymaps = {
 		inline = {
-			["tab"] = "",
-			["<M-l>"] = "accept_all_suggestions",
+			--["<M-l>"] = "accept_all_suggestions",
 			["<C-Down>"] = "accept_line",
 			["<C-Right>"] = "accept_word",
 			["<C-Up>"] = "revoke_line",
 			["<C-Left>"] = "revoke_word",
-			["<A-;>"] = "triggering_completion",
+			["<M-;>"] = "triggering_completion",
 		},
 		chat = {
 			["q"] = "close",
@@ -158,6 +142,10 @@ local map = vim.keymap.set
 -- 复用 opt 参数
 local opt = { noremap = true, silent = true }
 map("n", "<leader>ac", "<cmd>Fitten toggle_chat<cr>", opt)
+map("i", "<M-l>", function()
+	require("fittencode").accept_all_suggestions()
+end, opt)
+
 
 map({ "n", "v" }, "<leader>af", function()
 	-- 复制选中内容到寄存器
@@ -214,3 +202,5 @@ map({ "n", "v" }, "<leader>af", function()
 		end
 	end)
 end, opt)
+-- use <leader>ac to toggle chat window
+-- use <leader>af to select fitten function and apply it to the selected text

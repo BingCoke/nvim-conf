@@ -9,7 +9,6 @@ require("lspconfig").gopls.setup({
 		gopls = {
 			buildFlags = {
 				"-tags=wireinject",
-				--"-tags=!wireinject",
 			},
 
 			hints = {

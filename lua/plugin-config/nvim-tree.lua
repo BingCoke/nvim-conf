@@ -17,29 +17,31 @@ local function tree(bufnr)
 	vim.keymap.set("n", "s", api.node.open.vertical, opts("Open: Vertical Split"))
 	vim.keymap.set("n", "S", api.node.open.horizontal, opts("Open: Horizontal Split"))
 	vim.keymap.set("n", "<BS>", api.node.navigate.parent_close, opts("Close Directory"))
-	--vim.keymap.set('n', '<CR>', api.node.open.edit, opts('Open'))
-	vim.keymap.set("n", "<CR>", function()
-		local tab_buffers = vim.fn.tabpagebuflist(vim.fn.tabpagenr())
-		-- 遍历缓冲区
-		-- 如果有一个filetype是dashboard 或者两个以上的buffer的filetype是nil或者"" 那么就是open
-		local count = 0
-		for _, bufn in ipairs(tab_buffers) do
-			local filetype = vim.api.nvim_buf_get_option(bufn, "filetype")
-			local name = vim.fn.bufname(bufn)
-			if filetype == "dashboard" then
-				api.node.open.drop()
-				return
-			end
-			if (filetype == nil or filetype == "") and (name == nil or name == "") then
-				count = count + 1
-			end
-		end
-		if count >= 2 then
-			api.node.open.drop()
-			return
-		end
-		api.node.open.tab_drop()
-	end, opts("Open"))
+	vim.keymap.set("n", "<CR>", api.node.open.edit, opts("Open"))
+	--vim.keymap.set("n", "<CR>", function()
+	--	local tab_buffers = vim.fn.tabpagebuflist(vim.fn.tabpagenr())
+	--	-- 遍历缓冲区
+	--	-- 如果有一个filetype是dashboard 或者两个以上的buffer的filetype是nil或者"" 那么就是open
+	--	local count = 0
+	--	for _, bufn in ipairs(tab_buffers) do
+	--		local filetype = vim.api.nvim_buf_get_option(bufn, "filetype")
+	--		local name = vim.fn.bufname(bufn)
+	--		if filetype == "dashboard" then
+	--			api.node.open.drop()
+	--			return
+	--		end
+	--		if (filetype == nil or filetype == "") and (name == nil or name == "") then
+	--			count = count + 1
+	--		end
+	--	end
+	--	if count >= 2 then
+	--		api.node.open.drop()
+	--		return
+	--	end
+	--	api.node.open.tab_drop()
+	--	return
+	--end, opts("Open"))
+
 	vim.keymap.set("n", "<Tab>", api.node.open.preview, opts("Open Preview"))
 	vim.keymap.set("n", ">", api.node.navigate.sibling.next, opts("Next Sibling"))
 	vim.keymap.set("n", "<", api.node.navigate.sibling.prev, opts("Previous Sibling"))
@@ -96,16 +98,11 @@ end
 require("nvim-tree").setup({
 	disable_netrw = true,
 	sync_root_with_cwd = true,
-	respect_buf_cwd = true,
-	update_focused_file = {
-		enable = true,
-		update_root = true,
-	},
+	--respect_buf_cwd = true,
 	--hijack_unnamed_buffer_when_opening = true,
 	view = {
 		float = {
 			enable = true,
-			quit_on_focus_loss = true,
 			open_win_config = function()
 				local screen_w = vim.opt.columns:get()
 				local screen_h = vim.opt.lines:get() - vim.opt.cmdheight:get()
@@ -163,6 +160,13 @@ vim.keymap.set("n", "\\", function()
 	tree_api.tree.toggle({
 		find_file = false,
 		update_root = true,
+	})
+end, opt)
+vim.keymap.set("n", "<M-m>", function()
+	tree_api.tree.toggle({
+		find_file = false,
+		update_root = true,
+		position = "left",
 	})
 end, opt)
 

@@ -107,7 +107,6 @@ vim.filetype.add({
 	extension = {
 		astro = "astro",
 		max = "mdx",
-		json = "jsonc",
 	},
 })
 
@@ -127,3 +126,7 @@ vim.cmd([[
 	set tagfunc=v:lua.vim.lsp.tagfunc
 	set jumpoptions+=stack
 	]])
+
+vim.g.loaded_netrw = 1
+vim.g.loaded_netrwPlugin = 1
+vim.opt.termguicolors = true

@@ -8,9 +8,12 @@ telescope.setup({
 	defaults = {
 		-- 打开弹窗后进入的初始模式，默认为 insert，也可以是 normal
 		initial_mode = "insert",
+
 		file_ignore_patterns = {
 			"node_modules",
 			"vendor",
+			"ios",
+			"andriod",
 		},
 		-- 窗口内快捷键
 		mappings = {
@@ -66,9 +69,10 @@ telescope.setup({
 			hidden_files = true, -- default: false
 			search_by = "title",
 		},
+		my_file_find = {},
 		file_browser = {
 			-- disables netrw and use telescope-file-browser in its place
-			hijack_netrw = false,
+			--hijack_netrw = false,
 			mappings = {
 				["i"] = {
 					-- your custom insert mode mappings
@@ -89,3 +93,8 @@ require("telescope").load_extension("my_file_find")
 --require'telescope'.extensions.projects.projects{}
 require("telescope").load_extension("ui-select")
 --require("telescope").load_extension("project")
+require("telescope").load_extension("file_browser")
+
+vim.keymap.set("n", "<space>bb", function()
+	require("telescope").extensions.file_browser.file_browser()
+end)
