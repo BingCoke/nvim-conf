@@ -1,8 +1,12 @@
 local M = {}
 local keymap = vim.keymap -- for conciseness
-local util = require("lspconfig.util")
+local util = require("lspconfig/util")
+local lsp = require("lsp.lsp")
+local on_attach = lsp.on_attach
+local capabilities = lsp.capabilities
+local default_capabilities = lsp.default_capabilities
 
-function M.setup(lspconfig, capabilities, on_attach)
+function M.setup()
 	--local rs_cap = require("cmp_nvim_lsp").default_capabilities()
 	local rs_cap = vim.lsp.protocol.make_client_capabilities()
 
@@ -94,8 +98,9 @@ function M.setup(lspconfig, capabilities, on_attach)
 			return false
 		end
 	end
+	vim.lsp.enable("rust_analyzer")
 
-	lspconfig["rust_analyzer"].setup({
+	vim.lsp.config("rust_analyzer", {
 		capabilities = rs_cap,
 		on_attach = on_attach,
 		root_dir = function(fname)

@@ -30,7 +30,8 @@ conform.setup({
 		javascript = { "prettier_d", "biome", lsp_format = "fallback", stop_after_first = true },
 		javascriptreact = { "prettier_d", "biome", stop_after_first = true },
 		typescript = { "prettier_d", lsp_format = "fallback", stop_after_first = true },
-		typescriptreact = { "biome", "prettier_d", lsp_format = "fallback", stop_after_first = true },
+		typescriptreact = { "prettier_d", "biome", lsp_format = "fallback", stop_after_first = true },
+		svelte = { "prettier_d", lsp_format = "fallback", stop_after_first = true },
 		vue = { "prettierd" },
 		xml = { "xmlformatter" },
 		css = { "prettierd" },
@@ -42,6 +43,8 @@ conform.setup({
 		python = { "black" },
 		yaml = { "yamlfmt" },
 		shell = { "shfmt" },
+		rust = { "rustfmt" },
+		go = { "gofmt" },
 
 		-- Use the "*" filetype to run formatters on all filetypes.
 		["*"] = { "codespell" },

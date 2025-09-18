@@ -15,34 +15,6 @@ end
 local types = require("cmp.types")
 local compare = cmp.config.compare
 
-local kind_icons = {
-	Text = "",
-	Method = "",
-	Function = "󰊕",
-	Constructor = "",
-	Field = "",
-	Variable = "",
-	Class = "",
-	Interface = "",
-	Module = "",
-	Property = "",
-	Unit = "",
-	Value = "󱁦",
-	Enum = "",
-	Keyword = "",
-	Snippet = "",
-	Color = "",
-	File = "",
-	Reference = "",
-	Folder = "",
-	EnumMember = "",
-	Constant = "",
-	Struct = "",
-	Event = "",
-	Operator = "󰘵",
-	TypeParameter = "",
-}
-
 local function border(hl_name)
 	return {
 		{ "╭", hl_name },
@@ -119,6 +91,7 @@ cmp.setup({
 	sources = cmp.config.sources({
 		{
 			name = "nvim_lsp",
+			trigger_characters = { ".", "$", "-" },
 		},
 		{
 			name = "luasnip",
@@ -130,35 +103,31 @@ cmp.setup({
 		{ name = "buffer" },
 	}),
 	formatting = {
-		fields = { "menu", "abbr", "kind" },
+		fields = { --[["menu",]]
+			"abbr",
+			"kind",
+		},
 		format = function(entry, item)
 			local entryItem = entry:get_completion_item()
 			local color = entryItem.documentation
 
-			--item.menu_hl_group = hl
-			-- check if color is hexcolor
 			if color and type(color) == "string" and color:match("^#%x%x%x%x%x%x$") then
 				local hl = "hex-" .. color:sub(2)
-
 				if #vim.api.nvim_get_hl(0, { name = hl }) == 0 then
 					vim.api.nvim_set_hl(0, hl, { fg = color })
 				end
-
 				item.menu = " "
 				item.menu_hl_group = hl
 			end
 
+
 			local kind = require("lspkind").cmp_format({
-				--mode = "symbol_text",
 				maxwidth = 50,
 				before = require("tailwind-tools.cmp").lspkind_format,
 			})(entry, item)
-			--local strings = vim.split(kind.kind, "%s", { trimempty = true })
-			--kind.kind = " " .. (strings[1] or "") .. " "
-			--kind.menu = "    (" .. (strings[2] or "") .. ")"
+
 
 			kind.kind = kind.kind .. " "
-
 			return kind
 		end,
 	},
@@ -313,7 +282,6 @@ cmp.setup.filetype("css", {
 local js = { "javascript", "typescript", "typescriptreact", "javascriptreact" }
 
 cmp.setup.filetype("go", {
-
 	sorting = {
 		comparators = {
 			compare.score, -- based on :  score = score + ((#sources - (source_index - 1)) * sorting.priority_weight)
@@ -347,11 +315,11 @@ cmp.setup.filetype("go", {
 		},
 	},
 })
+
 for key, value in pairs(js) do
 	cmp.setup.filetype(value, {
 		sorting = {
 			comparators = {
-
 				compare.exact,
 				compare.offset,
 				compare.score, -- based on :  score = score + ((#sources - (source_index - 1)) * sorting.priority_weight)
@@ -367,7 +335,9 @@ for key, value in pairs(js) do
 	})
 end
 
+
 local api = vim.api
+
 local function generate_highlight()
 	-- gray
 	api.nvim_command("highlight! CmpItemAbbrDeprecated guibg=NONE gui=strikethrough guifg=#808080")

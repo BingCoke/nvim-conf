@@ -42,11 +42,20 @@
         "path": "./go.json"
       },
       {
-        "language": "javascript",
+        "language": [
+          "javascript",
+          "svelte"
+        ],
         "path": "./js.json"
       },
       {
-        "language": "typescript",
+        "language": "svelte",
+        "path": "./svelte.json"
+      },
+      {
+        "language": [
+          "typescript"
+        ],
         "path": "./ts.json"
       },
       {

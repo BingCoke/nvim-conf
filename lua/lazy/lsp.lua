@@ -4,15 +4,15 @@ local js = g.ts
 return {
 	------- LSP -----
 	{
-		"neovim/nvim-lspconfig",
+		"mason-org/mason-lspconfig.nvim",
 		dependencies = {
-			"williamboman/mason-lspconfig.nvim",
-			"williamboman/mason.nvim",
+			"mason-org/mason.nvim",
 			"onsails/lspkind.nvim",
 		},
 		config = function()
 			require("lsp.mason")
 			require("lsp.lsp")
+			require("lsp.languages")
 		end,
 		ft = language,
 		event = { "VeryLazy" },
@@ -35,7 +35,6 @@ return {
 	{
 		"someone-stole-my-name/yaml-companion.nvim",
 		dependencies = {
-			"neovim/nvim-lspconfig",
 			"nvim-lua/plenary.nvim",
 			"nvim-telescope/telescope.nvim",
 		},
@@ -43,23 +42,6 @@ return {
 			require("telescope").load_extension("yaml_schema")
 		end,
 		event = "VeryLazy",
-	},
-	{
-		"pmizio/typescript-tools.nvim",
-		dependencies = { "nvim-lua/plenary.nvim", "neovim/nvim-lspconfig" },
-		config = function()
-			local mlsp = require("lsp.lsp")
-			require("lsp.language.typescript").setup(mlsp.lspconfig, mlsp.default_capabilities, mlsp.on_attach)
-		end,
-		ft = {
-			"javascript",
-			"javascriptreact",
-			"typescript",
-			"typescriptreact",
-			"mdx",
-			"vue",
-		},
-		--enabled = false,
 	},
 	{
 		"onsails/lspkind.nvim",
@@ -72,9 +54,7 @@ return {
 	-- JSON 增强
 	{
 		"b0o/schemastore.nvim",
-		dependencies = {
-			"neovim/nvim-lspconfig",
-		},
+		dependencies = {},
 		config = function()
 			-- code
 			require("language.json")
@@ -91,12 +71,10 @@ return {
 		requires = {
 			"stevearc/dressing.nvim", -- optional for vim.ui.select
 			"mfussenegger/nvim-dap",
-			"neovim/nvim-lspconfig",
 		},
 
 		config = function()
-			local mlsp = require("lsp.lsp")
-			require("lsp.language.flutter").setup(mlsp.lspconfig, mlsp.default_capabilities, mlsp.on_attach)
+			require("lsp.language.flutter").setup()
 		end,
 		ft = "dart",
 	},
@@ -136,9 +114,6 @@ return {
 			"neovim/nvim-lspconfig",
 			"mfussenegger/nvim-dap", -- (optional) only if you use `gopher.dap`
 		},
-		config = function()
-			require("language.go")
-		end,
 		-- (optional) will update plugin's deps on every update
 		build = function()
 			vim.cmd.GoInstallDeps()
@@ -222,5 +197,4 @@ return {
 			end)
 		end,
 	},
-
 }

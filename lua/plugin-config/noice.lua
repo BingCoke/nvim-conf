@@ -150,6 +150,13 @@ require("noice").setup({
 		},
 		{
 			filter = {
+				event = "msg_show",
+				find = "deprecated",
+			},
+			opts = { skip = true },
+		},
+		{
+			filter = {
 				event = "lsp",
 				kind = "progress",
 				any = {
@@ -166,4 +173,6 @@ require("noice").setup({
 })
 local keymap = vim.keymap
 local opt = { silent = true, noremap = true }
+
 keymap.set("n", "<leader>n", "<cmd>Noice dismiss<CR>")
+

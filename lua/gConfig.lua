@@ -40,6 +40,7 @@ local language = {
 	"graphql",
 	"graphqls",
 	"typespec",
+	"svelte",
 }
 local ts = {
 	"html",
@@ -48,6 +49,7 @@ local ts = {
 	"javascript",
 	"javascriptreact",
 	"mdx",
+	"svelte",
 	"vue",
 }
 

@@ -10,6 +10,42 @@ map("n", "Q", "q", opt)
 map("n", "q", "", opt)
 map("i", "<c-`>", "`", opt)
 
+-- 优先使用 git 根目录，如果没有，则使用当前工作目录
+local function get_relative_path()
+	local git_root = vim.fn.systemlist("git rev-parse --show-toplevel")[1]
+	if vim.v.shell_error ~= 0 then
+		git_root = vim.fn.getcwd()
+	end
+	local abs_path = vim.fn.expand("%:p")
+	return vim.fn.fnamemodify(abs_path, ":." .. git_root .. "/")
+end
+
+map("v", "<M-c>", function()
+	-- 获取文件相对路径
+	local filepath = vim.fn.expand("%:.")
+	local filetype = vim.bo.filetype
+
+	-- 获取选择位置
+	local start_line = vim.fn.line("'<")
+	local end_line = vim.fn.line("'>")
+
+	-- 获取选中的文本
+	local selected_text = vim.fn.getline("'<", "'>")
+
+	-- 构建简洁格式
+	local context = {}
+	table.insert(context, filepath .. ":" .. start_line .. "-" .. end_line)
+	table.insert(context, "```" .. (filetype ~= "" and filetype or ""))
+	for _, line in ipairs(selected_text) do
+		table.insert(context, line)
+	end
+	table.insert(context, "```")
+
+	-- 复制到剪贴板
+	local context_text = table.concat(context, "\n")
+	vim.fn.setreg("+", context_text)
+end, opt)
+
 -- 取消 s 默认功能
 map("n", "s", "", opt)
 
@@ -24,6 +60,7 @@ map("n", "<leader>sc", "<C-w>c", opt)
 
 map("n", "<M-d>", "<C-w>c", opt)
 map("i", "<M-d>", "<C-w>c", opt)
+
 -- 关闭其他
 map("n", "<leader>so", "<C-w>o", opt)
 
@@ -167,5 +204,14 @@ end, { desc = "Go to previous diagnostic" })
 vim.keymap.set("n", "]g", function()
 	vim.diagnostic.goto_next({ float = false })
 end, { desc = "Go to next diagnostic" })
+
+-- 使用vscode打开当前文件
+vim.keymap.set("n", "<leader>cc", function()
+	vim.fn.jobstart({ "code", "-a", vim.loop.cwd(), vim.fn.expand("%:p") })
+end, {
+	desc = "open vscode in current buffer file",
+	noremap = true,
+	silent = true,
+})
 
 return pluginKeys

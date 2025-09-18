@@ -6,6 +6,7 @@ local mason_lspconfig = require("mason-lspconfig")
 mason.setup({})
 
 mason_lspconfig.setup({
+	automatic_enable = false,
 	-- list of servers for mason to install
 	ensure_installed = {
 		"ts_ls",

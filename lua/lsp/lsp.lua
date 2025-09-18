@@ -1,16 +1,5 @@
 local M = {}
 
-local language = {
-	"lua",
-	"python",
-	"rust",
-	"markdown",
-	"yaml",
-	--"ts",
-}
-
-local util = require("lspconfig.util")
-
 local methods = vim.lsp.protocol.Methods
 
 local inlay_hint_handler = vim.lsp.handlers[methods.textDocument_inlayHint]
@@ -42,12 +31,6 @@ vim.lsp.handlers[methods.textDocument_inlayHint] = function(err, result, ctx, co
 	end
 
 	inlay_hint_handler(err, result, ctx, config)
-end
-
--- import lspconfig plugin safely
-local lspconfig_status, lspconfig = pcall(require, "lspconfig")
-if not lspconfig_status then
-	return
 end
 
 vim.diagnostic.config({
@@ -86,7 +69,9 @@ end
 
 -- enable keybinds only for when lsp server available
 
-local on_attach = function(_, bufnr)
+local on_attach = function(client, bufnr)
+	--print(vim.inspect(client.server_capabilities.completionProvider.triggerCharacters))
+
 	vim.wo.signcolumn = "yes"
 	-- keybind optionslsplsp
 	local opts = { noremap = true, silent = true, buffer = bufnr }
@@ -159,9 +144,6 @@ capabilities.textDocument.foldingRange = {
 
 capabilities.textDocument.completion.completionItem.snippetSupport = true
 
--- The nvim-cmp almost supports LSP's capabilities so You should advertise it to LSP servers..
---local default_capabilities = require("cmp_nvim_lsp").default_capabilities()
---local default_capabilities = vim.lsp.protocol.make_client_capabilities()
 local default_capabilities = require("util.cmpUtil").getCapabilites()
 
 --local default_capabilities  = vim.lsp.protocol.default_capabilities()
@@ -175,311 +157,9 @@ for type, icon in pairs(signs) do
 	vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
 end
 
-for _, value in ipairs(language) do
-	require("lsp.language." .. value).setup(lspconfig, default_capabilities, on_attach)
-end
-
-lspconfig["awk_ls"].setup({
-	capabilities = default_capabilities,
-	on_attach = on_attach,
-})
-
--- configure html server
-lspconfig["html"].setup({
-	capabilities = default_capabilities,
-	root_dir = util.root_pattern(".git", "turbo.json", "pnpm-workspace.yaml"),
-	on_attach = function(client, bufnr)
-		on_attach(client, bufnr)
-	end,
-	init_options = {
-		provideFormatter = false,
-		configurationSection = { "html", "css", "javascript" },
-		embeddedLanguages = {
-			css = true,
-			javascript = true,
-		},
-	},
-})
-
-require("tailwind-tools").setup({
-	server = {
-		override = true,
-		settings = {
-			filetypes = {
-				"templ",
-				"vue",
-				"html",
-				"astro",
-				"javascript",
-				"typescript",
-				"react",
-				"htmlangular",
-			},
-			experimental = {
-				-- https://github.com/paolotiu/tailwind-intellisense-regex-list#tailwind-merge
-				classRegex = {
-					{ "tv\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]" },
-					{ "(?:twMerge|twJoin)\\(([^\\);]*)[\\);]", "[`'\"`]([^'\"`,;]*)[`'\"`]" },
-					{ "classNames\\(([^)]*)\\)", "[\"'`]([^\"'`]*)[\"'`]" },
-					{ "windVars\\(([^)]*)\\)", "[\"'`]([^\"'`]*)[\"'`]" },
-					{ "cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]" },
-				},
-			},
-			classAttributes = { "class", "classList", "className", ".*Style", ".*Class", ".*ClassName" },
-		},
-	},
-})
---lspconfig.tailwindcss.setup({
---	--root_dir = function(fname)
---	--	return vim.fs.dirname(vim.fs.find("package.json", { path = fname, upward = true })[1])
---	--		or vim.fs.dirname(vim.fs.find("node_modules", { path = fname, upward = true })[1])
---	--		or vim.fs.dirname(vim.fs.find(".git", { path = fname, upward = true })[1])
---	--end,
---	capabilities = capabilities,
---	on_attach = on_attach,
---	settings = {
---		tailwindCSS = {
---			filetypes = {
---				"templ",
---				"vue",
---				"html",
---				"astro",
---				"javascript",
---				"typescript",
---				"react",
---				"htmlangular",
---			},
---			experimental = {
---				-- https://github.com/paolotiu/tailwind-intellisense-regex-list#tailwind-merge
---				classRegex = {
---					{ "tv\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]" },
---					{ "(?:twMerge|twJoin)\\(([^\\);]*)[\\);]", "[`'\"`]([^'\"`,;]*)[`'\"`]" },
---					{ "classNames\\(([^)]*)\\)", "[\"'`]([^\"'`]*)[\"'`]" },
---					{ "windVars\\(([^)]*)\\)", "[\"'`]([^\"'`]*)[\"'`]" },
---					{ "cva\\(([^)]*)\\)", "[\"'`]([^\"'`]*).*?[\"'`]" },
---				},
---			},
---			classAttributes = { "class", "classList", "className", ".*Style", ".*Class", ".*ClassName" },
---			--classAttributes = { "class", "classList", "className", ".*Class", ".*ClassName", ".*styles", ".*style" },
---		},
---	},
---})
-
-lspconfig.stylelint_lsp.setup({
-	filetypes = {
-		"css",
-		"less",
-		"scss",
-		"sugarss",
-		"vue",
-		"wxss",
-	},
-	capabilities = capabilities,
-	on_attach = function(a, b)
-		on_attach(a, b)
-	end,
-	settings = {
-		stylelintplus = {
-			autoFixOnFormat = true,
-		},
-	},
-})
-
-lspconfig["cssls"].setup({
-	capabilities = default_capabilities,
-	on_attach = on_attach,
-	settings = {
-		css = {
-			validate = true,
-			lint = {
-				unknownAtRules = "ignore",
-			},
-		},
-		scss = {
-			validate = true,
-			lint = {
-				unknownAtRules = "ignore",
-			},
-		},
-		less = {
-			validate = true,
-			lint = {
-				unknownAtRules = "ignore",
-			},
-		},
-	},
-})
-
-lspconfig["lemminx"].setup({
-	capabilities = capabilities,
-	on_attach = on_attach,
-})
-
-lspconfig["bashls"].setup({
-	capabilities = capabilities,
-	on_attach = on_attach,
-})
-
-lspconfig["taplo"].setup({
-	capabilities = capabilities,
-	on_attach = on_attach,
-})
-
---lspconfig["ruby_ls"].setup({
---	capabilities = capabilities,
---	on_attach = on_attach,
---})
-
-lspconfig.kotlin_language_server.setup({
-	capabilities = capabilities,
-	on_attach = on_attach,
-})
-
-lspconfig["prismals"].setup({
-	capabilities = capabilities,
-	on_attach = on_attach,
-})
-
-lspconfig.intelephense.setup({
-	capabilities = capabilities,
-	on_attach = on_attach,
-	init_options = {
-		licenceKey = "/Users/bingcoke/.config/intelephense/licence",
-	},
-	settings = {},
-})
-
-lspconfig.arduino_language_server.setup({
-	capabilities = capabilities,
-	on_attach = on_attach,
-})
-
-lspconfig.lemminx.setup({
-	capabilities = capabilities,
-	on_attach = on_attach,
-})
-
-lspconfig.astro.setup({
-	capabilities = capabilities,
-	on_attach = on_attach,
-})
-
-lspconfig.thriftls.setup({
-	capabilities = capabilities,
-	on_attach = on_attach,
-})
-
-lspconfig.buf_ls.setup({
-	capabilities = capabilities,
-	on_attach = on_attach,
-})
-
-lspconfig.graphql.setup({
-	capabilities = capabilities,
-	on_attach = on_attach,
-})
-
-lspconfig.omnisharp.setup({
-	on_attach = on_attach,
-	capabilities = capabilities,
-})
-
---lspconfig.clangd.setup({
---	capabilities = capabilities,
---	on_attach = on_attach,
---})
-
-lspconfig.ccls.setup({
-	capabilities = capabilities,
-	on_attach = on_attach,
-	flags = {
-		debounce_text_changes = 150,
-	},
-	init_options = {
-		cache = {
-			directory = "/tmp/ccls-cache",
-		},
-		clang = {
-			extraArgs = { "-std=c++11" },
-		},
-	},
-})
-
-lspconfig["tsp_server"].setup({
-	capabilities = capabilities,
-	on_attach = on_attach,
-})
-
-lspconfig["css_variables"].setup({
-	capabilities = capabilities,
-	on_attach = on_attach,
-})
-
-lspconfig["eslint"].setup({
-	capabilities = capabilities,
-	on_attach = on_attach,
-	root_dir = function(filename, bufnr)
-		if string.find(filename, "node_modules/") then
-			return nil
-		end
-
-		return require("lspconfig/util").root_pattern(
-			"eslint.config.js",
-			"eslint.config.mjs",
-			"eslint.config.cjs",
-			"eslint.config.ts",
-			"eslint.config.mts",
-			"eslint.config.cts"
-		)()
-	end,
-})
-
-require("lsp.language.rime").setup()
-
-lspconfig.rime_ls.setup({
-	init_options = {
-		enabled = false,
-		--shared_data_dir = "/usr/share/rime-data",
-		--user_data_dir = "~/.local/share/rime-ls",
-		log_dir = "/tmp",
-		max_candidates = 9,
-		paging_characters = { ",", "." },
-		trigger_characters = {},
-		schema_trigger_character = "&",
-		max_tokens = 0,
-		always_incomplete = false,
-		preselect_first = false,
-		show_filter_text_in_label = false,
-		long_filter_text = true,
-	},
-	settings = {
-		ignorePattern = { "node_modules/**" },
-	},
-	on_attach = function(client, bufnr)
-		on_attach(client, bufnr)
-		local toggle_rime = function()
-			client.request("workspace/executeCommand", { command = "rime-ls.toggle-rime" }, function(_, result, ctx, _)
-				if ctx.client_id == client.id then
-					vim.g.rime_enabled = result
-				end
-			end)
-		end
-		-- keymaps for executing command
-		vim.keymap.set("n", "<leader>rr", toggle_rime, { desc = "Toggle [R]ime" })
-		vim.keymap.set("i", "<C-s>", toggle_rime, { desc = "Toggle Rime" })
-		vim.keymap.set("n", "<leader>rs", function()
-			vim.lsp.buf.execute_command({ command = "rime-ls.sync-user-data" })
-		end, { desc = "[R]ime [S]ync" })
-	end,
-	capabilities = capabilities,
-})
-
 M.on_attach = on_attach
 M.capabilities = capabilities
-M.lspconfig = lspconfig
 M.default_capabilities = default_capabilities
-M.tsserverAttached = false
-M.volarAttached = false
 
 vim.cmd("command! -nargs=0 OpenInGoogle !google-chrome-stable  --new-window % &;")
 vim.cmd("command! -nargs=0 OpenThunar !thunar % &;")

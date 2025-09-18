@@ -11,13 +11,13 @@ return {
 		end,
 		event = "VeryLazy",
 	},
-	{
-		"simrat39/symbols-outline.nvim",
-		config = function()
-			require("plugin-config.symbols-outline")
-		end,
-		ft = language,
-	},
+	--{
+	--	"simrat39/symbols-outline.nvim",
+	--	config = function()
+	--		require("plugin-config.symbols-outline")
+	--	end,
+	--	ft = language,
+	--},
 	{
 		"RRethy/vim-illuminate",
 		config = function()
@@ -59,6 +59,7 @@ return {
 		main = "ibl",
 		config = function()
 			require("ibl").setup({})
+
 		end,
 		enabled = true,
 		ft = language,
@@ -171,7 +172,7 @@ return {
 	{
 		"yetone/avante.nvim",
 		event = "VeryLazy",
-		--enabled =false,
+		enabled = false,
 		--version = false, -- set this if you want to always pull the latest change
 		ft = language,
 		config = function()
@@ -216,5 +217,18 @@ return {
 			"nvim-telescope/telescope.nvim", -- optional
 			"neovim/nvim-lspconfig", -- optional
 		},
+		ft = language,
+	},
+	{
+		"code-biscuits/nvim-biscuits",
+		dependencies = {
+			"nvim-treesitter/nvim-treesitter",
+		},
+		config = function()
+			require("nvim-biscuits").setup({
+				on_events = { "InsertLeave", "CursorHoldI" },
+			})
+		end,
+		ft = language,
 	},
 }

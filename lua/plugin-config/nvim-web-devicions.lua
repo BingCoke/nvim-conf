@@ -63,6 +63,11 @@ require("nvim-web-devicons").setup({
 			color = "#EF8547",
 			name = "http",
 		},
+		css = {
+			icon = "",
+			color = "#EF8547",
+			name = "http",
+		},
 		httpResult = {
 			icon = "",
 			color = "#EF8547",

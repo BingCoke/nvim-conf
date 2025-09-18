@@ -16,9 +16,9 @@ bufferline.setup({
 			style = "none",
 		},
 		--left_mouse_command = "tabnext %d", -- can be a string | function | false, see "Mouse actions"
-		middle_mouse_command = function(arg)
-			vim.cmd("tabclose " .. arg)
-		end,
+		--middle_mouse_command = function(arg)
+		--	vim.cmd("tabclose " .. arg)
+		--end,
 		left_trunc_marker = "",
 		right_trunc_marker = "",
 		buffer_close_icon = "󰅖",
@@ -44,7 +44,11 @@ local function goTo(num)
 	bufferline.go_to(num)
 end
 
-map("n", "<a-w>", "<Cmd>bdelete<CR>", opts)
+map("n", "<a-w>", function()
+	local bufnr = vim.api.nvim_get_current_buf()
+	require("bufferline").cycle(-1) -- 先切换到下一个buffer
+	vim.cmd("bdelete! " .. bufnr) -- 然后关闭原buffer
+end, opts)
 map("n", "<leader>sw", "<Cmd>BufferLinePick<CR>", opts)
 
 map("n", "<c-h>", "<Cmd>BufferLineCyclePrev<CR>", opts)

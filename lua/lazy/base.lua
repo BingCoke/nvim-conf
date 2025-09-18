@@ -1,15 +1,11 @@
 return {
-
 	{
 		"folke/tokyonight.nvim",
 		--"catppuccin/nvim",
 		--name = "catppuccin",
 		lazy = false,
 		priority = 1000,
-		dependencies = {
-			--"EdenEast/nightfox.nvim",
-			--{ "diegoulloao/neofusion.nvim", priority = 1000, config = true },
-		},
+		dependencies = {},
 		config = function()
 			require("colorscheme")
 		end,
@@ -33,7 +29,6 @@ return {
 		config = function()
 			require("plugin-config.nvim-tree")
 		end,
-		--enabled = false,
 	},
 	{
 		"ahmedkhalf/project.nvim",
@@ -54,28 +49,36 @@ return {
 		event = "VeryLazy",
 	},
 	{
-		"akinsho/bufferline.nvim",
-		version = "*",
-		lazy = false,
-		priority = 1000,
-		event = "VeryLazy",
-
-		dependencies = {
-			--"nvim-tree/nvim-web-devicons",
-		},
-		config = function()
-			require("plugin-config.bufferline")
-			vim.api.nvim_create_autocmd("BufAdd", {
-				callback = function()
-					vim.schedule(function()
-						---@diagnostic disable-next-line: undefined-global
-						pcall(nvim_bufferline)
-					end)
-				end,
-			})
-		end,
 		--event = "VeryLazy",
+		"romgrk/barbar.nvim",
+		event = "VimEnter",
+		init = function()
+			vim.g.barbar_auto_setup = false
+		end,
+		config = function()
+			require("plugin-config.barbar")
+		end,
 	},
+	--{
+	--	"akinsho/bufferline.nvim",
+	--	version = "*",
+	--	lazy = false,
+	--	priority = 1000,
+	--	event = "VeryLazy",
+	--	dependencies = {},
+	--	config = function()
+	--		require("plugin-config.bufferline")
+	--		vim.api.nvim_create_autocmd("BufAdd", {
+	--			callback = function()
+	--				vim.schedule(function()
+	--					---@diagnostic disable-next-line: undefined-global
+	--					pcall(nvim_bufferline)
+	--				end)
+	--			end,
+	--		})
+	--	end,
+	--	--event = "VeryLazy",
+	--},
 	{
 		"nvim-telescope/telescope.nvim",
 		lazy = true,

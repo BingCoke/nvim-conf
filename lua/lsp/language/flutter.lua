@@ -12,8 +12,14 @@ local preview_stack_trace = function()
 end
 
 local keymap = vim.keymap -- for conciseness
+local util = require("lspconfig/util")
+local lsp = require("lsp.lsp")
+local on_attach = lsp.on_attach
+local capabilities = lsp.capabilities
+local default_capabilities = lsp.default_capabilities
 
-function M.setup(lspconfig, capabilities, on_attach)
+function M.setup()
+
 	vim.api.nvim_create_autocmd("BufEnter", {
 		pattern = "__FLUTTER_DEV_LOG__",
 		callback = function()

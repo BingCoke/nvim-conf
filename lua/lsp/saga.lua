@@ -47,14 +47,3 @@ require("lspsaga").setup({
 	},
 })
 
-local opts = { noremap = true, silent = true }
-local keymap = vim.keymap -- for conciseness
--- Diagnostic jump with filters such as only jumping to an error
---keymap.set("n", "[e", function()
---	require("lspsaga.diagnostic"):goto_prev({ severity = vim.diagnostic.severity.ERROR })
---end, opts)
---keymap.set("n", "]e", function()
---	require("lspsaga.diagnostic"):goto_next({ severity = vim.diagnostic.severity.ERROR })
---end, opts)
---keymap.set("n", "[g", "<cmd>Lspsaga diagnostic_jump_prev<CR>", opts) -- jump to previous diagnostic in buffer
---keymap.set("n", "]g", "<cmd>Lspsaga diagnostic_jump_next<CR>", opts) -- jump to next diagnostic in buffer

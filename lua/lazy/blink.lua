@@ -1,4 +1,5 @@
-local init = false
+require("util.cmpUtil").blinkCmp = true
+
 return {
 	{
 		"saghen/blink.cmp",
@@ -6,57 +7,34 @@ return {
 		dependencies = {
 			{ "L3MON4D3/LuaSnip", version = "v2.*" },
 		},
-
-		-- use a release tag to download pre-built binaries
 		version = "*",
-		-- AND/OR build from source, requires nightly: https://rust-lang.github.io/rustup/concepts/channels.html#working-with-nightly-rust
-		-- build = 'cargo build --release',
-		-- If you use nix, you can build from source using latest nightly rust with:
-		-- build = 'nix run .#build-plugin',
-
 		---@module 'blink.cmp'
 		---@type blink.cmp.Config
 		opts_extend = { "sources.default" },
 		config = function()
-			require("util.cmpUtil").blinkCmp = true
 			require("blink.cmp").setup({
 				snippets = { preset = "luasnip" },
-
-				--signature = { enabled = true },
-
 				sources = {
-					default = { "lsp", "path", "snippets" },
-					providers = {
-						lsp = {
-							transform_items = function(_, items)
-								-- the default transformer will do this
-								for _, item in ipairs(items) do
-									if item.kind == require("blink.cmp.types").CompletionItemKind.Snippet then
-										item.score_offset = item.score_offset - 3
-									end
-								end
-
-								-- you can define your own filter for rime item
-								return items
-							end,
-						},
-					},
+					default = { "lsp", "path", "snippets", "buffer" },
+					providers = {},
 				},
 				completion = {
 					documentation = {
-						auto_show = false,
+						auto_show = true,
 						auto_show_delay_ms = 50,
 						window = {
 							border = "rounded",
 						},
 					},
-					keyword = { range = "full" },
-
 					accept = { auto_brackets = { enabled = false } },
 					menu = {
 						border = "rounded",
 						draw = {
-							columns = { { "kind_icon" }, { "label", "label_description", gap = 1 }, { "kind" } },
+							columns = {
+								{ "kind_icon" },
+								{ "label", "label_description", gap = 1 },
+								{ "kind" },
+							},
 							components = {
 								kind_icon = {
 									ellipsis = false,
@@ -77,39 +55,33 @@ return {
 						--components = {},
 					},
 
-					--ghost_text = { enabled = true },
 				},
 				cmdline = {
 					enabled = true,
 					completion = { menu = { auto_show = true } },
 					keymap = {
 						preset = "none",
-						--
 						["<M-space>"] = { "show", "show_documentation", "hide_documentation" },
 						["<C-e>"] = { "hide" },
 						["<tab>"] = { "select_and_accept", "fallback_to_mappings" },
-
 						["<c-k>"] = { "select_prev", "fallback" },
 						["<c-j>"] = { "select_next", "fallback" },
 						["<C-p>"] = { "select_prev", "fallback_to_mappings" },
 						["<C-n>"] = { "select_next", "fallback_to_mappings" },
-
-						["<C-b>"] = { "scroll_documentation_up", "fallback" },
-						["<C-f>"] = { "scroll_documentation_down", "fallback" },
+						["<C-u>"] = { "scroll_documentation_up", "fallback" },
+						["<C-d>"] = { "scroll_documentation_down", "fallback" },
 
 						["<c-l>"] = { "snippet_forward", "fallback" },
 						["<c-h>"] = { "snippet_backward", "fallback" },
-
-						--["<C-k>"] = { "show_signature", "hide_signature", "fallback" },
 					},
 					sources = function()
 						local type = vim.fn.getcmdtype()
-						-- Search forward and backward
 						if type == "/" or type == "?" then
 							return { "buffer" }
 						end
 						-- Commands
 						if type == ":" or type == "@" then
+							-- 如果真的是需要进行命令行模式 那么你需要如下的配置
 							return { "cmdline" }
 						end
 						return {}
@@ -119,6 +91,7 @@ return {
 				keymap = {
 					preset = "none",
 					["<M-space>"] = { "show", "show_documentation", "hide_documentation" },
+					["<C-f>"] = { "show", "show_documentation", "hide_documentation" },
 					["<C-e>"] = { "hide" },
 					["<tab>"] = { "select_and_accept", "fallback" },
 					["<c-k>"] = { "select_prev", "fallback" },
@@ -127,11 +100,10 @@ return {
 					["<C-n>"] = { "select_next", "fallback_to_mappings" },
 					["<C-u>"] = { "scroll_documentation_up", "fallback_to_mappings" },
 					["<C-d>"] = { "scroll_documentation_down", "fallback_to_mappings" },
-					["<C-b>"] = { "scroll_documentation_up", "fallback" },
-					["<C-f>"] = { "scroll_documentation_down", "fallback" },
-					["<c-l>"] = { "snippet_forward", "fallback" },
-					["<c-h>"] = { "snippet_backward", "fallback" },
-
+					--["<c-l>"] = { "snippet_forward", "fallback" },
+					--["<c-h>"] = { "snippet_backward", "fallback" },
+					["<right>"] = { "snippet_forward", "fallback" },
+					["<left>"] = { "snippet_backward", "fallback" },
 					--["<C-k>"] = { "show_signature", "hide_signature", "fallback" },
 				},
 			})
