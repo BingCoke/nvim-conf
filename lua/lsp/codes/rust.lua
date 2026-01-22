@@ -103,68 +103,68 @@ function M.setup()
 	vim.lsp.config("rust_analyzer", {
 		capabilities = rs_cap,
 		on_attach = on_attach,
-		root_dir = function(fname)
-			-- print(fname)
-			local cargo_crate_dir = util.root_pattern("Cargo.toml")(fname)
-			local cmd = { "cargo", "metadata", "--no-deps", "--format-version", "1" }
-			if cargo_crate_dir ~= nil then
-				cmd[#cmd + 1] = "--manifest-path"
-				cmd[#cmd + 1] = util.path.join(cargo_crate_dir, "Cargo.toml")
-			end
-
-			local cargo_workspace_root = get_workspace_dir(cmd)
-			--print(cargo_workspace_root)
-
-			if cargo_workspace_root then
-				cargo_workspace_root = util.path.sanitize(cargo_workspace_root)
-			end
-			if
-				isPathInFolder(cargo_workspace_root, "/home/bk/.rustup")
-				or isPathInFolder(cargo_workspace_root, "/home/bk/.cargo")
-			then
-				return ""
-			end
-
-			return cargo_workspace_root
-				or cargo_crate_dir
-				or util.root_pattern("rust-project.json")(fname)
-				or util.find_git_ancestor(fname)
-		end,
+		--root_dir = function(fname)
+		--	-- print(fname)
+		--	local cargo_crate_dir = util.root_pattern("Cargo.toml")(fname)
+		--	local cmd = { "cargo", "metadata", "--no-deps", "--format-version", "1" }
+		--	if cargo_crate_dir ~= nil then
+		--		cmd[#cmd + 1] = "--manifest-path"
+		--		cmd[#cmd + 1] = util.path.join(cargo_crate_dir, "Cargo.toml")
+		--	end
+		--
+		--	local cargo_workspace_root = get_workspace_dir(cmd)
+		--	--print(cargo_workspace_root)
+		--
+		--	if cargo_workspace_root then
+		--		cargo_workspace_root = util.path.sanitize(cargo_workspace_root)
+		--	end
+		--	if
+		--		isPathInFolder(cargo_workspace_root, "/home/bk/.rustup")
+		--		or isPathInFolder(cargo_workspace_root, "/home/bk/.cargo")
+		--	then
+		--		return ""
+		--	end
+		--
+		--	return cargo_workspace_root
+		--		or cargo_crate_dir
+		--		or util.root_pattern("rust-project.json")(fname)
+		--		or util.find_git_ancestor(fname)
+		--end,
 
 		--rust-analyzer.cargo.buildScripts.invocationStrategy
 		--rust-analyzer.files.excludeDirs
-		settings = {
-			["rust-analyzer"] = {
-				files = {
-					excludeDirs = {
-						"/home/bk/.rustup/**",
-						"/home/bk/.cargo/**",
-					},
-				},
-				cargo = {
-					allFeatures = true,
-				},
-				completion = {
-					privateEditable = {
-						enable = true,
-					},
-					snippets = {
-						custom = {
-							["ok"] = {
-								["postfix"] = "ok",
-								["body"] = "Ok(${receiver})",
-								["scope"] = "expr",
-							},
-							["Some"] = {
-								["postfix"] = "some",
-								["body"] = "Some(${receiver})",
-								--["scope"] = "expr",
-							},
-						},
-					},
-				},
-			},
-		},
+		--settings = {
+		--	["rust-analyzer"] = {
+		--		files = {
+		--			excludeDirs = {
+		--				--"/home/bk/.rustup/**",
+		--				--"/home/bk/.cargo/**",
+		--			},
+		--		},
+		--		cargo = {
+		--			allFeatures = true,
+		--		},
+		--		completion = {
+		--			privateEditable = {
+		--				enable = true,
+		--			},
+		--			snippets = {
+		--				custom = {
+		--					["ok"] = {
+		--						["postfix"] = "ok",
+		--						["body"] = "Ok(${receiver})",
+		--						["scope"] = "expr",
+		--					},
+		--					["Some"] = {
+		--						["postfix"] = "some",
+		--						["body"] = "Some(${receiver})",
+		--						--["scope"] = "expr",
+		--					},
+		--				},
+		--			},
+		--		},
+		--	},
+		--},
 	})
 end
 

@@ -6,14 +6,11 @@ local lsp = require("lsp.lsp")
 local on_attach = lsp.on_attach
 
 M.setup = function()
-	vim.lsp.enable("svelte")
-	vim.lsp.enable("vtsls")
-
 	vim.lsp.config("vtsls", {
 		capabilities = svecapabilities,
 		on_attach = on_attach,
 		filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
-		root_dir = util.root_pattern(".git", "turbo.json", "pnpm-workspace.yaml"),
+		--root_dir = util.root_pattern(".git", "turbo.json", "pnpm-workspace.yaml"),
 		settings = {
 			vtsls = {
 				tsserver = {
@@ -67,6 +64,16 @@ M.setup = function()
 		end,
 		settings = {},
 	})
+
+	vim.lsp.config("tsgo", {
+		capabilities = svecapabilities,
+		on_attach = on_attach,
+	})
+
+	--vim.lsp.enable("vue_ls")
+	vim.lsp.enable("svelte")
+	--vim.lsp.enable("tsgo")
+	vim.lsp.enable("vtsls")
 end
 
 return M

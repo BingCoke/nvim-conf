@@ -25,10 +25,9 @@ vim.opt.rtp:prepend(lazypath)
 -- Example using a list of specs with the default options
 require("lazy").setup({
 	{ import = "lazy.lsp" },
-	{ import = "lazy.dap" },
+	--{ import = "lazy.dap" },
 	--{ import = "lazy.cmp" },
 	{ import = "lazy.blink" },
-
 	{ import = "lazy.markdown" },
 	{ import = "lazy.base" },
 	{ import = "lazy.code" },

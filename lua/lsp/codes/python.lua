@@ -15,14 +15,14 @@ M.setup = function()
 		"Pipfile",
 		"pyrightconfig.json",
 		".git",
-		--"__init__.py",
+		"__init__.py",
 	}
 
-	vim.lsp.enable("basedpyright")
-	vim.lsp.config("basedpyright", {
+	vim.lsp.enable("pyright")
+	vim.lsp.config("pyright", {
 		capabilities = capabilities,
 		on_attach = on_attach,
-		root_dir = util.root_pattern(unpack(root_files)),
+		--root_dir = util.root_pattern(unpack(root_files)),
 		settings = {
 			basedpyright = {
 				analysis = {
@@ -35,5 +35,6 @@ M.setup = function()
 			},
 		},
 	})
+
 end
 return M

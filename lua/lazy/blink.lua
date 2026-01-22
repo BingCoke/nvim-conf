@@ -18,6 +18,7 @@ return {
 					default = { "lsp", "path", "snippets", "buffer" },
 					providers = {},
 				},
+				
 				completion = {
 					documentation = {
 						auto_show = true,

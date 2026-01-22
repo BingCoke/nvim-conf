@@ -18,11 +18,6 @@ return {
 		event = { "VeryLazy" },
 	},
 	{
-		"kaarmu/typst.vim",
-		ft = "typst",
-		event = "VeryLazy",
-	},
-	{
 		"folke/lazydev.nvim",
 		ft = "lua", -- only load on lua files
 		opts = {
@@ -31,17 +26,6 @@ return {
 				-- Load luvit types when the `vim.uv` word is found
 			},
 		},
-	},
-	{
-		"someone-stole-my-name/yaml-companion.nvim",
-		dependencies = {
-			"nvim-lua/plenary.nvim",
-			"nvim-telescope/telescope.nvim",
-		},
-		config = function()
-			require("telescope").load_extension("yaml_schema")
-		end,
-		event = "VeryLazy",
 	},
 	{
 		"onsails/lspkind.nvim",
@@ -57,7 +41,6 @@ return {
 		dependencies = {},
 		config = function()
 			-- code
-			require("language.json")
 		end,
 		ft = {
 			"json",
@@ -133,7 +116,7 @@ return {
 		config = function()
 			require("plugin-config.color")
 		end,
-		event = "VeryLazy",
+		ft = language,
 	},
 	{
 		"dart-lang/dart-vim-plugin",

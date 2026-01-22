@@ -10,7 +10,6 @@ return {
 			require("colorscheme")
 		end,
 	},
-
 	{
 		"nvim-neo-tree/neo-tree.nvim",
 		event = "VeryLazy",
@@ -59,26 +58,6 @@ return {
 			require("plugin-config.barbar")
 		end,
 	},
-	--{
-	--	"akinsho/bufferline.nvim",
-	--	version = "*",
-	--	lazy = false,
-	--	priority = 1000,
-	--	event = "VeryLazy",
-	--	dependencies = {},
-	--	config = function()
-	--		require("plugin-config.bufferline")
-	--		vim.api.nvim_create_autocmd("BufAdd", {
-	--			callback = function()
-	--				vim.schedule(function()
-	--					---@diagnostic disable-next-line: undefined-global
-	--					pcall(nvim_bufferline)
-	--				end)
-	--			end,
-	--		})
-	--	end,
-	--	--event = "VeryLazy",
-	--},
 	{
 		"nvim-telescope/telescope.nvim",
 		lazy = true,
@@ -105,7 +84,6 @@ return {
 	},
 	{
 		"glepnir/dashboard-nvim",
-		event = "VimEnter",
 		config = function()
 			require("plugin-config.dashboard")
 		end,
@@ -136,69 +114,6 @@ return {
 		--enabled = false
 	},
 	{
-		{
-			"gbprod/yanky.nvim",
-			enabled = false,
-			event = "VeryLazy",
-			dependencies = {
-				"kkharji/sqlite.lua",
-			},
-			config = function()
-				local mapping = require("yanky.telescope.mapping")
-				local utils = require("yanky.utils")
-				vim.keymap.set("n", "<leader>y", ":Telescope yank_history<CR>")
-				-- vim.keymap.set("n", "<c-u>", "<Plug>(YankyCycleForward)")
-				-- vim.keymap.set("n", "<c-e>", "<Plug>(YankyCycleBackward)")
-				vim.keymap.set({ "n", "x" }, "p", "<Plug>(YankyPutAfter)")
-				vim.keymap.set({ "n", "x" }, "P", "<Plug>(YankyPutBefore)")
-				vim.keymap.set({ "n", "x" }, "gp", "<Plug>(YankyGPutAfter)")
-				vim.keymap.set({ "n", "x" }, "gP", "<Plug>(YankyGPutBefore)")
-
-				require("yanky").setup({
-					ring = {
-						history_length = 2000,
-						storage = "sqlite",
-						sync_with_numbered_registers = true,
-						cancel_event = "update",
-					},
-					picker = {
-						select = {
-							action = nil, -- nil to use default put action
-						},
-						telescope = {
-							use_default_mappings = false, -- if default mappings should be used
-							mappings = {
-								n = {
-									p = mapping.put("p"),
-									P = mapping.put("P"),
-									d = mapping.delete(),
-									r = mapping.set_register(utils.get_default_register()),
-								},
-								i = {
-									["<CR>"] = mapping.put("p"),
-									["<c-g>"] = mapping.put("P"),
-									["<c-x>"] = mapping.delete(),
-									["<c-r>"] = mapping.set_register(utils.get_default_register()),
-								},
-							}, -- nil to use default mappings or no mappings (see `use_default_mappings`)
-						},
-					},
-					system_clipboard = {
-						sync_with_ring = true,
-					},
-					highlight = {
-						on_put = false,
-						on_yank = false,
-						timer = 300,
-					},
-					preserve_cursor_position = {
-						enabled = true,
-					},
-				})
-			end,
-		},
-	},
-	{
 		"vhyrro/luarocks.nvim",
 		event = "VeryLazy",
 		opts = {
@@ -212,17 +127,6 @@ return {
 		config = function()
 			require("plugin-config.toggleterm")
 		end,
-	},
-	{
-		"rest-nvim/rest.nvim",
-		dependencies = {
-			"vhyrro/luarocks.nvim",
-		},
-		config = function()
-			require("plugin-config.http")
-		end,
-		enabled = false,
-		event = "VeryLazy",
 	},
 	{
 		"xiyaowong/transparent.nvim",
@@ -245,6 +149,8 @@ return {
 			require("transparent").clear("HoverBorder")
 			require("transparent").clear("Pmenu")
 			require("transparent").clear("NotifyBackground")
+			require("transparent").clear("BufferTabpagesSep")
+			require("transparent").clear("BufferTabpages")
 		end,
 	},
 }

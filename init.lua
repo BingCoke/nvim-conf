@@ -7,6 +7,7 @@ require("basic")
 require("keybindings")
 require("plugins")
 
+
 vim.g.hlchunk_files = "*.ts,*.js,*.json,*.go,*.c,*.cpp,*.rs,*.h,*.hpp,*.lua,*.py,*.dart"
 vim.o.switchbuf = "useopen,usetab,newtab"
 

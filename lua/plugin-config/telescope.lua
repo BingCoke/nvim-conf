@@ -86,15 +86,9 @@ telescope.setup({
 	},
 })
 
---require("telescope").load_extension("file_browser")
 require("telescope").load_extension("myprojects")
 require("telescope").load_extension("my_file_find")
 --require("telescope").load_extension("rest")
 --require'telescope'.extensions.projects.projects{}
 require("telescope").load_extension("ui-select")
---require("telescope").load_extension("project")
-require("telescope").load_extension("file_browser")
 
-vim.keymap.set("n", "<space>bb", function()
-	require("telescope").extensions.file_browser.file_browser()
-end)

@@ -31,6 +31,7 @@ return {
 			require("plugin-config.nvim-treesitter")
 		end,
 		ft = language,
+		enabled = true,
 	},
 	{
 		"HiPhish/rainbow-delimiters.nvim",
@@ -59,7 +60,6 @@ return {
 		main = "ibl",
 		config = function()
 			require("ibl").setup({})
-
 		end,
 		enabled = true,
 		ft = language,
@@ -121,18 +121,6 @@ return {
 			require("plugin-config.conform")
 		end,
 		event = "BufRead",
-	},
-	{
-		"kaarmu/typst.vim",
-		ft = "typst",
-		config = function() end,
-	},
-	{
-		"niuiic/typst-preview.nvim",
-		dependencies = {
-			"niuiic/core.nvim",
-		},
-		ft = "typst",
 	},
 	{
 		"mfussenegger/nvim-lint",
@@ -206,17 +194,6 @@ return {
 			local tiny = require("tiny-inline-diagnostic")
 			tiny.setup({})
 		end,
-		ft = language,
-	},
-	{
-		"luckasRanarison/tailwind-tools.nvim",
-		name = "tailwind-tools",
-		build = ":UpdateRemotePlugins",
-		dependencies = {
-			"nvim-treesitter/nvim-treesitter",
-			"nvim-telescope/telescope.nvim", -- optional
-			"neovim/nvim-lspconfig", -- optional
-		},
 		ft = language,
 	},
 	{

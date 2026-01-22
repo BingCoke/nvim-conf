@@ -14,28 +14,27 @@ local lsps = {
 
 for _, value in ipairs(lsps) do
 	local states, mod = pcall(require, "lsp.codes." .. value)
-
 	if not states then
 		print("No LSP support for " .. value)
 		return
 	end
-	print("set up ", value)
-
 	mod.setup()
 end
 
 local simpleLsps = {
 	"bashls",
 	"lemminx",
-	"prismals",
+	--"prismals",
 	"arduino_language_server",
 	"lemminx",
-	"thriftls",
+	--"thriftls",
 	"css_variables",
 	"tsp_server",
 	"buf_ls",
-	"awk_ls",
+	--"awk_ls",
 	"yamlls",
+	"taplo",
+	"cssls",
 }
 
 local lsp = require("lsp.lsp")

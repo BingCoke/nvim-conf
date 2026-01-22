@@ -10,7 +10,7 @@ M.setup = function()
 	vim.lsp.enable("html")
 	vim.lsp.config("html", {
 		capabilities = default_capabilities,
-		root_dir = util.root_pattern(".git", "turbo.json", "pnpm-workspace.yaml"),
+		--root_dir = util.root_pattern(".git", "turbo.json", "pnpm-workspace.yaml"),
 		on_attach = on_attach,
 		init_options = {
 			provideFormatter = false,

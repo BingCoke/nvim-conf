@@ -16,7 +16,6 @@ local m = extras.m
 local l = extras.l
 local postfix = require("luasnip.extras.postfix").postfix
 
-
 return {
   s("trig", t("loaded!!")),
   s("ternary", {
