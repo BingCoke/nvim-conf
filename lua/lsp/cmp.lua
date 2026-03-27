@@ -120,19 +120,16 @@ cmp.setup({
 				item.menu_hl_group = hl
 			end
 
-
 			local kind = require("lspkind").cmp_format({
 				maxwidth = 50,
-				before = require("tailwind-tools.cmp").lspkind_format,
 			})(entry, item)
-
 
 			kind.kind = kind.kind .. " "
 			return kind
 		end,
 	},
 	window = {
-		completion = cmp.config.window.bordered(),
+		completion = { border = border("CmpDocBorder"), winhighlight = "FloatBorder:BorderBG" },
 		documentation = {
 			border = border("CmpDocBorder"),
 			winhighlight = "FloatBorder:BorderBG",
@@ -334,7 +331,6 @@ for key, value in pairs(js) do
 		},
 	})
 end
-
 
 local api = vim.api
 

@@ -5,9 +5,9 @@ return {
 		"saghen/blink.cmp",
 		-- optional: provides snippets for the snippet source
 		dependencies = {
-			{ "L3MON4D3/LuaSnip", version = "v2.*" },
+			{ "L3MON4D3/LuaSnip" },
 		},
-		version = "*",
+		version = "1.*",
 		---@module 'blink.cmp'
 		---@type blink.cmp.Config
 		opts_extend = { "sources.default" },
@@ -18,8 +18,12 @@ return {
 					default = { "lsp", "path", "snippets", "buffer" },
 					providers = {},
 				},
-				
 				completion = {
+					keyword = { range = "full" },
+					trigger = {
+						show_on_keyword = true,
+						show_on_trigger_character = true,
+					},
 					documentation = {
 						auto_show = true,
 						auto_show_delay_ms = 50,
@@ -39,9 +43,7 @@ return {
 							components = {
 								kind_icon = {
 									ellipsis = false,
-									--width = { max = 1, fill = true },
 									text = function(ctx)
-										-- for tailwindcss color
 										if ctx.kind == "Color" and ctx.item.client_name == "tailwindcss" then
 											return "󱓻"
 										end
@@ -53,9 +55,7 @@ return {
 								},
 							},
 						},
-						--components = {},
 					},
-
 				},
 				cmdline = {
 					enabled = true,

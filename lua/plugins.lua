@@ -26,8 +26,8 @@ vim.opt.rtp:prepend(lazypath)
 require("lazy").setup({
 	{ import = "lazy.lsp" },
 	--{ import = "lazy.dap" },
-	--{ import = "lazy.cmp" },
-	{ import = "lazy.blink" },
+	{ import = "lazy.cmp" },
+	--{ import = "lazy.blink" },
 	{ import = "lazy.markdown" },
 	{ import = "lazy.base" },
 	{ import = "lazy.code" },

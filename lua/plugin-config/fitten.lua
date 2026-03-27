@@ -143,9 +143,10 @@ local map = vim.keymap.set
 local opt = { noremap = true, silent = true }
 map("n", "<leader>ac", "<cmd>Fitten toggle_chat<cr>", opt)
 map("i", "<M-l>", function()
-	require("fittencode").accept_all_suggestions()
+	pcall(function()
+		require("fittencode").accept("all")
+	end)
 end, opt)
-
 
 map({ "n", "v" }, "<leader>af", function()
 	-- 复制选中内容到寄存器
@@ -202,5 +203,6 @@ map({ "n", "v" }, "<leader>af", function()
 		end
 	end)
 end, opt)
+--print(vim.inspect(fittencode.get_status()))
 -- use <leader>ac to toggle chat window
 -- use <leader>af to select fitten function and apply it to the selected text

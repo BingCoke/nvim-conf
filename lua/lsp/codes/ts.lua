@@ -6,23 +6,27 @@ local lsp = require("lsp.lsp")
 local on_attach = lsp.on_attach
 
 M.setup = function()
+	local vue_language_server_path = vim.fn.expand("$MASON/packages")
+		.. "/vue-language-server"
+		.. "/node_modules/@vue/language-server"
+
+	local tsserver_filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" }
+	local vue_plugin = {
+		name = "@vue/typescript-plugin",
+		location = vue_language_server_path,
+		languages = { "vue" },
+		configNamespace = "typescript",
+	}
+
 	vim.lsp.config("vtsls", {
 		capabilities = svecapabilities,
 		on_attach = on_attach,
-		filetypes = { "typescript", "javascript", "javascriptreact", "typescriptreact", "vue" },
-		--root_dir = util.root_pattern(".git", "turbo.json", "pnpm-workspace.yaml"),
+		filetypes = tsserver_filetypes,
 		settings = {
 			vtsls = {
 				tsserver = {
 					globalPlugins = {
-						{
-							name = "@vue/typescript-plugin",
-							location = vim.fn.stdpath("data")
-								.. "/mason/packages/vue-language-server/node_modules/@vue/language-server",
-							languages = { "vue" },
-							configNamespace = "typescript",
-							enableForWorkspaceTypeScriptVersions = true,
-						},
+						vue_plugin,
 						{
 							name = "typescript-svelte-plugin",
 							location = vim.fn.stdpath("data") .. "/mason/packages/svelte-language-server",
@@ -70,7 +74,7 @@ M.setup = function()
 		on_attach = on_attach,
 	})
 
-	--vim.lsp.enable("vue_ls")
+	vim.lsp.enable("vue_ls")
 	vim.lsp.enable("svelte")
 	--vim.lsp.enable("tsgo")
 	vim.lsp.enable("vtsls")

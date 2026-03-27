@@ -87,6 +87,42 @@ return {
 		config = function()
 			require("plugin-config.fitten")
 		end,
+		enabled = false,
+	},
+	{
+		"milanglacier/minuet-ai.nvim",
+		ft = language,
+		enabled = false,
+		config = function()
+			require("minuet").setup({
+				virtualtext = {
+					auto_trigger_ft = { "*" },
+					keymap = {
+						-- accept whole completion
+						accept = "<A-l>",
+						-- accept one line
+						accept_line = "<A-a>",
+						-- accept n lines (prompts for number)
+						-- e.g. "A-z 2 CR" will accept 2 lines
+						--accept_n_lines = "<A-z>",
+						-- Cycle to prev completion item, or manually invoke completion
+						prev = "<A-[>",
+						-- Cycle to next completion item, or manually invoke completion
+						next = "<A-]>",
+						--dismiss = "<A-e>",
+					},
+				},
+				provider = "claude",
+				provider_options = {
+					claude = {
+						max_tokens = 2569,
+						api_key = "ANTHROPIC_AUTH_TOKEN",
+						stream = true,
+						end_point = "https://api.xheai.cc/v1/messages",
+					},
+				},
+			})
+		end,
 	},
 	{
 		"zbirenbaum/copilot.lua",

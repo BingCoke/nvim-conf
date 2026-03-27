@@ -145,7 +145,7 @@ return {
 			require("transparent").clear_prefix("Lsp")
 			require("transparent").clear_prefix("Noice")
 			require("transparent").clear_prefix("Saga")
-			require("transparent").clear_prefix("Float")
+			--require("transparent").clear_prefix("Float")
 			require("transparent").clear("HoverBorder")
 			require("transparent").clear("Pmenu")
 			require("transparent").clear("NotifyBackground")

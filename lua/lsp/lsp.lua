@@ -85,7 +85,8 @@ local on_attach = function(client, bufnr)
 	keymap.set("n", "gr", "<CMD>Lspsaga finder ref<CR>", opts) -- show definition, references
 	--keymap.set("n", "gd", "<Cmd>lua vim.lsp.buf.definition()<CR>", opts) -- got to declaration
 	keymap.set("n", "gD", "<CMD>Glance definitions<CR>", opts)
-	keymap.set("n", "gd", "<cmd>Lspsaga goto_definition<CR>", opts)
+	--keymap.set("n", "gd", "<cmd>Lspsaga goto_definition<CR>", opts)
+	keymap.set("n", "gd", vim.lsp.buf.definition, opts)
 	keymap.set("n", "ga", "<cmd>tab split | Lspsaga goto_definition<CR>", opts)
 	--keymap.set("n", "gd", "<cmd>Lspsaga goto_definition<CR>", opts)
 
@@ -152,10 +153,16 @@ local default_capabilities = require("util.cmpUtil").getCapabilites()
 -- (not in youtube nvim video)
 local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
 
-for type, icon in pairs(signs) do
-	local hl = "DiagnosticSign" .. type
-	vim.fn.sign_define(hl, { text = icon, texthl = hl, numhl = "" })
-end
+vim.diagnostic.config({
+	signs = {
+		text = {
+			[vim.diagnostic.severity.ERROR] = "✘",
+			[vim.diagnostic.severity.WARN] = "▲",
+			[vim.diagnostic.severity.HINT] = "⚑",
+			[vim.diagnostic.severity.INFO] = "»",
+		},
+	},
+})
 
 M.on_attach = on_attach
 M.capabilities = capabilities
