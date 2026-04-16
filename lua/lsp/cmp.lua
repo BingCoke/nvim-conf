@@ -139,9 +139,9 @@ cmp.setup({
 	sorting = {
 		comparators = {
 			compare.offset,
+			compare.recently_used,
 			compare.exact,
 			compare.score,
-			compare.recently_used,
 			compare.locality,
 			compare.kind,
 			compare.length,
@@ -308,7 +308,6 @@ cmp.setup.filetype("go", {
 			compare.sort_text,
 			compare.length,
 			compare.order,
-			compare.scopes, -- what?
 		},
 	},
 })
@@ -325,7 +324,6 @@ for key, value in pairs(js) do
 				compare.kind,
 				compare.length,
 				compare.order,
-				compare.scopes, -- what?
 				compare.sort_text,
 			},
 		},

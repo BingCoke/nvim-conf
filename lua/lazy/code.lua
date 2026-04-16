@@ -17,13 +17,21 @@ return {
 	--		require("plugin-config.symbols-outline")
 	--	end,
 	--	ft = language,
-	--},
+	--},{}
 	{
-		"RRethy/vim-illuminate",
-		config = function()
-			require("plugin-config.illuminate")
-		end,
-		ft = language,
+		"mawkler/refjump.nvim",
+		event = "LspAttach", -- Uncomment to lazy load
+		opts = {
+			keymaps = {
+				enable = true,
+				next = "<M-n>", -- Keymap to jump to next LSP reference
+				prev = "<M-p>", -- Keymap to jump to previous LSP reference
+			},
+			highlights = {
+				enable = true, -- Highlight the LSP references on jump
+				auto_clear = true, -- Automatically clear highlights when cursor moves
+			},
+		},
 	},
 	{
 		"nvim-treesitter/nvim-treesitter",
@@ -46,6 +54,7 @@ return {
 		dependencies = {
 			{
 				"JoosepAlviste/nvim-ts-context-commentstring",
+				enabled = true,
 				opts = {},
 			},
 		},
@@ -175,7 +184,7 @@ return {
 	},
 	{
 		"edolphin-ydf/goimpl.nvim",
-		--enabled = false,
+		enabled = false,
 		requires = {
 			{ "nvim-lua/plenary.nvim" },
 			{ "nvim-lua/popup.nvim" },
@@ -243,5 +252,10 @@ return {
 			})
 		end,
 		ft = language,
+	},
+	{
+		"nabekou29/js-i18n.nvim",
+		event = { "BufReadPre", "BufNewFile" },
+		opts = {},
 	},
 }

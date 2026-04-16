@@ -32,6 +32,7 @@ require("lazy").setup({
 	{ import = "lazy.base" },
 	{ import = "lazy.code" },
 	{ import = "lazy.useful" },
+	{ import = "lazy.test" },
 	--{ import = "lazy.mini" },
 }, {
 	ui = {
@@ -40,8 +41,7 @@ require("lazy").setup({
 	},
 	performance = {
 		rtp = {
-			disabled_plugins = {
-			},
+			disabled_plugins = {},
 		},
 	},
 })

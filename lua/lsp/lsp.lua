@@ -40,11 +40,11 @@ vim.diagnostic.config({
 vim.lsp.inlay_hint.enable(true)
 
 -- config lsp signature
-vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
-	-- Use a sharp border with `FloatBorder` highlights
-	border = "single",
-	title = { { "signature", "TitleString" } },
-})
+--vim.lsp.handlers["textDocument/signatureHelp"] = vim.lsp.with(vim.lsp.handlers.signature_help, {
+--	-- Use a sharp border with `FloatBorder` highlights
+--	border = "single",
+--	title = { { "signature", "TitleString" } },
+--})
 
 vim.cmd("hi LspSignatureActiveParameter guibg=#3b4261")
 
@@ -78,8 +78,8 @@ local on_attach = function(client, bufnr)
 
 	keymap.set("i", "<c-p>", vim.lsp.buf.signature_help, opts)
 	-- 设置光标
-	keymap.set("n", "<a-p>", "<cmd>lua require('illuminate').goto_prev_reference(true)<CR>", opts)
-	keymap.set("n", "<a-n>", "<cmd>lua require('illuminate').goto_next_reference(true)<CR>", opts)
+	--keymap.set("n", "<a-p>", "<cmd>lua require('illuminate').goto_prev_reference(true)<CR>", opts)
+	--keymap.set("n", "<a-n>", "<cmd>lua require('illuminate').goto_next_reference(true)<CR>", opts)
 
 	-- set keybinds
 	keymap.set("n", "gr", "<CMD>Lspsaga finder ref<CR>", opts) -- show definition, references

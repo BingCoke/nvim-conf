@@ -99,7 +99,7 @@ return {
 		},
 		-- (optional) will update plugin's deps on every update
 		build = function()
-			vim.cmd.GoInstallDeps()
+			--vim.cmd.GoInstallDeps()
 		end,
 	},
 	-- language ts
