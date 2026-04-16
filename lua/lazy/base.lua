@@ -103,7 +103,7 @@ return {
 			})
 		end,
 		--event = "BufReadPre",
-		--enabled = false,
+		enabled = false,
 	},
 	{
 		"uga-rosa/ccc.nvim",
