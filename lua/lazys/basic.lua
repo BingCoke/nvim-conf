@@ -11,6 +11,7 @@ return {
     end,
     event = "VeryLazy",
   },
+
   -- terminal tool
   {
     "akinsho/toggleterm.nvim",
