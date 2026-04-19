@@ -187,3 +187,4 @@ return telescope.register_extension({
 		myprojects = projects,
 	},
 })
+

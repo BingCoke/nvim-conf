@@ -1,7 +1,0 @@
-#!/bin/bash
-
-# yazi absolute path
-path="$1"
-server="$NVIM_SERVER"
-nvim --server $server --remote-send  "<c-\><c-n>:lua require('util.open').open_file('${path}')<cr>"
-

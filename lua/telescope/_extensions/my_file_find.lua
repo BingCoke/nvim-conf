@@ -158,3 +158,4 @@ return telescope.register_extension({
 		find_files = find_files,
 	},
 })
+

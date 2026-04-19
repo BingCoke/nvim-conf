@@ -1,11 +1,11 @@
+
+
 vim.g.root_spec = { "lsp", { ".git", "lua" }, "cwd" }
 -- disable netrw at the very start of your init.lua
 vim.g.loaded_netrw = 1
 
 vim.g.loaded_netrwPlugin = 1
 
-vim.o.shell = "/bin/bash"
-vim.opt.shell = "fish"
 -- utf8
 vim.g.encoding = "UTF-8"
 vim.o.fileencoding = "utf-8"
@@ -13,8 +13,8 @@ vim.o.fileencoding = "utf-8"
 vim.o.scrolloff = 3
 vim.o.sidescrolloff = 3
 -- 使用相对行号
---vim.wo.number = true
---vim.wo.relativenumber = true
+vim.wo.number = false
+vim.wo.relativenumber = false
 
 vim.opt.smoothscroll = true
 -- 高亮所在行
@@ -54,7 +54,7 @@ vim.o.hlsearch = false
 -- 边输入边搜索
 vim.o.incsearch = true
 -- 命令行高为2，提供足够的显示空间
-vim.o.cmdheight = 2
+vim.o.cmdheight = 0
 -- 当文件被外部程序修改时，自动加载
 vim.o.autoread = true
 vim.bo.autoread = true
@@ -83,7 +83,7 @@ vim.o.splitright = true
 vim.o.background = "dark"
 vim.o.termguicolors = true
 vim.opt.termguicolors = true
--- 不可见字符的显示，这里只把空格显示为一个点
+
 vim.o.listchars = "space: ,tab:  "
 vim.o.list = true
 -- 补全增强
@@ -110,17 +110,8 @@ vim.filetype.add({
 	},
 })
 
---vim.opt["guicursor"] = ""
-
 vim.wo.cursorline = true
 
---vim.cmd([[
---autocmd InsertEnter * set cursorline
---]])
---
---vim.cmd([[
---autocmd InsertLeave * set nocursorline
---]])
 
 vim.cmd([[
 	set tagfunc=v:lua.vim.lsp.tagfunc

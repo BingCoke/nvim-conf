@@ -6,48 +6,18 @@ local map = vim.keymap.set
 -- 复用 opt 参数
 local opt = { noremap = true, silent = true }
 
-map("n", "Q", "q", opt)
-map("n", "q", "", opt)
 map("i", "<c-`>", "`", opt)
 
--- 优先使用 git 根目录，如果没有，则使用当前工作目录
-local function get_relative_path()
-	local git_root = vim.fn.systemlist("git rev-parse --show-toplevel")[1]
-	if vim.v.shell_error ~= 0 then
-		git_root = vim.fn.getcwd()
-	end
-	local abs_path = vim.fn.expand("%:p")
-	return vim.fn.fnamemodify(abs_path, ":." .. git_root .. "/")
-end
 
-map("v", "<M-c>", function()
-	-- 获取文件相对路径
-	local filepath = vim.fn.expand("%:.")
-	local filetype = vim.bo.filetype
 
-	-- 获取选择位置
-	local start_line = vim.fn.line("'<")
-	local end_line = vim.fn.line("'>")
-
-	-- 获取选中的文本
-	local selected_text = vim.fn.getline("'<", "'>")
-
-	-- 构建简洁格式
-	local context = {}
-	table.insert(context, filepath .. ":" .. start_line .. "-" .. end_line)
-	table.insert(context, "```" .. (filetype ~= "" and filetype or ""))
-	for _, line in ipairs(selected_text) do
-		table.insert(context, line)
-	end
-	table.insert(context, "```")
-
-	-- 复制到剪贴板
-	local context_text = table.concat(context, "\n")
-	vim.fn.setreg("+", context_text)
-end, opt)
 
 -- 取消 s 默认功能
 map("n", "s", "", opt)
+
+-- 插入模式
+vim.keymap.set({'i','c',}, '<C-v>', '<C-r>+', { noremap = true, silent = true })
+
+vim.keymap.set({'n', 'i', 'v', 'c', 't'}, '<F13>', '<Nop>', { noremap = true, silent = true })
 
 -- windows 分屏快捷键
 map("n", "<leader>sv", ":vsp<CR>", opt)
@@ -69,12 +39,6 @@ vim.s = 12
 
 map("n", "<esc>", "<cmd>noh<cr><esc>", opt)
 map("i", "<esc>", "<cmd>noh<cr><esc>", opt)
-
--- save file
---map("i", "<C-s>", "<cmd>w<cr><esc>", opt)
---map("x", "<C-s>", "<cmd>w<cr><esc>", opt)
---map("n", "<C-s>", "<cmd>w<cr><esc>", opt)
---map("s", "<C-s>", "<cmd>w<cr><esc>", opt)
 
 map("n", "<leader>w", "<cmd>w<cr><esc>", opt)
 
@@ -127,91 +91,86 @@ local pluginKeys = {}
 -- Telescope
 -- 查找文件
 map("n", "<C-p>", function()
-	local tab_buffers = vim.fn.tabpagebuflist(vim.fn.tabpagenr())
-	local tree = false
-	local dash = false
-	for _, bufnr in ipairs(tab_buffers) do
-		local filetype = vim.api.nvim_buf_get_option(bufnr, "filetype")
-		if filetype == "NvimTree" then
-			tree = true
-		end
+  local tab_buffers = vim.fn.tabpagebuflist(vim.fn.tabpagenr())
+  local tree = false
+  local dash = false
+  for _, bufnr in ipairs(tab_buffers) do
+    local filetype = vim.api.nvim_buf_get_option(bufnr, "filetype")
+    if filetype == "NvimTree" then
+      tree = true
+    end
 
-		if filetype == "dashboard" then
-			dash = true
-		end
-	end
-	if #tab_buffers > 1 then
-		tree = false
-	end
+    if filetype == "dashboard" then
+      dash = true
+    end
+  end
+  if #tab_buffers > 1 then
+    tree = false
+  end
 
-	if tree then
-		vim.cmd([[enew]])
-	end
+  if tree then
+    vim.cmd([[enew]])
+  end
 
-	if dash then
-		require("telescope").extensions.my_file_find.find_files({})
-		return
-	end
+  if dash then
+    require("telescope").extensions.my_file_find.find_files({})
+    return
+  end
 
-	vim.cmd([[Telescope find_files]])
+  vim.cmd([[Telescope find_files]])
 end, opt)
 
 -- 全局搜索
 map("n", "<C-f>", function()
-	local tab_buffers = vim.fn.tabpagebuflist(vim.fn.tabpagenr())
-	local tree = false
-	for _, bufnr in ipairs(tab_buffers) do
-		local filetype = vim.api.nvim_buf_get_option(bufnr, "filetype")
-		if filetype == "NvimTree" then
-			tree = true
-		end
-	end
-	if #tab_buffers > 1 then
-		tree = false
-	end
-	if tree then
-		vim.cmd([[enew]])
-	end
-	vim.cmd([[Telescope live_grep]])
+  local tab_buffers = vim.fn.tabpagebuflist(vim.fn.tabpagenr())
+  local tree = false
+  for _, bufnr in ipairs(tab_buffers) do
+    local filetype = vim.api.nvim_buf_get_option(bufnr, "filetype")
+    if filetype == "NvimTree" then
+      tree = true
+    end
+  end
+  if #tab_buffers > 1 then
+    tree = false
+  end
+  if tree then
+    vim.cmd([[enew]])
+  end
+  vim.cmd([[Telescope live_grep]])
 end, opt)
 
-map("n", "sw", "<cmd>Telescope buffers<CR>", opt)
-map("n", "<leader>p", "<cmd>Telescope lsp_dynamic_workspace_symbols<CR>", opt)
+map("n", "<leader>sw", "<cmd>Telescope buffers<CR>", opt)
 -- dap
 
 map("n", "<c-w>", "<c-w>w", opt)
-
--- nvim-tree
--- alt+m 键 打开关闭tree
---map("n", "<A-m>", ":NvimTreeToggle<CR>", opt)
 
 vim.keymap.set("n", "<leader>t", "<cmd>SymbolsOutline<CR>", { noremap = true, silent = false })
 
 -- 跳转到下一个错误
 vim.keymap.set("n", "]e", function()
-	vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR, float = false })
+  vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR, float = false })
 end, { desc = "Next Error" })
 
 -- 跳转到上一个错误
 vim.keymap.set("n", "[e", function()
-	vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR, float = false })
+  vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR, float = false })
 end, { desc = "Previous Error" })
 
 -- 使用 Lua 配置
 vim.keymap.set("n", "[g", function()
-	vim.diagnostic.goto_prev({ float = false })
+  vim.diagnostic.goto_prev({ float = false })
 end, { desc = "Go to previous diagnostic" })
 vim.keymap.set("n", "]g", function()
-	vim.diagnostic.goto_next({ float = false })
+  vim.diagnostic.goto_next({ float = false })
 end, { desc = "Go to next diagnostic" })
 
 -- 使用vscode打开当前文件
 vim.keymap.set("n", "<leader>cc", function()
-	vim.fn.jobstart({ "code", "-a", vim.loop.cwd(), vim.fn.expand("%:p") })
+  vim.fn.jobstart({ "code", "-a", vim.loop.cwd(), vim.fn.expand("%:p") })
 end, {
-	desc = "open vscode in current buffer file",
-	noremap = true,
-	silent = true,
+desc = "open vscode in current buffer file",
+noremap = true,
+silent = true,
 })
 
 return pluginKeys

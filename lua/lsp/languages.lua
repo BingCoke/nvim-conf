@@ -48,3 +48,4 @@ for _, value in ipairs(simpleLsps) do
 		on_attach = on_attach,
 	})
 end
+

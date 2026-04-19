@@ -1,7 +1,7 @@
 local M = {}
 
 local util = require("lspconfig.util")
-local svecapabilities = require("util.cmpUtil").getCapabilites()
+local svecapabilities = require("util.cmp").getCapabilites()
 local lsp = require("lsp.lsp")
 local on_attach = lsp.on_attach
 
