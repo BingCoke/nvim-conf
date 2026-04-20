@@ -38,7 +38,6 @@ vim.lsp.inlay_hint.enable(true)
 
 -- 配置keymap
 local on_attach = function(client, bufnr)
-	print("on_attach ", bufnr)
 
 	--vim.wo.signcolumn = "yes"
 	-- keybind optionslsplsp

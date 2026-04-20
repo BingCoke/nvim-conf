@@ -9,7 +9,6 @@ M.setup = function()
 		on_attach = function(cli, buf)
 			on_attach(cli,buf)
 		end,
-		--on_attach = on_attach,
 		capabilities = capabilities,
 		settings = {
 			gopls = {},

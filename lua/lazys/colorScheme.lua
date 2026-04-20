@@ -62,7 +62,7 @@ return {
 	{
 		"xiyaowong/transparent.nvim",
 		dependencies = { "folke/tokyonight.nvim" },
-		enabled = false,
+		--enabled = false,
 		config = function()
 			require("transparent").setup({
 				exclude_groups = {
