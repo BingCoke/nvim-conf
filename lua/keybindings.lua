@@ -8,16 +8,17 @@ local opt = { noremap = true, silent = true }
 
 map("i", "<c-`>", "`", opt)
 
-
-
-
 -- 取消 s 默认功能
 map("n", "s", "", opt)
 
 -- 插入模式
-vim.keymap.set({'i','c',}, '<C-v>', '<C-r>+', { noremap = true, silent = true })
+vim.keymap.set({ "i" }, "<C-v>", "<C-r>+", { noremap = true, silent = true })
+vim.keymap.set('c', '<C-v>', function()
+  local text = vim.fn.getreg('+')
+  vim.api.nvim_feedkeys(text, 'n', true)
+end, { noremap = true, silent = true })
 
-vim.keymap.set({'n', 'i', 'v', 'c', 't'}, '<F13>', '<Nop>', { noremap = true, silent = true })
+vim.keymap.set({ "n", "i", "v", "c", "t" }, "<F13>", "<Nop>", { noremap = true, silent = true })
 
 -- windows 分屏快捷键
 map("n", "<leader>sv", ":vsp<CR>", opt)
@@ -91,52 +92,52 @@ local pluginKeys = {}
 -- Telescope
 -- 查找文件
 map("n", "<C-p>", function()
-  local tab_buffers = vim.fn.tabpagebuflist(vim.fn.tabpagenr())
-  local tree = false
-  local dash = false
-  for _, bufnr in ipairs(tab_buffers) do
-    local filetype = vim.api.nvim_buf_get_option(bufnr, "filetype")
-    if filetype == "NvimTree" then
-      tree = true
-    end
+	local tab_buffers = vim.fn.tabpagebuflist(vim.fn.tabpagenr())
+	local tree = false
+	local dash = false
+	for _, bufnr in ipairs(tab_buffers) do
+		local filetype = vim.api.nvim_buf_get_option(bufnr, "filetype")
+		if filetype == "NvimTree" then
+			tree = true
+		end
 
-    if filetype == "dashboard" then
-      dash = true
-    end
-  end
-  if #tab_buffers > 1 then
-    tree = false
-  end
+		if filetype == "dashboard" then
+			dash = true
+		end
+	end
+	if #tab_buffers > 1 then
+		tree = false
+	end
 
-  if tree then
-    vim.cmd([[enew]])
-  end
+	if tree then
+		vim.cmd([[enew]])
+	end
 
-  if dash then
-    require("telescope").extensions.my_file_find.find_files({})
-    return
-  end
+	if dash then
+		require("telescope").extensions.my_file_find.find_files({})
+		return
+	end
 
-  vim.cmd([[Telescope find_files]])
+	vim.cmd([[Telescope find_files]])
 end, opt)
 
 -- 全局搜索
 map("n", "<C-f>", function()
-  local tab_buffers = vim.fn.tabpagebuflist(vim.fn.tabpagenr())
-  local tree = false
-  for _, bufnr in ipairs(tab_buffers) do
-    local filetype = vim.api.nvim_buf_get_option(bufnr, "filetype")
-    if filetype == "NvimTree" then
-      tree = true
-    end
-  end
-  if #tab_buffers > 1 then
-    tree = false
-  end
-  if tree then
-    vim.cmd([[enew]])
-  end
-  vim.cmd([[Telescope live_grep]])
+	local tab_buffers = vim.fn.tabpagebuflist(vim.fn.tabpagenr())
+	local tree = false
+	for _, bufnr in ipairs(tab_buffers) do
+		local filetype = vim.api.nvim_buf_get_option(bufnr, "filetype")
+		if filetype == "NvimTree" then
+			tree = true
+		end
+	end
+	if #tab_buffers > 1 then
+		tree = false
+	end
+	if tree then
+		vim.cmd([[enew]])
+	end
+	vim.cmd([[Telescope live_grep]])
 end, opt)
 
 map("n", "<leader>sw", "<cmd>Telescope buffers<CR>", opt)
@@ -148,29 +149,29 @@ vim.keymap.set("n", "<leader>t", "<cmd>SymbolsOutline<CR>", { noremap = true, si
 
 -- 跳转到下一个错误
 vim.keymap.set("n", "]e", function()
-  vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR, float = false })
+	vim.diagnostic.goto_next({ severity = vim.diagnostic.severity.ERROR, float = false })
 end, { desc = "Next Error" })
 
 -- 跳转到上一个错误
 vim.keymap.set("n", "[e", function()
-  vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR, float = false })
+	vim.diagnostic.goto_prev({ severity = vim.diagnostic.severity.ERROR, float = false })
 end, { desc = "Previous Error" })
 
 -- 使用 Lua 配置
 vim.keymap.set("n", "[g", function()
-  vim.diagnostic.goto_prev({ float = false })
+	vim.diagnostic.goto_prev({ float = false })
 end, { desc = "Go to previous diagnostic" })
 vim.keymap.set("n", "]g", function()
-  vim.diagnostic.goto_next({ float = false })
+	vim.diagnostic.goto_next({ float = false })
 end, { desc = "Go to next diagnostic" })
 
 -- 使用vscode打开当前文件
 vim.keymap.set("n", "<leader>cc", function()
-  vim.fn.jobstart({ "code", "-a", vim.loop.cwd(), vim.fn.expand("%:p") })
+	vim.fn.jobstart({ "code", "-a", vim.loop.cwd(), vim.fn.expand("%:p") })
 end, {
-desc = "open vscode in current buffer file",
-noremap = true,
-silent = true,
+	desc = "open vscode in current buffer file",
+	noremap = true,
+	silent = true,
 })
 
 return pluginKeys

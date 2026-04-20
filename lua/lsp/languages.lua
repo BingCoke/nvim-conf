@@ -40,7 +40,6 @@ local simpleLsps = {
 local lsp = require("lsp.lsp")
 local on_attach = lsp.on_attach
 local capabilities = lsp.capabilities
-local default_capabilities = lsp.default_capabilities
 for _, value in ipairs(simpleLsps) do
 	vim.lsp.enable(value)
 	vim.lsp.config(value, {

@@ -5,16 +5,17 @@ local on_attach = lsp.on_attach
 local capabilities = lsp.capabilities
 
 M.setup = function()
-	vim.lsp.enable("gopls")
 	vim.lsp.config("gopls", {
-		capabilities = capabilities,
-		on_attach = function(client, bufnr)
-			lsp.on_attach(client, bufnr)
+		on_attach = function(cli, buf)
+			on_attach(cli,buf)
 		end,
+		--on_attach = on_attach,
+		capabilities = capabilities,
 		settings = {
 			gopls = {},
 		},
 	})
+	vim.lsp.enable("gopls")
 end
 
 return M

@@ -9,11 +9,13 @@ return {
 		dependencies = {
 			"mason-org/mason.nvim",
 			"onsails/lspkind.nvim",
+			"neovim/nvim-lspconfig",
 			{
 				"nvimdev/lspsaga.nvim",
 			},
 		},
 		config = function()
+			require("config.lspsaga")
 			require("lsp.mason")
 			require("lsp.lsp")
 			require("lsp.languages")
@@ -77,7 +79,6 @@ return {
 		ft = "go",
 		dependencies = {
 			"nvim-lua/plenary.nvim",
-			"neovim/nvim-lspconfig",
 			"mfussenegger/nvim-dap", -- (optional) only if you use `gopher.dap`
 		},
 		-- (optional) will update plugin's deps on every update

@@ -10,7 +10,7 @@ M.setup = function()
 	vim.lsp.config("eslint", {
 		capabilities = capabilities,
 		on_attach = on_attach,
-		root_dir = function(filename, bufnr)
+		root_dir = function(filename)
 			if string.find(filename, "node_modules/") then
 				return nil
 			end

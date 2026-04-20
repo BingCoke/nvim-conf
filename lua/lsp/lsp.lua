@@ -1,6 +1,5 @@
 local methods = vim.lsp.protocol.Methods
 
-
 -- 防止vtsls 的 hover的类型过长, 如果过长就用....替代
 local inlay_hint_handler = vim.lsp.handlers[methods.textDocument_inlayHint]
 vim.lsp.handlers[methods.textDocument_inlayHint] = function(err, result, ctx, config)
@@ -37,10 +36,9 @@ vim.cmd("hi LspSignatureActiveParameter guibg=#3b4261")
 -- 开启 hint
 vim.lsp.inlay_hint.enable(true)
 
-
-
 -- 配置keymap
 local on_attach = function(client, bufnr)
+	print("on_attach ", bufnr)
 
 	--vim.wo.signcolumn = "yes"
 	-- keybind optionslsplsp
@@ -76,7 +74,7 @@ local on_attach = function(client, bufnr)
 		opts
 	) -- show  diagnostics for line
 
-	keymap.set("n", "K", vim.lsp.buf.hover, opts)
+	keymap.set("n", "K", "<cmd>Lspsaga hover_doc<CR>", opts)
 
 	--keymap.set("n", "<A-a>", "<cmd>Lspsaga hover_doc<CR>", opts) -- show documentation for what is under cursor
 
@@ -98,8 +96,6 @@ local on_attach = function(client, bufnr)
 	--	addSymbolAtLineEnd(".")
 	--end, opts)
 end
-
-
 
 -- 配置不同的类型的图标
 local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
@@ -125,6 +121,3 @@ M.on_attach = on_attach
 M.capabilities = capabilities
 
 return M
-
-
-
