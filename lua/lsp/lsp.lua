@@ -38,7 +38,7 @@ vim.lsp.inlay_hint.enable(true)
 
 -- 配置keymap
 local on_attach = function(client, bufnr)
-
+	vim.keymap.del("n", "grn")
 	--vim.wo.signcolumn = "yes"
 	-- keybind optionslsplsp
 	local opts = { noremap = true, silent = true, buffer = bufnr }
@@ -47,22 +47,31 @@ local on_attach = function(client, bufnr)
 	keymap.set("i", "<c-p>", vim.lsp.buf.signature_help, opts)
 
 	-- set keybinds
-	keymap.set("n", "gr", "<CMD>Lspsaga finder ref<CR>", opts) -- show definition, references
+	--keymap.set("n", "gr", "<CMD>Lspsaga finder ref<CR>", opts) -- show definition, references
+	keymap.set("n", "grr", "<CMD>Telescope lsp_references<CR>", opts) -- show definition, references
 	--keymap.set("n", "gd", "<Cmd>lua vim.lsp.buf.definition()<CR>", opts) -- got to declaration
 	--keymap.set("n", "gD", "<CMD>Glance definitions<CR>", opts)
 	--keymap.set("n", "gd", "<cmd>Lspsaga goto_definition<CR>", opts)
-	keymap.set("n", "gd", vim.lsp.buf.definition, opts)
+	--keymap.set("n", "gd", vim.lsp.buf.definition, opts)
 	keymap.set("n", "ga", "<cmd>tab split | Lspsaga goto_definition<CR>", opts)
 	--keymap.set("n", "gd", "<cmd>Lspsaga goto_definition<CR>", opts)
+	keymap.set("n", "gd", function()
+		require("telescope.builtin").lsp_definitions({ reuse_win = true })
+	end, opts)
 
 	-- Go to type definition
 	--keymap.set("n", "gt", "<CMD>Glance type_definitions<CR>", opts)
-	keymap.set("n", "gy", "<CMD>lua vim.lsp.buf.type_definition()<CR>", opts)
+	--keymap.set("n", "gy", "<CMD>lua vim.lsp.buf.type_definition()<CR>", opts)
+	keymap.set("n", "gry", function()
+		require("telescope.builtin").lsp_type_definitions({ reuse_win = true })
+	end, opts)
 
-	keymap.set("n", "gi", "<CMD>Lspsaga finder imp<CR>", opts)
+	--keymap.set("n", "gi", "<CMD>Lspsaga finder imp<CR>", opts)
+	keymap.set("n", "gri", function()
+		require("telescope.builtin").lsp_implementations({ reuse_win = true })
+	end, opts)
 
 	keymap.set("n", "<leader>s", "<cmd>Lspsaga code_action<CR>", opts) -- see available code actions
-	--keymap.set("n", "<leader>s", "<cmd>LspUI code_action<CR>", opts) -- see available code actions
 
 	keymap.set("n", "<leader>rn", vim.lsp.buf.rename, opts) -- smart rename
 
@@ -95,9 +104,6 @@ local on_attach = function(client, bufnr)
 	--	addSymbolAtLineEnd(".")
 	--end, opts)
 end
-
--- 配置不同的类型的图标
-local signs = { Error = " ", Warn = " ", Hint = " ", Info = " " }
 
 vim.diagnostic.config({
 	signs = {

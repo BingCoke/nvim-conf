@@ -20,6 +20,8 @@ return {
 
 	{
 		"nvim-treesitter/nvim-treesitter",
+		event = { "VeryLazy" },
+		cmd = { "TSUpdate", "TSInstall", "TSLog", "TSUninstall" },
 		config = function()
 			require("nvim-treesitter")
 				.install({
@@ -47,7 +49,6 @@ return {
 				})
 				:wait(300000)
 		end,
-		ft = language,
 		enabled = true,
 	},
 
@@ -113,7 +114,7 @@ return {
 		config = function()
 			require("gitsigns").setup({
 				-- 查看git编辑情况
-				 current_line_blame = true,
+				current_line_blame = true,
 				--numhl = true, -- Toggle with `:Gitsigns toggle_numhl`
 				--linehl = true, -- Toggle with `:Gitsigns toggle_linehl`
 			})

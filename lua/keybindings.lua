@@ -46,6 +46,8 @@ map("n", "<leader>w", "<cmd>w<cr><esc>", opt)
 -- 上下比例控制
 map("n", "<C-Down>", "<cmd>resize -2<CR>", opt)
 map("n", "<C-Up>", "<cmd>resize +2<CR>", opt)
+map('n', '<C-Right>', '<cmd>vertical resize +2<CR>', opts)
+map('n', '<C-Left>', '<cmd>vertical resize -2<CR>', opts)
 -- Terminal相关
 -- 打开terminal
 map("n", "<leader>h", "<cmd>sp | terminal<CR>", opt)

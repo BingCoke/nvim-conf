@@ -27,6 +27,22 @@ return {
 		end,
 	},
 	{
+		"stevearc/dressing.nvim",
+		lazy = true,
+		init = function()
+			---@diagnostic disable-next-line: duplicate-set-field
+			vim.ui.select = function(...)
+				require("lazy").load({ plugins = { "dressing.nvim" } })
+				return vim.ui.select(...)
+			end
+			---@diagnostic disable-next-line: duplicate-set-field
+			vim.ui.input = function(...)
+				require("lazy").load({ plugins = { "dressing.nvim" } })
+				return vim.ui.input(...)
+			end
+		end,
+	},
+	{
 		"nvim-telescope/telescope.nvim",
 		event = "VeryLazy",
 		dependencies = {
@@ -128,6 +144,7 @@ return {
 				},
 			})
 
+			require("telescope").load_extension("ui-select")
 			require("telescope").load_extension("myprojects")
 			require("telescope").load_extension("my_file_find")
 			require("telescope").load_extension("ui-select")
